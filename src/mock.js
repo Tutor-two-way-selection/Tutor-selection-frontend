@@ -7,4 +7,20 @@ Mock.mock('/student/login', {
   //   }]
   'success|1-0': true,
   'passChanged|10-1': true
+}).mock('/upload/1', {
+  'success|1-0': true,
+  // 'url|1': 'https://test-1301169585.cos.ap-shanghai.myqcloud.com/caster.jpg',
+  'url|1-10': 'abc'
+}).mock('/upload/2', {
+  'success|1-0': true,
+  // 'url|1': 'https://test-1301169585.cos.ap-shanghai.myqcloud.com/va11halla.png',
+  'url|1-10': 'def'
+}).mock('/student/tutorList', {
+  'tutorList|10-20': [{
+    'id|1-10': 'abc',
+    'name|2-3': 'cd',
+    'department|5-10': 'efg',
+    'search|4-8': 'hij',
+    'contact|4-8': 'klm'
+  }]
 })

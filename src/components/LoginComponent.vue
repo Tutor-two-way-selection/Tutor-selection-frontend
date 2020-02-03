@@ -114,7 +114,50 @@ export default {
                 console.log(response)
                 if (response.data.success) {
                   console.log('success')
-                  this.$router.push('/student')
+                  var tempStudent = {
+                    // regularStep: 0,
+                    // graduationStep: 0,
+                    // regularProfile: {
+                    //   flag: false
+                    // },
+                    // regularChoice: {
+                    //   flag: false
+                    // },
+                    // graduationProfile: {
+                    //   flag: false
+                    // },
+                    // graduationChoice: {
+                    //   flag: false
+                    // },
+                    regular: {
+                      first: '',
+                      second: '',
+                      step: 0,
+                      form: {
+                        profileTable: {
+                          flag: false
+                        },
+                        choiceTable: {
+                          flag: false
+                        }
+                      }
+                    },
+                    graduation: {
+                      first: '',
+                      second: '',
+                      step: 0,
+                      form: {
+                        profileTable: {
+                          flag: false
+                        },
+                        choiceTable: {
+                          flag: false
+                        }
+                      }
+                    }
+                  }
+                  this.$store.commit('setStudent', tempStudent)
+                  this.$router.push('/student/selectedTutor')
                 }
               }).catch(err => {
                 console.log(err)

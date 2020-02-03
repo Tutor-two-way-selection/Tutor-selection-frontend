@@ -6,13 +6,11 @@
       @click="next"
     >下一步</el-button>
     <br>
-    {{tutorType}}
-    <br>
     {{necList}}
     <hr>
     {{necFileList}}
     <router-view
-      :type="tutorType"
+      :type="'graduation'"
       :necList="necList"
     />
   </div>
@@ -23,13 +21,14 @@ import { mapState } from 'vuex'
 export default {
   data () {
     return {
-      tutorType: 'graduation',
       necList: [{
         url: '/upload/1',
+        type: 'graduation',
         name: 'profileTable',
         fileList: []
       }, {
         url: '/upload/2',
+        type: 'graduation',
         name: 'choiceTable',
         fileList: []
       }]
@@ -37,6 +36,15 @@ export default {
   },
   methods: {
     next () {
+      if (this.$store.state.student.graduation.form.profileTable.flag) {
+        let temp = this.$store.state.student
+        temp.graduation.form.choiceTable.flag = true
+        this.$store.commit('setStudent', temp)
+      } else {
+        let temp = this.$store.state.student
+        temp.graduation.form.profileTable.flag = true
+        this.$store.commit('setStudent', temp)
+      }
     }
   },
   components: {
@@ -44,7 +52,8 @@ export default {
   },
   computed: mapState({
     step (state) {
-      if (state.student[this.tutorType].form.profileTable.flag && state.student[this.tutorType].form.choiceTable.flag) {
+      // graduation
+      if (state.student.graduation.form.profileTable.flag && state.student.graduation.form.choiceTable.flag) {
         return 1
       } else {
         return 0
@@ -69,13 +78,11 @@ export default {
         console.log('necList changed')
         let tempStudent = this.$store.state.student
         for (let i = 0; i < this.necList.length; i++) {
-          if (tempStudent[this.tutorType]) {
-            if (tempStudent[this.tutorType].form[this.necList[i].name]) {
-              if (this.necList[i].fileList.length > 0) {
-                tempStudent[this.tutorType].form[this.necList[i].name].flag = true
-              } else {
-                tempStudent[this.tutorType].form[this.necList[i].name].flag = false
-              }
+          if (tempStudent[this.necList[i].type]) {
+            if (this.necList[i].fileList.length > 0) {
+              tempStudent[this.necList[i].type].form[this.necList[i].name].flag = true
+            } else {
+              tempStudent[this.necList[i].type].form[this.necList[i].name].flag = false
             }
           }
         }

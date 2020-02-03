@@ -4,6 +4,7 @@
       <router-link to="/">Home</router-link> |
       <router-link to="/about">About</router-link>
     </div> -->
+    <!-- {{JSON.parse(window.sessionStorage.getItem('student'))}} -->
     <router-view />
   </div>
 </template>
@@ -36,3 +37,24 @@ a {
   }
 }
 </style>
+<script>
+export default {
+  created () {
+    console.log(JSON.parse(window.sessionStorage.getItem('student')))
+  },
+  computed: {
+    listenStudent () {
+      return this.$store.state.student
+    }
+  },
+  watch: {
+    listenStudent: {
+      handler: function (val, oldval) {
+        this.$store.commit('UPDATE_Session')
+      },
+      deep: true// 对象内部的属性监听，也叫深度监听
+    }
+  }
+
+}
+</script>
