@@ -1,4 +1,5 @@
 var Mock = require('mockjs')
+
 Mock.mock('/student/login', {
   //   // 属性 list 的值是一个数组，其中含有 1 到 10 个元素
   //   'list|1-10': [{
@@ -23,4 +24,93 @@ Mock.mock('/student/login', {
     'search|4-8': 'hij',
     'contact|4-8': 'klm'
   }]
+}).mock('/student/information', {
+  regular: {
+    first: '',
+    second: '',
+    step: 0,
+    form: {
+      profileTable: {
+        flag: false,
+        fileList: []
+      },
+      choiceTable: {
+        flag: false,
+        fileList: []
+      }
+    }
+  },
+  graduation: {
+    first: '',
+    second: '',
+    step: 0,
+    form: {
+      profileTable: {
+        flag: false,
+        fileList: []
+      },
+      choiceTable: {
+        flag: false,
+        fileList: []
+      }
+    }
+  }
+}).mock('/student/information2', {
+  tutorTypeList: ['regular', 'graduation'],
+  regular: {
+    first: '',
+    second: '',
+    form: {
+      profileTable: {
+        flag: true,
+        fileList: [{
+          // 'status': 'success',
+          'name': 'caster.jpg',
+          // 'size': 1447144,
+          // 'percentage': 0,
+          'url': 'abcabcabcabcabcabcabcabc'
+          // 'uid': 1580800819013,
+          // 'raw': {
+          //   'uid': 1580800819013
+          // },
+          // 'response': {
+          //   'success': true,
+          //   'url': 'abcabcabcabcabcabcabcabc'
+          // }
+        }]
+      },
+      choiceTable: {
+        flag: true,
+        fileList: [{
+          // 'status': 'success',
+          'name': 'caster.jpg',
+          // 'size': 1447144,
+          'url': 'abcabcabcabcabcabcabcabc'
+          // 'percentage': 0,
+          // 'uid': 1580800819013,
+          // 'raw': {
+          //   'uid': 1580800819013
+          // },
+          // 'response': {
+          //   'success': true,
+          //   'url': 'abcabcabcabcabcabcabcabc'
+          // }
+        }]
+      }
+    }
+  },
+  graduation: {
+    first: '',
+    second: '',
+    form: {
+      profileTable: {
+        flag: false,
+        fileList: []
+      },
+      choiceTable: {
+        flag: false,
+        fileList: []
+      }
+    }
+  }
 })

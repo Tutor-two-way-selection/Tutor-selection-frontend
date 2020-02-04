@@ -44,7 +44,7 @@ export default {
   },
   computed: mapState({
     step (state) {
-      if (state.student[this.tutorType].form.profileTable.flag && state.student[this.tutorType].form.choiceTable.flag) {
+      if (state.flag[this.tutorType]) {
         return 1
       } else {
         return 0
@@ -57,33 +57,34 @@ export default {
       }
       for (let j = 0; j < this.necList.length; j++) {
         for (let i = 0; i < this.necList[j].fileList.length; i++) {
-          result[this.necList[j].name].push(this.necList[j].fileList[i].response.url)
+          result[this.necList[j].name].push(this.necList[j].fileList[i].url)
         }
       }
       return result
     }
   }),
   watch: {
-    necList: {
-      handler: function (val, oldval) {
-        console.log('necList changed')
-        let tempStudent = this.$store.state.student
-        for (let i = 0; i < this.necList.length; i++) {
-          if (tempStudent[this.tutorType]) {
-            if (tempStudent[this.tutorType].form[this.necList[i].name]) {
-              if (this.necList[i].fileList.length > 0) {
-                tempStudent[this.tutorType].form[this.necList[i].name].flag = true
-              } else {
-                tempStudent[this.tutorType].form[this.necList[i].name].flag = false
-              }
-            }
-          }
-        }
-        console.log(tempStudent)
-        this.$store.commit('setStudent', tempStudent)
-      },
-      deep: true// 对象内部的属性监听，也叫深度监听
-    }
+    // necList: {
+    //   handler: function (val, oldval) {
+    //     console.log('necList changed')
+    //     let tempStudent = this.$store.state.student
+    //     for (let i = 0; i < this.necList.length; i++) {
+    //       if (tempStudent[this.tutorType]) {
+    //         if (tempStudent[this.tutorType].form[this.necList[i].name]) {
+    //           if (this.necList[i].fileList.length > 0) {
+    //             tempStudent[this.tutorType].form[this.necList[i].name].flag = true
+    //             tempStudent[this.tutorType].form[this.necList[i].name].fileList = this.necList[i].fileList
+    //           } else {
+    //             tempStudent[this.tutorType].form[this.necList[i].name].flag = false
+    //           }
+    //         }
+    //       }
+    //     }
+    //     console.log(tempStudent)
+    //     this.$store.commit('setStudent', tempStudent)
+    //   },
+    //   deep: true// 对象内部的属性监听，也叫深度监听
+    // }
   }
 }
 </script>

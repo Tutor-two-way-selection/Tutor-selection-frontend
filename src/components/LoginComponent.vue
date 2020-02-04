@@ -100,64 +100,27 @@ export default {
   },
   methods: {
     onLogin (formName) {
-      // var accountType = this.accountType
       console.log(this.form.accountType)
       this.$refs[formName].validate(valid => {
         if (valid) {
           console.log('submit!')
           switch (this.form.accountType) {
             case 'student':
+              console.log({
+                stuNum: this.form.name,
+                stuPass: this.form.password
+              })
+              var that = this
               this.axios.post('/student/login', {
                 stuNum: this.form.name,
                 stuPass: this.form.password
               }).then(response => {
-                console.log(response)
                 if (response.data.success) {
-                  console.log('success')
-                  var tempStudent = {
-                    // regularStep: 0,
-                    // graduationStep: 0,
-                    // regularProfile: {
-                    //   flag: false
-                    // },
-                    // regularChoice: {
-                    //   flag: false
-                    // },
-                    // graduationProfile: {
-                    //   flag: false
-                    // },
-                    // graduationChoice: {
-                    //   flag: false
-                    // },
-                    regular: {
-                      first: '',
-                      second: '',
-                      step: 0,
-                      form: {
-                        profileTable: {
-                          flag: false
-                        },
-                        choiceTable: {
-                          flag: false
-                        }
-                      }
-                    },
-                    graduation: {
-                      first: '',
-                      second: '',
-                      step: 0,
-                      form: {
-                        profileTable: {
-                          flag: false
-                        },
-                        choiceTable: {
-                          flag: false
-                        }
-                      }
-                    }
-                  }
-                  this.$store.commit('setStudent', tempStudent)
-                  this.$router.push('/student/selectedTutor')
+                  this.$store.commit('setStudentId', that.form.name)
+                  this.$store.commit('LoadStudent', () => {
+                    // this.$store.commit('Flash_Flag')
+                    this.$router.push('/student')
+                  })
                 }
               }).catch(err => {
                 console.log(err)

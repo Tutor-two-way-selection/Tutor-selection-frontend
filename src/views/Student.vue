@@ -24,7 +24,7 @@
             <el-menu-item index="/student/regular/necessaryInfo">查看、修改个人信息</el-menu-item>
             <el-menu-item
               index="/student/regular/chooseTutor"
-              :disabled="!(this.$store.state.student.regular.form.profileTable.flag && this.$store.state.student.regular.form.choiceTable.flag)"
+              :disabled="!(this.$store.state.flag['regular'])"
             >选择导师</el-menu-item>
           </el-submenu>
 
@@ -36,7 +36,7 @@
             <el-menu-item index="/student/graduation/necessaryInfo">查看、修改个人信息</el-menu-item>
             <el-menu-item
               index="/student/graduation/chooseTutor"
-              :disabled="!(this.$store.state.student.graduation.form.profileTable.flag && this.$store.state.student.graduation.form.choiceTable.flag)"
+              :disabled="!(this.$store.state.flag['graduation'])"
             >选择导师</el-menu-item>
           </el-submenu>
           <el-menu-item index="/student/selectedTutor">
@@ -92,6 +92,9 @@ export default {
     defaultActive () {
       return this.$route.path.split('#').reverse()[0]
     }
+  },
+  created () {
+    this.$store.commit('Flash_Flag')
   }
 }
 </script>

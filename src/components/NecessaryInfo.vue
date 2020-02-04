@@ -4,13 +4,13 @@
       v-for="(item,i) in necList"
       :key="i"
     >
-      <h3>{{item.name}}</h3>
+      <h3>{{item.title||item.name}}</h3>
       <hr>
       <div
         v-for="(file,index) in item.fileList"
         :key="'file'+index"
       >
-        {{file.response.url||file.response||None}}
+        {{file.url||None}}
       </div>
       <el-upload
         class="upload-demo"
@@ -31,10 +31,10 @@
       >
         <i class="el-icon-upload"></i>
         <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
-        <div
+        <!-- <div
           slot="tip"
           class="el-upload__tip"
-        >只能上传jpg/png文件，且不超过500kb</div>
+        >只能上传jpg/png文件，且不超过500kb</div> -->
       </el-upload>
     </div>
   </div>
@@ -77,7 +77,9 @@ export default {
     for (let i = 0; i < this.necList.length; i++) {
       this.handleSuccess.push((response, file, fileList) => {
         console.log('success')
-        this.necList[i].fileList = fileList
+        var tempList = fileList
+        file['url'] = response.url
+        this.necList[i].fileList = tempList
       })
     }
     for (let i = 0; i < this.necList.length; i++) {
