@@ -10,7 +10,7 @@
     <hr>
     {{necFileList}}
     <router-view
-      :type="'graduation'"
+      :type="'graduate'"
       :necList="necList"
     />
   </div>
@@ -23,12 +23,12 @@ export default {
     return {
       necList: [{
         url: '/upload/1',
-        type: 'graduation',
+        type: 'graduate',
         name: 'profileTable',
         fileList: []
       }, {
         url: '/upload/2',
-        type: 'graduation',
+        type: 'graduate',
         name: 'choiceTable',
         fileList: []
       }]
@@ -36,13 +36,13 @@ export default {
   },
   methods: {
     next () {
-      if (this.$store.state.student.graduation.form.profileTable.flag) {
+      if (this.$store.state.student.graduate.form.profileTable.flag) {
         let temp = this.$store.state.student
-        temp.graduation.form.choiceTable.flag = true
+        temp.graduate.form.choiceTable.flag = true
         this.$store.commit('setStudent', temp)
       } else {
         let temp = this.$store.state.student
-        temp.graduation.form.profileTable.flag = true
+        temp.graduate.form.profileTable.flag = true
         this.$store.commit('setStudent', temp)
       }
     }
@@ -52,8 +52,8 @@ export default {
   },
   computed: mapState({
     step (state) {
-      // graduation
-      if (state.student.graduation.form.profileTable.flag && state.student.graduation.form.choiceTable.flag) {
+      // graduate
+      if (state.student.graduate.form.profileTable.flag && state.student.graduate.form.choiceTable.flag) {
         return 1
       } else {
         return 0

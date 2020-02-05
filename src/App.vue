@@ -6,9 +6,9 @@
     </div> -->
     <!-- {{JSON.parse(window.sessionStorage.getItem('student'))}} -->
     <div v-if="this.$store.state.student">
-      {{this.$store.state.stuId}}
+      {{this.$store.state.student.stuId}}
       <hr>
-      {{listenStudent}}
+      {{this.$store.state}}
     </div>
     <router-view />
   </div>
@@ -45,9 +45,11 @@ a {
 <script>
 export default {
   created () {
-    console.log('app created', window.sessionStorage.getItem('student'))
-    if (window.sessionStorage.getItem('student')) {
-      console.log(JSON.parse(window.sessionStorage.getItem('student')))
+    var accountType = 'student'
+    var json = window.sessionStorage.getItem(accountType)
+    console.log('app created', json)
+    if (window.sessionStorage.getItem(accountType)) {
+      console.log(JSON.parse(window.sessionStorage.getItem(accountType)))
       this.$store.commit('Flash_Flag')
     } else {
       this.$router.push('/login')
@@ -56,23 +58,12 @@ export default {
   computed: {
     listenStudent () {
       return this.$store.state.student
-    },
-    listenStuId () {
-      return this.$store.state.stuId
     }
   },
   watch: {
     listenStudent: {
       handler: function (val, oldval) {
         console.log('listenStudent')
-        this.$store.commit('UPDATE_Session')
-        this.$store.commit('Flash_Flag')
-      },
-      deep: true// 对象内部的属性监听，也叫深度监听
-    },
-    listenStuId: {
-      handler: function (val, oldval) {
-        console.log('listenStuId')
         this.$store.commit('UPDATE_Session')
         this.$store.commit('Flash_Flag')
       },

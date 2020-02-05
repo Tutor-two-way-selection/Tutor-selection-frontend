@@ -4,7 +4,7 @@ import Index from '../views/Index.vue'
 import Login from '../views/Login.vue'
 import Student from '../views/Student.vue'
 import Regular from '../views/student/Regular.vue'
-import Graduation from '../views/student/Graduation.vue'
+import Graduate from '../views/student/Graduate.vue'
 import SelectedTutor from '../views/student/SelectedTutor.vue'
 import Publicly from '../views/student/Publicly.vue'
 import MyTutor from '../views/student/MyTutor.vue'
@@ -60,8 +60,8 @@ const routes = [
       }]
     },
     {
-      path: 'graduation',
-      component: Graduation,
+      path: 'graduate',
+      component: Graduate,
       children: [{
         path: '/',
         redirect: 'necessaryInfo'

@@ -1,7 +1,8 @@
 <template>
   <div>
+    <h2>毕业设计导师选择</h2>
     <Progress :step="step" />
-    <el-button
+    <!-- <el-button
       style="margin-top: 12px;"
       @click="next"
     >下一步</el-button>
@@ -10,7 +11,7 @@
     <br>
     {{necList}}
     <hr>
-    {{necFileList}}
+    {{necFileList}} -->
     <router-view
       :type="tutorType"
       :necList="necList"
@@ -23,14 +24,16 @@ import { mapState } from 'vuex'
 export default {
   data () {
     return {
-      tutorType: 'graduation',
+      tutorType: 'graduate',
       necList: [{
         url: '/upload/1',
         name: 'profileTable',
+        title: '学生个人简介表',
         fileList: []
       }, {
         url: '/upload/2',
         name: 'choiceTable',
+        title: '导师双向选择表',
         fileList: []
       }]
     }
@@ -63,28 +66,12 @@ export default {
       return result
     }
   }),
-  watch: {
-    // necList: {
-    //   handler: function (val, oldval) {
-    //     console.log('necList changed')
-    //     let tempStudent = this.$store.state.student
-    //     for (let i = 0; i < this.necList.length; i++) {
-    //       if (tempStudent[this.tutorType]) {
-    //         if (tempStudent[this.tutorType].form[this.necList[i].name]) {
-    //           if (this.necList[i].fileList.length > 0) {
-    //             tempStudent[this.tutorType].form[this.necList[i].name].flag = true
-    //             tempStudent[this.tutorType].form[this.necList[i].name].fileList = this.necList[i].fileList
-    //           } else {
-    //             tempStudent[this.tutorType].form[this.necList[i].name].flag = false
-    //           }
-    //         }
-    //       }
-    //     }
-    //     console.log(tempStudent)
-    //     this.$store.commit('setStudent', tempStudent)
-    //   },
-    //   deep: true// 对象内部的属性监听，也叫深度监听
-    // }
+  created () {
+    for (let i = 0; i < this.necList.length; i++) {
+      if (this.$store.state.student[this.tutorType].form[this.necList[i].name]) {
+        this.necList[i].fileList = this.$store.state.student[this.tutorType].form[this.necList[i].name].fileList
+      }
+    }
   }
 }
 </script>

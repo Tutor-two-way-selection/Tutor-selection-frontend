@@ -1,7 +1,8 @@
 <template>
   <div>
+    <h2>本科导师选择</h2>
     <Progress :step="step" />
-    <el-button
+    <!-- <el-button
       style="margin-top: 12px;"
       @click="next"
     >下一步</el-button>
@@ -10,7 +11,7 @@
     <br>
     {{necList}}
     <hr>
-    {{necFileList}}
+    {{necFileList}} -->
     <router-view
       :type="tutorType"
       :necList="necList"
@@ -33,10 +34,6 @@ export default {
         url: '/upload/2',
         name: 'choiceTable',
         title: '导师双向选择表',
-        fileList: []
-      }, {
-        url: '/upload/2',
-        name: 'third',
         fileList: []
       }]
     }
@@ -75,7 +72,6 @@ export default {
         this.necList[i].fileList = this.$store.state.student[this.tutorType].form[this.necList[i].name].fileList
       }
     }
-    this.$store.commit('Flash_Flag')
   }
 }
 </script>

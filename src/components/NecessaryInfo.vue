@@ -6,12 +6,12 @@
     >
       <h3>{{item.title||item.name}}</h3>
       <hr>
-      <div
+      <!-- <div
         v-for="(file,index) in item.fileList"
         :key="'file'+index"
       >
         {{file.url||None}}
-      </div>
+      </div> -->
       <el-upload
         class="upload-demo"
         :action="item.url"

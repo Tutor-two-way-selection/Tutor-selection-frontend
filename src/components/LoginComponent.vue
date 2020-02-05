@@ -106,25 +106,7 @@ export default {
           console.log('submit!')
           switch (this.form.accountType) {
             case 'student':
-              console.log({
-                stuNum: this.form.name,
-                stuPass: this.form.password
-              })
-              var that = this
-              this.axios.post('/student/login', {
-                stuNum: this.form.name,
-                stuPass: this.form.password
-              }).then(response => {
-                if (response.data.success) {
-                  this.$store.commit('setStudentId', that.form.name)
-                  this.$store.commit('LoadStudent', () => {
-                    // this.$store.commit('Flash_Flag')
-                    this.$router.push('/student')
-                  })
-                }
-              }).catch(err => {
-                console.log(err)
-              })
+              this.studentLogin()
               break
             case 'teacher':
               this.$router.push('/student')
@@ -137,6 +119,29 @@ export default {
           console.log('error submit!!')
           return false
         }
+      })
+    },
+    studentLogin () {
+      console.log({
+        stuNum: this.form.name,
+        stuPass: this.form.password
+      })
+      var that = this
+      this.axios.post('/student/login', {
+        stuNum: this.form.name,
+        stuPass: this.form.password
+      }).then(response => {
+        if (response.data.success) {
+          this.$store.commit('setStudentId', that.form.name)
+          this.$store.commit('LoadStudent', { next: () => {
+            this.$router.push('/student')
+          },
+          id: this.form.name })
+        } else {
+          // 密码错误
+        }
+      }).catch(err => {
+        console.log(err)
       })
     }
   }

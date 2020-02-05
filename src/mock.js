@@ -1,5 +1,5 @@
 var Mock = require('mockjs')
-
+// Random.word()
 Mock.mock('/student/login', {
   //   // 属性 list 的值是一个数组，其中含有 1 到 10 个元素
   //   'list|1-10': [{
@@ -17,12 +17,115 @@ Mock.mock('/student/login', {
   // 'url|1': 'https://test-1301169585.cos.ap-shanghai.myqcloud.com/va11halla.png',
   'url|1-10': 'def'
 }).mock('/student/tutorList', {
-  'tutorList|10-20': [{
-    'id|1-10': 'abc',
-    'name|2-3': 'cd',
-    'department|5-10': 'efg',
-    'search|4-8': 'hij',
-    'contact|4-8': 'klm'
+  // 'tutorList|10-20': [{
+  //   id: '@word(3, 5)',
+  //   name: '@word(3, 5)',
+  //   department: '@word(3, 5)',
+  //   search: '@word(3, 5)',
+  //   contact: '@word(3, 5)'
+  // }]
+  tutorList: [{
+    'id': 'qsxqx',
+    'name': 'pbml',
+    'department': 'dul',
+    'search': 'hebm',
+    'contact': 'ixt'
+  }, {
+    'id': 'mjogo',
+    'name': 'hlbnd',
+    'department': 'cig',
+    'search': 'xsmj',
+    'contact': 'lcnfl'
+  }, {
+    'id': 'iadh',
+    'name': 'umjnd',
+    'department': 'nrmc',
+    'search': 'vdgn',
+    'contact': 'lcpbq'
+  }, {
+    'id': 'boi',
+    'name': 'tmudk',
+    'department': 'yrw',
+    'search': 'cbhm',
+    'contact': 'mtws'
+  }, {
+    'id': 'owvm',
+    'name': 'xmhh',
+    'department': 'shs',
+    'search': 'wmum',
+    'contact': 'fvc'
+  }, {
+    'id': 'obbt',
+    'name': 'diuu',
+    'department': 'pcwb',
+    'search': 'eveyv',
+    'contact': 'puf'
+  }, {
+    'id': 'ifni',
+    'name': 'ngmuc',
+    'department': 'vlzs',
+    'search': 'fmlrf',
+    'contact': 'snll'
+  }, {
+    'id': 'dftg',
+    'name': 'sihh',
+    'department': 'xgjb',
+    'search': 'zmuvd',
+    'contact': 'jwyf'
+  }, {
+    'id': 'idysr',
+    'name': 'vfbg',
+    'department': 'cytm',
+    'search': 'ldse',
+    'contact': 'unjm'
+  }, {
+    'id': 'lys',
+    'name': 'iefr',
+    'department': 'bybm',
+    'search': 'bkjy',
+    'contact': 'iqmu'
+  }, {
+    'id': 'jsmqu',
+    'name': 'pliw',
+    'department': 'zrxf',
+    'search': 'zfah',
+    'contact': 'elrt'
+  }, {
+    'id': 'htjf',
+    'name': 'grger',
+    'department': 'wbole',
+    'search': 'uadx',
+    'contact': 'jlit'
+  }, {
+    'id': 'ruts',
+    'name': 'jioo',
+    'department': 'mske',
+    'search': 'cujy',
+    'contact': 'ofp'
+  }, {
+    'id': 'ygw',
+    'name': 'glw',
+    'department': 'hoogl',
+    'search': 'emgo',
+    'contact': 'muqv'
+  }, {
+    'id': 'tgjww',
+    'name': 'hcf',
+    'department': 'iuvm',
+    'search': 'xnadl',
+    'contact': 'qjeb'
+  }, {
+    'id': 'chh',
+    'name': 'gurq',
+    'department': 'fius',
+    'search': 'oenb',
+    'contact': 'efd'
+  }, {
+    'id': 'wci',
+    'name': 'gxi',
+    'department': 'zjyd',
+    'search': 'oyo',
+    'contact': 'smupx'
   }]
 }).mock('/student/information', {
   regular: {
@@ -40,7 +143,7 @@ Mock.mock('/student/login', {
       }
     }
   },
-  graduation: {
+  graduate: {
     first: '',
     second: '',
     step: 0,
@@ -56,7 +159,7 @@ Mock.mock('/student/login', {
     }
   }
 }).mock('/student/information2', {
-  tutorTypeList: ['regular', 'graduation'],
+  tutorTypeList: ['regular', 'graduate'],
   regular: {
     first: '',
     second: '',
@@ -99,7 +202,7 @@ Mock.mock('/student/login', {
       }
     }
   },
-  graduation: {
+  graduate: {
     first: '',
     second: '',
     form: {
@@ -113,4 +216,23 @@ Mock.mock('/student/login', {
       }
     }
   }
+}).mock('/student/queryinfo', {
+  profileTable: {
+    flag: true,
+    fileList: [{
+      'name': 'caster.jpg',
+      'url': 'abcabcabcabcabcabcabcabc'
+    }]
+  },
+  choiceTable: {
+    flag: true,
+    fileList: [{
+      'name': 'caster.jpg',
+      'url': 'abcabcabcabcabcabcabcabc'
+    }]
+  }
+}).mock('/student/regular', {
+  success: true
+}).mock('/student/graduate', {
+  success: true
 })

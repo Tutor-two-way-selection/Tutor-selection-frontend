@@ -28,15 +28,15 @@
             >选择导师</el-menu-item>
           </el-submenu>
 
-          <el-submenu index="/student/graduation">
+          <el-submenu index="/student/graduate">
             <template slot="title">
               <i class="el-icon-location"></i>
               <span slot="title">毕业设计导师选择</span>
             </template>
-            <el-menu-item index="/student/graduation/necessaryInfo">查看、修改个人信息</el-menu-item>
+            <el-menu-item index="/student/graduate/necessaryInfo">查看、修改个人信息</el-menu-item>
             <el-menu-item
-              index="/student/graduation/chooseTutor"
-              :disabled="!(this.$store.state.flag['graduation'])"
+              index="/student/graduate/chooseTutor"
+              :disabled="!(this.$store.state.flag['graduate'])"
             >选择导师</el-menu-item>
           </el-submenu>
           <el-menu-item index="/student/selectedTutor">
@@ -86,6 +86,7 @@ export default {
     },
     quit () {
       this.$router.push('/')
+      this.$store.commit('LOGOUT')
     }
   },
   computed: {

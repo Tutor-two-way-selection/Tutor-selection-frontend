@@ -1,9 +1,67 @@
 <template>
   <div>
-    {{type}}
+    <!-- {{type}} -->
     <br>
     <!-- <el-button @click="resetDepartmentFilter">清除部门过滤器</el-button> -->
-    <el-button @click="clearFilter">清除所有过滤器</el-button>
+    <el-form
+      ref="form"
+      :model="form"
+      :inline="true"
+      label-width="80px"
+      :rules="rules"
+    >
+      <!-- <el-tag
+        closable
+        v-show="form.firstChoice"
+      >第一志愿: {{form.firstChoice}}</el-tag>
+      <br>
+      <el-tag
+        closable
+        v-show="form.secondChoice"
+        type="success"
+      >第二志愿: {{form.secondChoice}}</el-tag> -->
+      {{form}}
+      <br>
+      <el-form-item
+        label="第一志愿"
+        prop="firstChoice"
+      >
+        <el-select
+          v-model="form.firstChoice"
+          placeholder="请选择第一志愿"
+        >
+          <el-option
+            :label="item.name"
+            :value="item.id"
+            v-for="(item,i) in tutorList"
+            :key="i+'first'"
+          ></el-option>
+        </el-select>
+      </el-form-item>
+      <el-form-item label="第二志愿">
+        <el-select
+          v-model="form.secondChoice"
+          placeholder="请选择第二志愿"
+        >
+          <el-option
+            :label="item.name"
+            :value="item.id"
+            v-for="(item,i) in tutorList"
+            :key="i+'second'"
+          ></el-option>
+        </el-select>
+      </el-form-item>
+      <el-form-item label="接受调剂">
+        <el-switch v-model="form.redistribute"></el-switch>
+      </el-form-item>
+      <el-form-item>
+        <el-button
+          type="primary"
+          @click="onSubmit('form')"
+        >提交</el-button>
+      </el-form-item>
+    </el-form>
+    <!-- <el-button @click="clearFilter">清除所有过滤器</el-button> -->
     <el-table
       ref="filterTable"
       :data="tutorList"
@@ -75,7 +133,17 @@ export default {
     return {
       tutorList: [],
       department_filters: [],
-      search_filters: []
+      search_filters: [],
+      form: {
+        redistribute: false,
+        firstChoice: '',
+        secondChoice: ''
+      },
+      rules: {
+        firstChoice: [
+          { required: true, message: '请选择第一志愿导师', trigger: 'blur' }
+        ]
+      }
     }
   },
   created () {
@@ -118,9 +186,50 @@ export default {
     },
     asFirstChoice (id) {
       console.log(id)
+      this.form.firstChoice = id
     },
     asSecondChoice (id) {
       console.log(id)
+      this.form.secondChoice = id
+    },
+    onSubmit (formName) {
+      // this.axios.post()
+      this.$refs[formName].validate(valid => {
+        if (valid) {
+          console.log(this.type, ': submit!')
+        } else {
+          console.log(this.type, ': error submit!!')
+          return false
+        }
+      })
+    }
+  },
+  computed: {
+    listenFirstChoice () {
+      return this.form.firstChoice
+    },
+    listenSecondChoice () {
+      return this.form.secondChoice
+    }
+  },
+  watch: {
+    listenFirstChoice: {
+      handler: function (val, oldval) {
+        console.log('listenFirstChoice')
+        if (this.form.firstChoice === this.form.secondChoice) {
+          this.form.secondChoice = ''
+        }
+      },
+      deep: true
+    },
+    listenSecondChoice: {
+      handler: function (val, oldval) {
+        console.log('listenSecondChoice')
+        if (this.form.secondChoice === this.form.firstChoice) {
+          this.form.firstChoice = ''
+        }
+      },
+      deep: true
     }
   }
 }
