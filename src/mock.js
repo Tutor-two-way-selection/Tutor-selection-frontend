@@ -185,7 +185,7 @@ Mock.mock('/student/login', {
       choiceTable: {
         flag: true,
         fileList: [{
-          // 'status': 'success',
+          // 'status': 'failed',
           'name': 'caster.jpg',
           // 'size': 1447144,
           'url': 'abcabcabcabcabcabcabcabc'
@@ -235,4 +235,26 @@ Mock.mock('/student/login', {
   success: true
 }).mock('/student/graduate', {
   success: true
+}).mock('/student/selected', {
+  firstChoice: {
+    'id': 'wci',
+    'name': 'gxi',
+    'department': 'zjyd',
+    'search': 'oyo',
+    'contact': 'smupx'
+  },
+  secondChoice: {
+    'id': 'tgjww',
+    'name': 'hcf',
+    'department': 'iuvm',
+    'search': 'xnadl',
+    'contact': 'qjeb'
+  }
 })
+  .mock('/student/mytutor', {
+    'id': 'tgjww',
+    'name': 'hcf',
+    'department': 'iuvm',
+    'search': 'xnadl',
+    'contact': 'qjeb'
+  })

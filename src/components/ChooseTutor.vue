@@ -67,14 +67,21 @@
       :data="tutorList"
       style="width: 100%"
     >
+      <el-table-column type="expand">
+        <template slot-scope="props">
+          {{props.row}}
+        </template>
+      </el-table-column>
       <el-table-column
         prop="id"
         label="编号"
+        sortable
       >
       </el-table-column>
       <el-table-column
         prop="name"
         label="姓名"
+        sortable
       >
       </el-table-column>
       <el-table-column
@@ -197,6 +204,8 @@ export default {
       this.$refs[formName].validate(valid => {
         if (valid) {
           console.log(this.type, ': submit!')
+          console.log('/student/' + this.type, { stuID: this.$store.state.student.stuId, firstChoice: this.form.firstChoice, secondChoice: this.form.secondChoice, isRedistribute: this.form.isRedistribute })
+          this.axios.post('/student/' + this.type, { stuID: this.$store.state.student.stuId, firstChoice: this.form.firstChoice, secondChoice: this.form.secondChoice, isRedistribute: this.form.isRedistribute })
         } else {
           console.log(this.type, ': error submit!!')
           return false
