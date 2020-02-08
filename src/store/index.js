@@ -5,7 +5,10 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
-    student: window.JSON.parse(window.sessionStorage.getItem('student')) || {},
+    student: window.JSON.parse(window.sessionStorage.getItem('student-tsf')) || {},
+    teacher: window.JSON.parse(window.sessionStorage.getItem('teacher-tsf')) || {},
+    admin: window.JSON.parse(window.sessionStorage.getItem('admin-tsf')) || {},
+    accountType: window.JSON.parse(window.sessionStorage.getItem('accountType-tsf')) || '',
     flag: {
       regular: false,
       graduate: false
@@ -14,17 +17,57 @@ export default new Vuex.Store({
   mutations: {
     UPDATE_Session: state => {
       console.log(
-        'UPDATE_Session',
-        window.JSON.stringify(state.student)
+        'UPDATE_Session'
+      )
+      window.sessionStorage.setItem('student-tsf', null)
+      window.sessionStorage.setItem('teacher-tsf', null)
+      window.sessionStorage.setItem('admin-tsf', null)
+      if (state.accountType === 'student') {
+        window.sessionStorage.setItem(
+          'student-tsf',
+          window.JSON.stringify(state.student)
+        )
+      } else if (state.accountType === 'teacher') {
+        window.sessionStorage.setItem(
+          'teacher-tsf',
+          window.JSON.stringify(state.teacher)
+        )
+      } else if (state.accountType === 'admin') {
+        window.sessionStorage.setItem(
+          'admin-tsf',
+          window.JSON.stringify(state.admin)
+        )
+      }
+    },
+    UPDATE_AccountType: state => {
+      console.log(
+        'UPDATE_Session'
       )
       window.sessionStorage.setItem(
-        'student',
-        window.JSON.stringify(state.student)
+        'accountType-tsf',
+        window.JSON.stringify(state.accountType)
       )
+      switch (state.accountType) {
+        case 'student':
+          state.teacher = {}
+          state.admin = {}
+          break
+        case 'teacher':
+          state.student = {}
+          state.admin = {}
+          break
+        case 'admin':
+          state.student = {}
+          state.teacher = {}
+          break
+      }
     },
     LOGOUT: state => {
       // 登出的时候要清除用户名
       state.student = {}
+      state.teacher = {}
+      state.admin = {}
+      state.accountType = ''
       state.flag = {
         regular: false,
         graduate: false
@@ -38,25 +81,15 @@ export default new Vuex.Store({
     setStudentId (state, id) {
       Vue.set(state.student, 'stuId', id)
     },
+    setTeacherId (state, id) {
+      Vue.set(state.teacher, 'teaId', id)
+    },
+    setAccountType (state, arg) {
+      state.accountType = arg
+    },
     LoadStudent (state, args) {
       if (args.id || state.student.stuId) {
         console.log('LoadStudent')
-        // axios
-        //   .post('/student/information2', {
-        //     id: state.stuId
-        //   })
-        //   .then(response => {
-        //     // 不知道为什么,state.student[key] = response.data[key]会使watch监听失效
-        //     // state.student = response.data
-        //     Vue.set(
-        //       state.student,
-        //       'tutorTypeList',
-        //       response.data['tutorTypeList']
-        //     )
-        //     Vue.set(state.student, 'regular', response.data['regular'])
-        //     Vue.set(state.student, 'graduate', response.data['graduate'])
-        //     next()
-        //   })
         Vue.set(
           state.student,
           'tutorTypeList',

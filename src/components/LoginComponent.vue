@@ -109,10 +109,11 @@ export default {
               this.studentLogin()
               break
             case 'teacher':
-              this.$router.push('/student')
+              // this.$router.push('/student')
+              this.teacherLogin()
               break
             case 'keeper':
-              this.$router.push('/student')
+              this.adminLogin()
               break
           }
         } else {
@@ -132,6 +133,7 @@ export default {
         stuPass: this.form.password
       }).then(response => {
         if (response.data.success) {
+          this.$store.commit('setAccountType', 'student')
           this.$store.commit('setStudentId', that.form.name)
           this.$store.commit('LoadStudent', { next: () => {
             this.$router.push('/student')
@@ -143,6 +145,29 @@ export default {
       }).catch(err => {
         console.log(err)
       })
+    },
+    teacherLogin () {
+      console.log({
+        stuNum: this.form.name,
+        stuPass: this.form.password
+      })
+      var that = this
+      this.axios.post('/teacher/login', {
+        stuNum: this.form.name,
+        stuPass: this.form.password
+      }).then(response => {
+        if (response.data.success) {
+          this.$store.commit('setAccountType', 'teacher')
+          this.$store.commit('setTeacherId', that.form.name)
+          this.$router.push('/teacher')
+        } else {
+          // 密码错误
+        }
+      }).catch(err => {
+        console.log(err)
+      })
+    },
+    adminLogin () {
     }
   }
 }

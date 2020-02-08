@@ -6,15 +6,7 @@
           <el-radio-button :label="false">展开</el-radio-button>
           <el-radio-button :label="true">收起</el-radio-button>
         </el-radio-group> -->
-        <el-menu
-          :default-active="defaultActive"
-          class="el-menu-vertical-demo"
-          @open="handleOpen"
-          @close="handleClose"
-          :collapse="isCollapse"
-          style="text-align: left;"
-          router
-        >
+        <el-menu :default-active="defaultActive" class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose" :collapse="isCollapse" style="text-align: left;" router>
           <!-- {{defaultActive}} -->
           <el-submenu index="/student/regular">
             <template slot="title">
@@ -22,10 +14,7 @@
               <span slot="title">本科导师选择</span>
             </template>
             <el-menu-item index="/student/regular/necessaryInfo">查看、修改个人信息</el-menu-item>
-            <el-menu-item
-              index="/student/regular/chooseTutor"
-              :disabled="!(this.$store.state.flag['regular'])"
-            >选择导师</el-menu-item>
+            <el-menu-item index="/student/regular/chooseTutor" :disabled="!(this.$store.state.flag['regular'])">选择导师</el-menu-item>
           </el-submenu>
 
           <el-submenu index="/student/graduate">
@@ -34,10 +23,7 @@
               <span slot="title">毕业设计导师选择</span>
             </template>
             <el-menu-item index="/student/graduate/necessaryInfo">查看、修改个人信息</el-menu-item>
-            <el-menu-item
-              index="/student/graduate/chooseTutor"
-              :disabled="!(this.$store.state.flag['graduate'])"
-            >选择导师</el-menu-item>
+            <el-menu-item index="/student/graduate/chooseTutor" :disabled="!(this.$store.state.flag['graduate'])">选择导师</el-menu-item>
           </el-submenu>
           <el-menu-item index="/student/selectedTutor">
             <i class="el-icon-document"></i>

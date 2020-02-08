@@ -250,6 +250,21 @@ Mock.mock('/student/login', {
     'search': 'xnadl',
     'contact': 'qjeb'
   }
+}).mock('/student/publicly', {
+  firstChoice: {
+    'id': 'wci',
+    'name': 'gxi',
+    'department': 'zjyd',
+    'search': 'oyo',
+    'contact': 'smupx'
+  },
+  secondChoice: {
+    'id': 'tgjww',
+    'name': 'hcf',
+    'department': 'iuvm',
+    'search': 'xnadl',
+    'contact': 'qjeb'
+  }
 })
   .mock('/student/mytutor', {
     'id': 'tgjww',
@@ -257,4 +272,7 @@ Mock.mock('/student/login', {
     'department': 'iuvm',
     'search': 'xnadl',
     'contact': 'qjeb'
+  }).mock('/teacher/login', {
+    'success|1-0': true,
+    'passChanged|10-1': true
   })

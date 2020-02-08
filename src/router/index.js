@@ -2,12 +2,16 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Index from '../views/Index.vue'
 import Login from '../views/Login.vue'
+
 import Student from '../views/Student.vue'
 import Regular from '../views/student/Regular.vue'
 import Graduate from '../views/student/Graduate.vue'
 import SelectedTutor from '../views/student/SelectedTutor.vue'
 import Publicly from '../views/student/Publicly.vue'
 import MyTutor from '../views/student/MyTutor.vue'
+
+import Teacher from '../views/Teacher.vue'
+import TeachInfo from '../views/teacher/TeachInfo.vue'
 
 import NecessaryInfo from '../components/NecessaryInfo.vue'
 import ChooseTutor from '../components/ChooseTutor.vue'
@@ -83,7 +87,21 @@ const routes = [
       component: MyTutor
     }
     ]
+  },
+  {
+    path: '/teacher',
+    name: 'teacher',
+    component: Teacher,
+    children: [{
+      path: '/',
+      redirect: 'teachInfo'
+    }, {
+      path: 'teachInfo',
+      component: TeachInfo
+    }
+    ]
   }
+
 ]
 
 const router = new VueRouter({
