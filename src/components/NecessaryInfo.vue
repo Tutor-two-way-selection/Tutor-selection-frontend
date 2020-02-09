@@ -1,9 +1,6 @@
 <template>
   <div class="necessary-info">
-    <div
-      v-for="(item,i) in necList"
-      :key="i"
-    >
+    <div v-for="(item,i) in necList" :key="i">
       <h3>{{item.title||item.name}}</h3>
       <hr>
       <!-- <div
@@ -11,7 +8,7 @@
         :key="'file'+index"
       >
         {{file.url||None}}
-      </div> -->
+      </div>-->
       <el-upload
         class="upload-demo"
         :action="item.url"
@@ -30,17 +27,18 @@
         :file-list="item.fileList"
       >
         <i class="el-icon-upload"></i>
-        <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
+        <div class="el-upload__text">将文件拖到此处，或
+          <em>点击上传</em>
+        </div>
         <!-- <div
           slot="tip"
           class="el-upload__tip"
-        >只能上传jpg/png文件，且不超过500kb</div> -->
+        >只能上传jpg/png文件，且不超过500kb</div>-->
       </el-upload>
     </div>
   </div>
 </template>
 <script>
-
 export default {
   data () {
     return {
@@ -71,7 +69,11 @@ export default {
       console.log(file)
     },
     handleExceed (files, fileList) {
-      this.$message.warning(`当前限制选择 3 个文件，本次选择了 ${files.length} 个文件，共选择了 ${files.length + fileList.length} 个文件`)
+      this.$message.warning(
+        `当前限制选择 3 个文件，本次选择了 ${
+          files.length
+        } 个文件，共选择了 ${files.length + fileList.length} 个文件`
+      )
     }
   },
   created () {
