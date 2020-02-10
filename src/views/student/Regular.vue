@@ -12,10 +12,11 @@
     {{necList}}
     <hr>
     {{necFileList}} -->
-    <router-view
-      :type="tutorType"
-      :necList="necList"
-    />
+    {{necFileList}}
+    <hr>
+    {{necInfo}}
+    <router-view :type="tutorType" :necList="necList" />
+    <el-button type="" @click="submitNec">提交基本信息</el-button>
   </div>
 </template>
 <script>
@@ -26,12 +27,12 @@ export default {
     return {
       tutorType: 'regular',
       necList: [{
-        url: '/upload/1',
+        url: '/uploadFile',
         name: 'profileTable',
         title: '学生个人简介表',
         fileList: []
       }, {
-        url: '/upload/2',
+        url: '/uploadFile',
         name: 'choiceTable',
         title: '导师双向选择表',
         fileList: []
@@ -40,6 +41,17 @@ export default {
   },
   methods: {
     next () {
+    },
+    submitNec () {
+      this.axios.post('/student/info', this.necInfo).then(res => {
+        if (res.data.success) {
+          console.log('提交成功')
+        } else {
+          console.log('提交出现故障')
+        }
+      }).catch(err => {
+        console.log(err)
+      })
     }
   },
   components: {
@@ -54,6 +66,7 @@ export default {
       }
     },
     necFileList () {
+      // 测试用
       var result = {}
       for (let j = 0; j < this.necList.length; j++) {
         result[this.necList[j].name] = []
@@ -61,6 +74,25 @@ export default {
       for (let j = 0; j < this.necList.length; j++) {
         for (let i = 0; i < this.necList[j].fileList.length; i++) {
           result[this.necList[j].name].push(this.necList[j].fileList[i].url)
+        }
+      }
+      return result
+    },
+    necInfo () {
+      var result = {}
+      result.stuNum = this.$store.state.student.stuId
+      result.tutorType = this.tutorType
+      for (let j = 0; j < this.necList.length; j++) {
+        result[this.necList[j].name] = []
+      }
+      for (let j = 0; j < this.necList.length; j++) {
+        for (let i = 0; i < this.necList[j].fileList.length; i++) {
+          var file = {}
+          file.url = this.necList[j].fileList[i].url
+          file.name = this.necList[j].fileList[i].name
+          file.status = this.necList[j].fileList[i].status
+          file.size = this.necList[j].fileList[i].size
+          result[this.necList[j].name].push(file)
         }
       }
       return result
@@ -76,7 +108,7 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-h2 {
-  margin-bottom: 40px;
-}
+  h2 {
+    margin-bottom: 40px;
+  }
 </style>

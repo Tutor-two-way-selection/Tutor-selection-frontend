@@ -20,41 +20,40 @@
 </template>
 
 <style lang="scss">
-* {
-  margin: 0;
-}
-a {
-  text-decoration: none;
-}
-#app {
-  font-family: "Avenir", Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-}
-
-#nav {
-  padding: 30px;
-
+  * {
+    margin: 0;
+  }
   a {
-    font-weight: bold;
+    text-decoration: none;
+  }
+  #app {
+    font-family: 'Avenir', Helvetica, Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-align: center;
     color: #2c3e50;
+  }
 
-    &.router-link-exact-active {
-      color: #42b983;
+  #nav {
+    padding: 30px;
+
+    a {
+      font-weight: bold;
+      color: #2c3e50;
+
+      &.router-link-exact-active {
+        color: #42b983;
+      }
     }
   }
-}
 </style>
 <script>
 export default {
   created () {
     var accountType = this.$store.state.accountType
     var json = window.sessionStorage.getItem(accountType + '-tsf')
-    console.log('app created', json)
-    if (window.sessionStorage.getItem(accountType + '-tsf')) {
-      console.log(JSON.parse(window.sessionStorage.getItem(accountType + '-tsf')))
+    console.log('app created', accountType, json, JSON.parse(json))
+    if (json) {
       if (accountType === 'student') {
         this.$store.commit('Flash_Flag')
       }

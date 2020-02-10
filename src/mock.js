@@ -1,32 +1,55 @@
 var Mock = require('mockjs')
 // Random.word()
-Mock.mock('/student/login', {
-  //   // 属性 list 的值是一个数组，其中含有 1 到 10 个元素
-  //   'list|1-10': [{
-  //     // 属性 id 是一个自增数，起始值为 1，每次增 1
-  //     'id|+1': 1
-  //   }]
-  'success|1-0': true,
-  'passChanged|0-1': true
-}).mock('/student/changePass', {
-  'success|1-0': true
-})
-  .mock('/upload/1', {
+Mock.mock('/student/login', options => {
+  console.log('mockjs:', options)
+  return Mock.mock({
+    //   // 属性 list 的值是一个数组，其中含有 1 到 10 个元素
+    //   'list|1-10': [{
+    //     // 属性 id 是一个自增数，起始值为 1，每次增 1
+    //     'id|+1': 1
+    //   }]
+    'success|1-0': true,
+    'passChanged|0-1': true
+  })
+}).mock('/student/changePass', options => {
+  console.log('mockjs:', options)
+  return Mock.mock({
+    'success|1-0': true
+  })
+}).mock('/upload/1', options => {
+  console.log('mockjs:', options)
+  return Mock.mock({
     'success|1-0': true,
     // 'url|1': 'https://test-1301169585.cos.ap-shanghai.myqcloud.com/caster.jpg',
     'url|1-10': 'abc'
-  }).mock('/upload/2', {
+  })
+}).mock('/upload/2', options => {
+  console.log('mockjs:', options)
+  return Mock.mock({
     'success|1-0': true,
     // 'url|1': 'https://test-1301169585.cos.ap-shanghai.myqcloud.com/va11halla.png',
     'url|1-10': 'def'
-  }).mock('/student/tutorList', {
-  // 'tutorList|10-20': [{
-  //   id: '@word(3, 5)',
-  //   name: '@word(3, 5)',
-  //   department: '@word(3, 5)',
-  //   search: '@word(3, 5)',
-  //   contact: '@word(3, 5)'
-  // }]
+  })
+}).mock('/uploadFile', options => {
+  console.log('mockjs:', options)
+  return Mock.mock({
+    'success|1-0': true,
+    // 'url|1': 'https://test-1301169585.cos.ap-shanghai.myqcloud.com/va11halla.png',
+    file: {
+      originalname: 'va11halla.png',
+      newfilename: 'saidgihkdglha'
+    }
+  })
+}).mock('/student/allteacher', options => {
+  console.log('mockjs:', options)
+  return Mock.mock({
+    // 'tutorList|10-20': [{
+    //   id: '@word(3, 5)',
+    //   name: '@word(3, 5)',
+    //   department: '@word(3, 5)',
+    //   search: '@word(3, 5)',
+    //   contact: '@word(3, 5)'
+    // }]
     tutorList: [{
       'id': 'qsxqx',
       'name': 'pbml',
@@ -130,7 +153,17 @@ Mock.mock('/student/login', {
       'search': 'oyo',
       'contact': 'smupx'
     }]
-  }).mock('/student/information', {
+  })
+}).mock('/student/info', options => {
+  // 测试用?
+  console.log('mockjs:', options)
+  return Mock.mock({
+    success: true
+  })
+}).mock('/student/information', options => {
+  // 测试用?
+  console.log('mockjs:', options)
+  return Mock.mock({
     regular: {
       first: '',
       second: '',
@@ -161,7 +194,11 @@ Mock.mock('/student/login', {
         }
       }
     }
-  }).mock('/student/information2', {
+  })
+}).mock('/student/information2', options => {
+  // 测试用?
+  console.log('mockjs:', options)
+  return Mock.mock({
     tutorTypeList: ['regular', 'graduate'],
     regular: {
       first: '',
@@ -170,37 +207,37 @@ Mock.mock('/student/login', {
         profileTable: {
           flag: true,
           fileList: [{
-          // 'status': 'success',
+            // 'status': 'success',
             'name': 'caster.jpg',
             // 'size': 1447144,
             // 'percentage': 0,
             'url': 'abcabcabcabcabcabcabcabc'
-          // 'uid': 1580800819013,
-          // 'raw': {
-          //   'uid': 1580800819013
-          // },
-          // 'response': {
-          //   'success': true,
-          //   'url': 'abcabcabcabcabcabcabcabc'
-          // }
+            // 'uid': 1580800819013,
+            // 'raw': {
+            //   'uid': 1580800819013
+            // },
+            // 'response': {
+            //   'success': true,
+            //   'url': 'abcabcabcabcabcabcabcabc'
+            // }
           }]
         },
         choiceTable: {
           flag: true,
           fileList: [{
-          // 'status': 'failed',
+            // 'status': 'failed',
             'name': 'caster.jpg',
             // 'size': 1447144,
             'url': 'abcabcabcabcabcabcabcabc'
-          // 'percentage': 0,
-          // 'uid': 1580800819013,
-          // 'raw': {
-          //   'uid': 1580800819013
-          // },
-          // 'response': {
-          //   'success': true,
-          //   'url': 'abcabcabcabcabcabcabcabc'
-          // }
+            // 'percentage': 0,
+            // 'uid': 1580800819013,
+            // 'raw': {
+            //   'uid': 1580800819013
+            // },
+            // 'response': {
+            //   'success': true,
+            //   'url': 'abcabcabcabcabcabcabcabc'
+            // }
           }]
         }
       }
@@ -219,7 +256,10 @@ Mock.mock('/student/login', {
         }
       }
     }
-  }).mock('/student/queryinfo', {
+  })
+}).mock('/student/queryinfo', options => {
+  console.log('mockjs:', options)
+  return Mock.mock({
     profileTable: {
       flag: true,
       fileList: [{
@@ -234,26 +274,20 @@ Mock.mock('/student/login', {
         'url': 'abcabcabcabcabcabcabcabc'
       }]
     }
-  }).mock('/student/regular', {
+  })
+}).mock('/student/regular', options => {
+  console.log('mockjs:', options)
+  return Mock.mock({
     success: true
-  }).mock('/student/graduate', {
+  })
+}).mock('/student/graduate', options => {
+  console.log('mockjs:', options)
+  return Mock.mock({
     success: true
-  }).mock('/student/selected', {
-    firstChoice: {
-      'id': 'wci',
-      'name': 'gxi',
-      'department': 'zjyd',
-      'search': 'oyo',
-      'contact': 'smupx'
-    },
-    secondChoice: {
-      'id': 'tgjww',
-      'name': 'hcf',
-      'department': 'iuvm',
-      'search': 'xnadl',
-      'contact': 'qjeb'
-    }
-  }).mock('/student/publicly', {
+  })
+}).mock('/student/selected', options => {
+  console.log('mockjs:', options)
+  return Mock.mock({
     firstChoice: {
       'id': 'wci',
       'name': 'gxi',
@@ -269,13 +303,37 @@ Mock.mock('/student/login', {
       'contact': 'qjeb'
     }
   })
-  .mock('/student/mytutor', {
+}).mock('/student/publicly', options => {
+  console.log('mockjs:', options)
+  return Mock.mock({
+    firstChoice: {
+      'id': 'wci',
+      'name': 'gxi',
+      'department': 'zjyd',
+      'search': 'oyo',
+      'contact': 'smupx'
+    },
+    secondChoice: {
+      'id': 'tgjww',
+      'name': 'hcf',
+      'department': 'iuvm',
+      'search': 'xnadl',
+      'contact': 'qjeb'
+    }
+  })
+}).mock('/student/mytutor', options => {
+  console.log('mockjs:', options)
+  return Mock.mock({
     'id': 'tgjww',
     'name': 'hcf',
     'department': 'iuvm',
     'search': 'xnadl',
     'contact': 'qjeb'
-  }).mock('/teacher/login', {
+  })
+}).mock('/teacher/login', options => {
+  console.log('mockjs:', options)
+  return Mock.mock({
     'success|1-0': true,
     'passChanged|10-1': true
   })
+})

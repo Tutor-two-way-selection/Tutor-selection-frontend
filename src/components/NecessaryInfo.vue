@@ -1,33 +1,18 @@
 <template>
   <div class="necessary-info">
-    <div v-for="(item,i) in necList" :key="i">
-      <h3>{{item.title||item.name}}</h3>
-      <hr>
+    <div v-for="(item, i) in necList" :key="i">
+      <h3>{{ item.title || item.name }}</h3>
+      <hr />
       <!-- <div
         v-for="(file,index) in item.fileList"
         :key="'file'+index"
       >
         {{file.url||None}}
       </div>-->
-      <el-upload
-        class="upload-demo"
-        :action="item.url"
-        :on-preview="handlePreview"
-        :on-remove="handleRemove[i]"
-        :before-remove="beforeRemove"
-        :on-success="handleSuccess[i]"
-        :on-error="handleError"
-        :before-upload="beforeUpload"
-        :on-progress="handleProgress"
-        multiple
-        drag
-        :auto-upload="true"
-        :limit="3"
-        :on-exceed="handleExceed"
-        :file-list="item.fileList"
-      >
+      <el-upload class="upload-demo" :action="item.url" :on-preview="handlePreview" :on-remove="handleRemove[i]" :before-remove="beforeRemove" :on-success="handleSuccess[i]" :on-error="handleError" :before-upload="beforeUpload" :on-progress="handleProgress" multiple drag :auto-upload="true" :limit="3" :on-exceed="handleExceed" :file-list="item.fileList">
         <i class="el-icon-upload"></i>
-        <div class="el-upload__text">将文件拖到此处，或
+        <div class="el-upload__text">
+          将文件拖到此处，或
           <em>点击上传</em>
         </div>
         <!-- <div
@@ -52,7 +37,7 @@ export default {
       console.log(file)
     },
     // handleRemove (file, fileList) {
-    //   console.log(file, fileList)
+    //   console.log(file, fileLists)
     // },
     beforeRemove (file, fileList) {
       return this.$confirm(`确定移除 ${file.name}？`)
@@ -80,8 +65,9 @@ export default {
     for (let i = 0; i < this.necList.length; i++) {
       this.handleSuccess.push((response, file, fileList) => {
         console.log('success')
+        console.log(file)
         var tempList = fileList
-        file['url'] = response.url
+        file['url'] = window.location.protocol + '//' + window.location.host + '/downloadFile?filename=' + response.file.newfilename + '&oldname=' + response.file.originalname
         this.necList[i].fileList = tempList
       })
     }
@@ -94,8 +80,8 @@ export default {
   }
 }
 </script>
-<style >
-.necessary-info {
-  text-align: left;
-}
+<style>
+  .necessary-info {
+    text-align: left;
+  }
 </style>

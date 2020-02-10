@@ -1,9 +1,15 @@
 <template>
   <div>
     <!-- {{type}} -->
-    <br>
+    <br />
     <!-- <el-button @click="resetDepartmentFilter">清除部门过滤器</el-button> -->
-    <el-form ref="form" :model="form" :inline="true" label-width="80px" :rules="rules">
+    <el-form
+      ref="form"
+      :model="form"
+      :inline="true"
+      label-width="80px"
+      :rules="rules"
+    >
       <!-- <el-tag
         closable
         v-show="form.firstChoice"
@@ -14,15 +20,15 @@
         v-show="form.secondChoice"
         type="success"
       >第二志愿: {{form.secondChoice}}</el-tag>-->
-      {{form}}
-      <br>
+      {{ form }}
+      <br />
       <el-form-item label="第一志愿" prop="firstChoice">
         <el-select v-model="form.firstChoice" placeholder="请选择第一志愿">
           <el-option
             :label="item.name"
             :value="item.id"
-            v-for="(item,i) in tutorList"
-            :key="i+'first'"
+            v-for="(item, i) in tutorList"
+            :key="i + 'first'"
           ></el-option>
         </el-select>
       </el-form-item>
@@ -31,8 +37,8 @@
           <el-option
             :label="item.name"
             :value="item.id"
-            v-for="(item,i) in tutorList"
-            :key="i+'second'"
+            v-for="(item, i) in tutorList"
+            :key="i + 'second'"
           ></el-option>
         </el-select>
       </el-form-item>
@@ -46,7 +52,7 @@
     <!-- <el-button @click="clearFilter">清除所有过滤器</el-button> -->
     <el-table ref="filterTable" :data="tutorList" style="width: 100%">
       <el-table-column type="expand">
-        <template slot-scope="props">{{props.row}}</template>
+        <template slot-scope="props">{{ props.row }}</template>
       </el-table-column>
       <el-table-column prop="id" label="编号" sortable></el-table-column>
       <el-table-column prop="name" label="姓名" sortable></el-table-column>
@@ -67,15 +73,20 @@
       <el-table-column label="操作">
         <template slot-scope="scope">
           <el-dropdown>
-            <el-button type="primary">选为导师
+            <el-button type="primary"
+              >选为导师
               <i class="el-icon-arrow-down el-icon--right"></i>
             </el-button>
             <el-dropdown-menu slot="dropdown">
               <el-dropdown-item>
-                <el-button type="text" @click="asFirstChoice(scope.row.id)">第一志愿</el-button>
+                <el-button type="text" @click="asFirstChoice(scope.row.id)"
+                  >第一志愿</el-button
+                >
               </el-dropdown-item>
               <el-dropdown-item>
-                <el-button type="text" @click="asSecondChoice(scope.row.id)">第二志愿</el-button>
+                <el-button type="text" @click="asSecondChoice(scope.row.id)"
+                  >第二志愿</el-button
+                >
               </el-dropdown-item>
             </el-dropdown-menu>
           </el-dropdown>
@@ -106,7 +117,7 @@ export default {
   },
   created () {
     this.axios
-      .post('/student/tutorList')
+      .post('/student/allteacher')
       .then(response => {
         this.tutorList = response.data.tutorList
         let tempList = []
@@ -168,13 +179,13 @@ export default {
             stuID: this.$store.state.student.stuId,
             firstChoice: this.form.firstChoice,
             secondChoice: this.form.secondChoice,
-            isRedistribute: this.form.isRedistribute
+            isRedistribute: this.form.redistribute
           })
           this.axios.post('/student/' + this.type, {
             stuID: this.$store.state.student.stuId,
             firstChoice: this.form.firstChoice,
             secondChoice: this.form.secondChoice,
-            isRedistribute: this.form.isRedistribute
+            isRedistribute: this.form.redistribute
           })
         } else {
           console.log(this.type, ': error submit!!')
