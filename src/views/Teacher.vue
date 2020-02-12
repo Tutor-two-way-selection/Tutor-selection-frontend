@@ -12,6 +12,14 @@
             <i class="el-icon-document"></i>
             <span slot="title">修改个人信息</span>
           </el-menu-item>
+          <el-menu-item index="/teacher/regular">
+            <i class="el-icon-document"></i>
+            <span slot="title">本科导师选择</span>
+          </el-menu-item>
+          <el-menu-item index="/teacher/graduate">
+            <i class="el-icon-document"></i>
+            <span slot="title">毕业导师选择</span>
+          </el-menu-item>
           <el-menu-item @click="quit">
             <i class="el-icon-document"></i>
             <span slot="title">退出登录</span>
@@ -26,10 +34,10 @@
 </template>
 
 <style>
-.el-menu-vertical-demo:not(.el-menu--collapse) {
-  /* width: 200px; */
-  min-height: 90vh;
-}
+  .el-menu-vertical-demo:not(.el-menu--collapse) {
+    /* width: 200px; */
+    min-height: 90vh;
+  }
 </style>
 <script>
 export default {

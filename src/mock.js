@@ -1,7 +1,7 @@
 var Mock = require('mockjs')
 // Random.word()
 Mock.mock('/student/login', options => {
-  console.log('mockjs:', options)
+  console.log('mockjs:', options, JSON.parse(options.body))
   return Mock.mock({
     //   // 属性 list 的值是一个数组，其中含有 1 到 10 个元素
     //   'list|1-10': [{
@@ -12,28 +12,28 @@ Mock.mock('/student/login', options => {
     'passChanged|0-1': true
   })
 }).mock('/student/changePass', options => {
-  console.log('mockjs:', options)
+  console.log('mockjs:', options, JSON.parse(options.body))
   return Mock.mock({
     'success|1-0': true
   })
 }).mock('/upload/1', options => {
-  console.log('mockjs:', options)
+  console.log('mockjs:', options, JSON.parse(options.body))
   return Mock.mock({
     'success|1-0': true,
     // 'url|1': 'https://test-1301169585.cos.ap-shanghai.myqcloud.com/caster.jpg',
     'url|1-10': 'abc'
   })
 }).mock('/upload/2', options => {
-  console.log('mockjs:', options)
+  console.log('mockjs:', options, JSON.parse(options.body))
   return Mock.mock({
     'success|1-0': true,
     // 'url|1': 'https://test-1301169585.cos.ap-shanghai.myqcloud.com/va11halla.png',
     'url|1-10': 'def'
   })
 }).mock('/uploadFile', options => {
-  console.log('mockjs:', options)
+  console.log('mockjs:', options, JSON.parse(options.body))
   return Mock.mock({
-    'success|1-0': true,
+    code: 20000,
     // 'url|1': 'https://test-1301169585.cos.ap-shanghai.myqcloud.com/va11halla.png',
     file: {
       originalname: 'va11halla.png',
@@ -41,7 +41,7 @@ Mock.mock('/student/login', options => {
     }
   })
 }).mock('/student/allteacher', options => {
-  console.log('mockjs:', options)
+  console.log('mockjs:', options, JSON.parse(options.body))
   return Mock.mock({
     // 'tutorList|10-20': [{
     //   id: '@word(3, 5)',
@@ -156,13 +156,13 @@ Mock.mock('/student/login', options => {
   })
 }).mock('/student/info', options => {
   // 测试用?
-  console.log('mockjs:', options)
+  console.log('mockjs:', options, JSON.parse(options.body))
   return Mock.mock({
     success: true
   })
 }).mock('/student/information', options => {
   // 测试用?
-  console.log('mockjs:', options)
+  console.log('mockjs:', options, JSON.parse(options.body))
   return Mock.mock({
     regular: {
       first: '',
@@ -197,7 +197,7 @@ Mock.mock('/student/login', options => {
   })
 }).mock('/student/information2', options => {
   // 测试用?
-  console.log('mockjs:', options)
+  console.log('mockjs:', options, JSON.parse(options.body))
   return Mock.mock({
     tutorTypeList: ['regular', 'graduate'],
     regular: {
@@ -258,35 +258,52 @@ Mock.mock('/student/login', options => {
     }
   })
 }).mock('/student/queryinfo', options => {
-  console.log('mockjs:', options)
+  console.log('mockjs:', options, JSON.parse(options.body))
   return Mock.mock({
+    tableList: [{
+      name: 'profileTable',
+      title: '学生个人简介表'
+    }, {
+      name: 'choiceTable',
+      title: '导师双向选择表'
+    }, {
+      name: 'choiceTable2',
+      title: '导师双向选择表'
+    }],
     profileTable: {
       flag: true,
       fileList: [{
-        'name': 'caster.jpg',
-        'url': 'abcabcabcabcabcabcabcabc'
+        name: 'caster.jpg',
+        url: 'abcabcabcabcabcabcabcabc',
+        status: 'success',
+        size: 1141
       }]
     },
     choiceTable: {
       flag: true,
       fileList: [{
-        'name': 'caster.jpg',
-        'url': 'abcabcabcabcabcabcabcabc'
+        name: 'caster.jpg',
+        url: 'abcabcabcabcabcabcabcabc'
       }]
+    },
+    choiceTable2: {
+      flag: false,
+      title: '导师双向选择表2',
+      fileList: []
     }
   })
 }).mock('/student/regular', options => {
-  console.log('mockjs:', options)
+  console.log('mockjs:', options, JSON.parse(options.body))
   return Mock.mock({
     success: true
   })
 }).mock('/student/graduate', options => {
-  console.log('mockjs:', options)
+  console.log('mockjs:', options, JSON.parse(options.body))
   return Mock.mock({
     success: true
   })
 }).mock('/student/selected', options => {
-  console.log('mockjs:', options)
+  console.log('mockjs:', options, JSON.parse(options.body))
   return Mock.mock({
     firstChoice: {
       'id': 'wci',
@@ -304,7 +321,7 @@ Mock.mock('/student/login', options => {
     }
   })
 }).mock('/student/publicly', options => {
-  console.log('mockjs:', options)
+  console.log('mockjs:', options, JSON.parse(options.body))
   return Mock.mock({
     firstChoice: {
       'id': 'wci',
@@ -322,7 +339,7 @@ Mock.mock('/student/login', options => {
     }
   })
 }).mock('/student/mytutor', options => {
-  console.log('mockjs:', options)
+  console.log('mockjs:', options, JSON.parse(options.body))
   return Mock.mock({
     'id': 'tgjww',
     'name': 'hcf',
@@ -331,9 +348,71 @@ Mock.mock('/student/login', options => {
     'contact': 'qjeb'
   })
 }).mock('/teacher/login', options => {
-  console.log('mockjs:', options)
+  console.log('mockjs:', options, JSON.parse(options.body))
   return Mock.mock({
-    'success|1-0': true,
-    'passChanged|10-1': true
+    'success|1-0': true
+  })
+}).mock('/teacher/info', options => {
+  console.log('mockjs:', options, JSON.parse(options.body))
+  return Mock.mock({
+    name: 'hcf',
+    department: 'iuvm',
+    search: 'xnadl',
+    contact: 'qjeb'
+  })
+}).mock('/teacher/changeinfo', options => {
+  console.log('mockjs:', options, JSON.parse(options.body))
+  return Mock.mock({
+    success: true
+  })
+}).mock('/teacher/stuinfo', options => {
+  console.log('mockjs:', options, JSON.parse(options.body))
+  return Mock.mock({
+    tableList: [{
+      name: 'profileTable',
+      title: '学生个人简介表'
+    }, {
+      name: 'choiceTable',
+      title: '导师双向选择表'
+    }],
+    stuList: [{
+      name: '张三',
+      id: '201701010101',
+      profileTable: {
+        flag: true,
+        fileList: [{
+          name: '计算机学院本科学生导师选择学生个人简介表 (1).DOC',
+          url: 'https://test-1301169585.cos.ap-shanghai.myqcloud.com/%E9%99%84%E4%BB%B6%E5%9B%9B%EF%BC%9A%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%AD%A6%E9%99%A2%E6%9C%AC%E7%A7%91%E5%AD%A6%E7%94%9F%E5%AF%BC%E5%B8%88%E9%80%89%E6%8B%A9%E5%AD%A6%E7%94%9F%E4%B8%AA%E4%BA%BA%E7%AE%80%E4%BB%8B%E8%A1%A8%20(1).DOC',
+          status: 'success',
+          size: 1141
+        }]
+      },
+      choiceTable: {
+        flag: true,
+        fileList: [{
+          name: '计算机学院本科学生导师双向选择表 (1).docx',
+          url: 'https://test-1301169585.cos.ap-shanghai.myqcloud.com/%E9%99%84%E4%BB%B6%E4%B8%80%EF%BC%9A%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%AD%A6%E9%99%A2%E6%9C%AC%E7%A7%91%E5%AD%A6%E7%94%9F%E5%AF%BC%E5%B8%88%E5%8F%8C%E5%90%91%E9%80%89%E6%8B%A9%E8%A1%A8%20(1).docx'
+        }]
+      }
+    }, {
+      name: '李四',
+      id: '201701010101',
+      profileTable: {
+        flag: true,
+        fileList: [{
+          name: '计算机学院本科学生导师选择学生个人简介表 (1).DOC',
+          url: 'https://test-1301169585.cos.ap-shanghai.myqcloud.com/%E9%99%84%E4%BB%B6%E5%9B%9B%EF%BC%9A%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%AD%A6%E9%99%A2%E6%9C%AC%E7%A7%91%E5%AD%A6%E7%94%9F%E5%AF%BC%E5%B8%88%E9%80%89%E6%8B%A9%E5%AD%A6%E7%94%9F%E4%B8%AA%E4%BA%BA%E7%AE%80%E4%BB%8B%E8%A1%A8%20(1).DOC',
+          status: 'success',
+          size: 1141
+        }]
+      },
+      choiceTable: {
+        flag: true,
+        fileList: [{
+          name: '计算机学院本科学生导师双向选择表 (1).docx',
+          url: 'https://test-1301169585.cos.ap-shanghai.myqcloud.com/%E9%99%84%E4%BB%B6%E4%B8%80%EF%BC%9A%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%AD%A6%E9%99%A2%E6%9C%AC%E7%A7%91%E5%AD%A6%E7%94%9F%E5%AF%BC%E5%B8%88%E5%8F%8C%E5%90%91%E9%80%89%E6%8B%A9%E8%A1%A8%20(1).docx'
+        }]
+      }
+    }]
   })
 })

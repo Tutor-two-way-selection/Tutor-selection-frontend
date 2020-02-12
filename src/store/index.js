@@ -88,6 +88,7 @@ export default new Vuex.Store({
       state.accountType = arg
     },
     LoadStudent (state, args) {
+      if (!args) { args = { next: () => {} } }
       if (args.id || state.student.stuId) {
         console.log('LoadStudent')
         Vue.set(
@@ -99,26 +100,30 @@ export default new Vuex.Store({
           stuID: args.id || state.student.stuId,
           type: 'regular'
         }).then(res => {
+          var tempForm = {}
+          for (let index in res.data.tableList) {
+            tempForm[res.data.tableList[index].name] = res.data[res.data.tableList[index].name]
+            console.log(res.data.tableList[index].name, '!!!!!!!!!!!!!')
+          }
           Vue.set(state.student, 'regular', {
             first: '',
             second: '',
-            form: {
-              profileTable: res.data.profileTable,
-              choiceTable: res.data.choiceTable
-            }
+            form: tempForm
           })
         })
         axios.post('/student/queryinfo', {
           stuID: args.id || state.student.stuId,
           type: 'graduate'
         }).then(res => {
+          var tempForm = {}
+          for (let index in res.data.tableList) {
+            tempForm[res.data.tableList[index].name] = res.data[res.data.tableList[index].name]
+            console.log(res.data.tableList[index].name, '!!!!!!!!!!!!!')
+          }
           Vue.set(state.student, 'graduate', {
             first: '',
             second: '',
-            form: {
-              profileTable: res.data.profileTable,
-              choiceTable: res.data.choiceTable
-            }
+            form: tempForm
           })
         })
         args.next()
@@ -133,10 +138,7 @@ export default new Vuex.Store({
             let flag = true
             for (var key in state.student[state.student.tutorTypeList[i]]
               .form) {
-              if (
-                state.student[state.student.tutorTypeList[i]].form[key].fileList
-                  .length > 0
-              ) {} else {
+              if (state.student[state.student.tutorTypeList[i]].form[key].fileList.length > 0) {} else {
                 flag = false
               }
             }

@@ -172,14 +172,14 @@ export default {
     teacherLogin () {
       // TODO 修改接口
       console.log({
-        stuNum: this.form.name,
-        stuPass: this.form.password
+        teaNum: this.form.name,
+        teaPass: this.form.password
       })
       var that = this
       this.axios
         .post('/teacher/login', {
-          stuNum: this.form.name,
-          stuPass: this.form.password
+          teaNum: this.form.name,
+          teaPass: this.form.password
         })
         .then(response => {
           if (response.data.success) {
@@ -247,8 +247,8 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-h2 {
-  text-align: left;
-  margin-left: 5%;
-}
+  h2 {
+    text-align: left;
+    margin-left: 5%;
+  }
 </style>

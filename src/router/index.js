@@ -12,6 +12,8 @@ import MyTutor from '../views/student/MyTutor.vue'
 
 import Teacher from '../views/Teacher.vue'
 import TeachInfo from '../views/teacher/TeachInfo.vue'
+import RegularTea from '../views/teacher/Regular.vue'
+import GraduateTea from '../views/teacher/Graduate.vue'
 
 import NecessaryInfo from '../components/NecessaryInfo.vue'
 import ChooseTutor from '../components/ChooseTutor.vue'
@@ -98,6 +100,12 @@ const routes = [
     }, {
       path: 'teachInfo',
       component: TeachInfo
+    }, {
+      path: 'regular',
+      component: RegularTea
+    }, {
+      path: 'graduate',
+      component: GraduateTea
     }
     ]
   }
