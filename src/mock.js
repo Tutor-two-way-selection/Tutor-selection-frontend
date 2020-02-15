@@ -266,9 +266,6 @@ Mock.mock('/student/login', options => {
     }, {
       name: 'choiceTable',
       title: '导师双向选择表'
-    }, {
-      name: 'choiceTable2',
-      title: '导师双向选择表'
     }],
     profileTable: {
       flag: true,
@@ -396,7 +393,7 @@ Mock.mock('/student/login', options => {
       }
     }, {
       name: '李四',
-      id: '201701010101',
+      id: '201701010102',
       profileTable: {
         flag: true,
         fileList: [{
@@ -415,4 +412,7 @@ Mock.mock('/student/login', options => {
       }
     }]
   })
+}).mock('/teacher/selectstu', options => {
+  console.log('mockjs:', options, JSON.parse(options.body))
+  return Mock.mock({ success: true })
 })

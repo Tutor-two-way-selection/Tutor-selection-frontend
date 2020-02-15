@@ -1,14 +1,14 @@
 <template>
   <div>
-    <el-table :data="stuList" style="width: 100%">
+    {{tutorType}}
+    <el-table :data="stuList" style="width: 100%" :row-class-name="tableRowClassName">
       <el-table-column type="expand">
         <template slot-scope="props">
           <div label="" v-for="(item,index) in tableList" :key="'table'+index">
-            <!-- <div>{{ item.title||item.name }}</div> -->
             <el-table :data="props.row[item.name].fileList" style="width: 100%">
               <el-table-column :label="item.title||item.name">
                 <template slot-scope="scope">
-                  <i class="el-icon-time"></i>
+                  <i class="el-icon-document"></i>
                   <span style="margin-left: 10px">{{ scope.row.name }}</span>
                 </template>
               </el-table-column>
@@ -24,37 +24,9 @@
                       </a>
                     </div>
                   </div>
-
-                  <!-- <el-row :gutter="12" type="flex">
-                    <el-col :span="12">
-                      <el-button type="success" size="mini" @click="preview(scope.row.url)">预览</el-button>
-                    </el-col>
-                    <el-col :span="12">
-                      <a :href="scope.row.url">
-                        <el-button type="primary" size="mini">下载</el-button>
-                      </a>
-                    </el-col>
-                  </el-row> -->
                 </template>
               </el-table-column>
             </el-table>
-            <!-- <div v-for="(file,fileIndex) in props.row[item.name].fileList" :key="'file'+index+fileIndex">
-              <el-card class="box-card" shadow="hover" body-style="width:100%;padding:10px" style="margin:15px;">
-                <el-row :gutter="12">
-                  <el-col :span="16">
-                    <div style="margin:auto"> {{file.name}}</div>
-                  </el-col>
-                  <el-col :span="4">
-                    <el-button type="success" size="medium" @click="preview(file.url)">预览</el-button>
-                  </el-col>
-                  <el-col :span="4">
-                    <a :href="file.url">
-                      <el-button type="primary" size="medium">下载</el-button>
-                    </a>
-                  </el-col>
-                </el-row>
-              </el-card>
-            </div> -->
           </div>
         </template>
       </el-table-column>
@@ -62,14 +34,24 @@
       </el-table-column>
       <el-table-column label="学生姓名" prop="name">
       </el-table-column>
+      <el-table-column label="">
+        <template slot-scope="scope">
+          <el-switch v-model="scope.row.recept" active-color="#13ce66" inactive-color="#ff4949" active-text="接收" inactive-text="不接收">
+          </el-switch>
+        </template>
+      </el-table-column>
+
     </el-table>
+    <el-button type="primary" style="margin-top:15px" @click="onSubmit">提交</el-button>
   </div>
 </template>
 <script>
+import Vue from 'vue'
 export default {
   data () {
     return {
       tutorType: 'regular',
+      // tutorType: this.$route.query.tutorType,
       stuList: [],
       tableList: []
     }
@@ -78,18 +60,59 @@ export default {
     this.axios.post('/teacher/stuinfo', { teaID: this.$store.state.teacher.teaId, type: this.tutorType }).then(res => {
       this.stuList = res.data.stuList
       this.tableList = res.data.tableList
+      for (let index in this.stuList) {
+        Vue.set(this.stuList[index], 'recept', false)
+      }
     })
   },
   methods: {
     preview (fileUrl) {
       window.open('http://view.officeapps.live.com/op/view.aspx?src=' + fileUrl)
+    },
+    tableRowClassName ({ row, rowIndex }) {
+      if (row.recept === true) {
+        return 'success-row'
+      } else {
+        return 'warning-row'
+      }
+    },
+    onSubmit () {
+      let tempList = []
+      for (let i in this.stuList) {
+        tempList.push({
+          stuID: this.stuList[i].id,
+          recept: this.stuList[i].recept
+        })
+      }
+      this.axios.post('/teacher/selectstu', {
+        teaID: this.$store.state.teacher.teaId,
+        type: this.tutorType,
+        selStuList: tempList
+      }).then(res => {
+        if (res.data.success) {
+          console.log('提交成功')
+        } else {
+          console.log('提交失败')
+        }
+      }).catch(err => {
+        console.log(err)
+      })
     }
   }
 }
 </script>
-<style lang="scss" scoped>
+<style lang="scss" >
   .flex-container {
     display: flex;
     justify-content: center;
+  }
+  .el-table .warning-row {
+    // background: oldlace;
+    background: #f56c6c4d;
+  }
+
+  .el-table .success-row {
+    // background: #f0f9eb;
+    background: #cef9b6;
   }
 </style>
