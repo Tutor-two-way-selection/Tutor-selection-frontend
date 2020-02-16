@@ -84,6 +84,9 @@ export default new Vuex.Store({
     setTeacherId (state, id) {
       Vue.set(state.teacher, 'teaId', id)
     },
+    setAdminId (state, id) {
+      Vue.set(state.admin, 'admId', id)
+    },
     setAccountType (state, arg) {
       state.accountType = arg
     },

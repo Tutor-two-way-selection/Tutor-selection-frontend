@@ -14,101 +14,146 @@ import Teacher from '../views/Teacher.vue'
 import TeachInfo from '../views/teacher/TeachInfo.vue'
 import RegularTea from '../views/teacher/Regular.vue'
 import GraduateTea from '../views/teacher/Graduate.vue'
+import PubliclyTea from '../views/teacher/Publicly.vue'
+import Accepted from '../views/teacher/Accepted.vue'
 
-import NecessaryInfo from '../components/NecessaryInfo.vue'
-import ChooseTutor from '../components/ChooseTutor.vue'
+import Admin from '../views/Admin.vue'
+import StuDetail from '../views/admin/StuDetail.vue'
+import TeaDetail from '../views/admin/TeaDetail.vue'
+import Select from '../views/admin/Select.vue'
+import GraduateAdm from '../views/admin/Graduate.vue'
+import PubliclyAdm from '../views/admin/Publicly.vue'
+import Confirm from '../views/admin/Confirm.vue'
+
+import NecessaryInfo from '../components/stu/NecessaryInfo.vue'
+import ChooseTutor from '../components/stu/ChooseTutor.vue'
+
+import TwoWaySelect from '../components/adm/TwoWaySelect.vue'
+import Manual from '../components/adm/Manual.vue'
 
 Vue.use(VueRouter)
 
-const routes = [
-  // {
-  //   path: '/',
-  //   name: 'home',
-  //   component: Home
-  // },
-  // {
-  //   path: '/about',
-  //   name: 'about',
-  //   // route level code-splitting
-  //   // this generates a separate chunk (about.[hash].js) for this route
-  //   // which is lazy-loaded when the route is visited.
-  //   component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
-  // }
-  {
+const routes = [{
+  path: '/',
+  name: 'index',
+  component: Index
+},
+{
+  path: '/login',
+  name: 'login',
+  component: Login
+},
+{
+  path: '/student',
+  // name: 'student',
+  component: Student,
+  children: [{
     path: '/',
-    name: 'index',
-    component: Index
-  },
-  {
-    path: '/login',
-    name: 'login',
-    component: Login
-  },
-  {
-    path: '/student',
-    name: 'student',
-    component: Student,
+    redirect: 'selectedTutor'
+  }, {
+    path: 'regular',
+    component: Regular,
     children: [{
       path: '/',
-      redirect: 'selectedTutor'
+      redirect: 'necessaryInfo'
     }, {
-      path: 'regular',
-      component: Regular,
-      children: [{
-        path: '/',
-        redirect: 'necessaryInfo'
-      }, {
-        path: 'necessaryInfo',
-        component: NecessaryInfo
-      }, {
-        path: 'chooseTutor',
-        component: ChooseTutor
-      }]
-    },
-    {
-      path: 'graduate',
-      component: Graduate,
-      children: [{
-        path: '/',
-        redirect: 'necessaryInfo'
-      }, {
-        path: 'necessaryInfo',
-        component: NecessaryInfo
-      }, {
-        path: 'chooseTutor',
-        component: ChooseTutor
-      }]
+      path: 'necessaryInfo',
+      component: NecessaryInfo
     }, {
-      path: 'selectedTutor',
-      component: SelectedTutor
-    }, {
-      path: 'publicly',
-      component: Publicly
-    }, {
-      path: 'myTutor',
-      component: MyTutor
-    }
-    ]
+      path: 'chooseTutor',
+      component: ChooseTutor
+    }]
   },
   {
-    path: '/teacher',
-    name: 'teacher',
-    component: Teacher,
+    path: 'graduate',
+    component: Graduate,
     children: [{
       path: '/',
-      redirect: 'teachInfo'
+      redirect: 'necessaryInfo'
     }, {
-      path: 'teachInfo',
-      component: TeachInfo
+      path: 'necessaryInfo',
+      component: NecessaryInfo
     }, {
-      path: 'regular',
-      component: RegularTea
-    }, {
-      path: 'graduate',
-      component: GraduateTea
-    }
-    ]
+      path: 'chooseTutor',
+      component: ChooseTutor
+    }]
+  }, {
+    path: 'selectedTutor',
+    component: SelectedTutor
+  }, {
+    path: 'publicly',
+    component: Publicly
+  }, {
+    path: 'myTutor',
+    component: MyTutor
   }
+  ]
+},
+{
+  path: '/teacher',
+  // name: 'teacher',
+  component: Teacher,
+  children: [{
+    path: '/',
+    redirect: 'teachInfo'
+  }, {
+    path: 'teachInfo',
+    component: TeachInfo
+  }, {
+    path: 'regular',
+    component: RegularTea
+  }, {
+    path: 'graduate',
+    component: GraduateTea
+  }, {
+    path: 'publicly',
+    component: PubliclyTea
+  }, {
+    path: 'accepted',
+    component: Accepted
+  }]
+},
+{
+  path: '/admin',
+  // name: 'admin',
+  component: Admin,
+  children: [{
+    path: '/',
+    redirect: 'stuDetail'
+  }, {
+    path: 'stuDetail',
+    component: StuDetail
+  }, {
+    path: 'teaDetail',
+    component: TeaDetail
+  }, {
+    path: '/admin/select/:tutorType',
+    component: Select,
+    children: [{
+      path: '/',
+      redirect: '/admin/select/regular/twoWaySelect/first'
+    }, {
+      path: '/admin/select/:tutorType/twoWaySelect/:progress',
+      component: TwoWaySelect
+    }, {
+      path: 'manual',
+      component: Manual
+    }]
+  }, {
+    path: 'graduate',
+    component: GraduateAdm,
+    children: [{
+      path: 'twoWaySelect',
+      component: TwoWaySelect
+    }]
+  }, {
+    path: 'publicly',
+    component: PubliclyAdm
+  }, {
+    path: 'confirm',
+    component: Confirm
+  }]
+}
 
 ]
 

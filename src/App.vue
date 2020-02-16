@@ -14,6 +14,11 @@
       <hr>
       {{this.$store.state.teacher}}
     </div>
+    <div v-if="this.$store.state.admin">
+      {{this.$store.state.admin.admId}}
+      <hr>
+      {{this.$store.state.admin}}
+    </div>
     {{this.$store.state}}
     <router-view />
   </div>

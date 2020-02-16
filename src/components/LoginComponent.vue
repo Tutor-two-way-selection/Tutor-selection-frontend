@@ -194,7 +194,26 @@ export default {
           console.log(err)
         })
     },
-    adminLogin () { },
+    adminLogin () {
+      var that = this
+      this.axios
+        .post('/admin/login', {
+          admNum: this.form.name,
+          admPass: this.form.password
+        })
+        .then(response => {
+          if (response.data.success) {
+            this.$store.commit('setAccountType', 'admin')
+            this.$store.commit('setTeacherId', that.form.name)
+            this.$router.push('/admin')
+          } else {
+            // TODO 密码错误
+          }
+        })
+        .catch(err => {
+          console.log(err)
+        })
+    },
     changePass (formName) {
       this.$refs[formName].validate(valid => {
         if (valid) {

@@ -1,7 +1,7 @@
 <template>
   <div>
     <h2>本科导师选择</h2>
-    <Progress :step="step" />
+    <Progress :step="step" :titleList="['上传个人信息','选择导师']" />
     <!-- <el-button
       style="margin-top: 12px;"
       @click="next"

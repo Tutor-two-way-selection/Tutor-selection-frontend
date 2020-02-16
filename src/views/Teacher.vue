@@ -20,11 +20,11 @@
             <i class="el-icon-document"></i>
             <span slot="title">毕业导师选择</span>
           </el-menu-item>
-          <el-menu-item index="">
+          <!-- <el-menu-item index="/teacher/publicly">
             <i class="el-icon-document"></i>
             <span slot="title">查看公示信息</span>
-          </el-menu-item>
-          <el-menu-item index="">
+          </el-menu-item> -->
+          <el-menu-item index="/teacher/accepted">
             <i class="el-icon-document"></i>
             <span slot="title">查看接收的学生</span>
           </el-menu-item>

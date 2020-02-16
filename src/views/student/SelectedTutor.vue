@@ -22,7 +22,7 @@
   </div>
 </template>
 <script>
-import TutorInfo from '../../components/TutorInfo'
+import TutorInfo from '../../components/stu/TutorInfo'
 export default {
   data () {
     return {
@@ -50,7 +50,7 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-h2 {
-  margin-bottom: 20px;
-}
+  h2 {
+    margin-bottom: 20px;
+  }
 </style>
