@@ -3,13 +3,7 @@
     <!-- {{type}} -->
     <br />
     <!-- <el-button @click="resetDepartmentFilter">清除部门过滤器</el-button> -->
-    <el-form
-      ref="form"
-      :model="form"
-      :inline="true"
-      label-width="80px"
-      :rules="rules"
-    >
+    <el-form ref="form" :model="form" :inline="true" label-width="80px" :rules="rules">
       <!-- <el-tag
         closable
         v-show="form.firstChoice"
@@ -24,22 +18,12 @@
       <br />
       <el-form-item label="第一志愿" prop="firstChoice">
         <el-select v-model="form.firstChoice" placeholder="请选择第一志愿">
-          <el-option
-            :label="item.name"
-            :value="item.id"
-            v-for="(item, i) in tutorList"
-            :key="i + 'first'"
-          ></el-option>
+          <el-option :label="item.name" :value="item.id" v-for="(item, i) in tutorList" :key="i + 'first'"></el-option>
         </el-select>
       </el-form-item>
       <el-form-item label="第二志愿">
         <el-select v-model="form.secondChoice" placeholder="请选择第二志愿">
-          <el-option
-            :label="item.name"
-            :value="item.id"
-            v-for="(item, i) in tutorList"
-            :key="i + 'second'"
-          ></el-option>
+          <el-option :label="item.name" :value="item.id" v-for="(item, i) in tutorList" :key="i + 'second'"></el-option>
         </el-select>
       </el-form-item>
       <el-form-item label="接受调剂">
@@ -56,37 +40,21 @@
       </el-table-column>
       <el-table-column prop="id" label="编号" sortable></el-table-column>
       <el-table-column prop="name" label="姓名" sortable></el-table-column>
-      <el-table-column
-        prop="department"
-        column-key="department"
-        label="部门"
-        :filters="department_filters"
-        :filter-method="filterHandler"
-      ></el-table-column>
-      <el-table-column
-        prop="search"
-        label="研究所"
-        :filters="search_filters"
-        :filter-method="filterHandler"
-      ></el-table-column>
+      <el-table-column prop="department" column-key="department" label="部门" :filters="department_filters" :filter-method="filterHandler"></el-table-column>
+      <el-table-column prop="search" label="研究所" :filters="search_filters" :filter-method="filterHandler"></el-table-column>
       <el-table-column prop="contact" label="联系方式"></el-table-column>
       <el-table-column label="操作">
         <template slot-scope="scope">
           <el-dropdown>
-            <el-button type="primary"
-              >选为导师
+            <el-button type="primary">选为导师
               <i class="el-icon-arrow-down el-icon--right"></i>
             </el-button>
             <el-dropdown-menu slot="dropdown">
               <el-dropdown-item>
-                <el-button type="text" @click="asFirstChoice(scope.row.id)"
-                  >第一志愿</el-button
-                >
+                <el-button type="text" @click="asFirstChoice(scope.row.id)">第一志愿</el-button>
               </el-dropdown-item>
               <el-dropdown-item>
-                <el-button type="text" @click="asSecondChoice(scope.row.id)"
-                  >第二志愿</el-button
-                >
+                <el-button type="text" @click="asSecondChoice(scope.row.id)">第二志愿</el-button>
               </el-dropdown-item>
             </el-dropdown-menu>
           </el-dropdown>
@@ -117,7 +85,7 @@ export default {
   },
   created () {
     this.axios
-      .post('/student/allteacher')
+      .post('/allteacher')
       .then(response => {
         this.tutorList = response.data.tutorList
         let tempList = []

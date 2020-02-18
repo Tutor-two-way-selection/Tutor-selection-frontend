@@ -6,17 +6,17 @@
     </div> -->
     <div v-if="this.$store.state.student">
       {{this.$store.state.student.stuId}}
-      <hr>
+      <hr />
       {{this.$store.state.student}}
     </div>
     <div v-if="this.$store.state.teacher">
       {{this.$store.state.teacher.teaId}}
-      <hr>
+      <hr />
       {{this.$store.state.teacher}}
     </div>
     <div v-if="this.$store.state.admin">
       {{this.$store.state.admin.admId}}
-      <hr>
+      <hr />
       {{this.$store.state.admin}}
     </div>
     {{this.$store.state}}
@@ -54,6 +54,16 @@
 </style>
 <script>
 export default {
+  data () {
+    return {
+      value1: null
+    }
+  },
+  methods: {
+    showDate () {
+      console.log(JSON.stringify({ date: this.value1 }))
+    }
+  },
   created () {
     var accountType = this.$store.state.accountType
     var json = window.sessionStorage.getItem(accountType + '-tsf')

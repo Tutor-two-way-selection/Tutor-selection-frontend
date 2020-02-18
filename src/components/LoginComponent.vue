@@ -138,13 +138,13 @@ export default {
     },
     studentLogin () {
       console.log({
-        stuNum: this.form.name,
+        stuID: this.form.name,
         stuPass: this.form.password
       })
       var that = this
       this.axios
         .post('/student/login', {
-          stuNum: this.form.name,
+          stuID: this.form.name,
           stuPass: this.form.password
         })
         .then(response => {
@@ -204,7 +204,7 @@ export default {
         .then(response => {
           if (response.data.success) {
             this.$store.commit('setAccountType', 'admin')
-            this.$store.commit('setTeacherId', that.form.name)
+            this.$store.commit('setAdminId', that.form.name)
             this.$router.push('/admin')
           } else {
             // TODO 密码错误
@@ -219,7 +219,7 @@ export default {
         if (valid) {
           console.log('submit!')
           console.log({
-            stuNum: this.form.name,
+            stuID: this.form.name,
             // oldPass: this.changePassForm.oldPassWord,
             oldPass: this.form.password,
             newPass: this.changePassForm.newPassWord
@@ -227,7 +227,7 @@ export default {
           // var that = this
           this.axios
             .post('/student/changePass', {
-              stuNum: this.form.name,
+              stuID: this.form.name,
               // oldPass: this.changePassForm.oldPassWord,
               oldPass: this.form.password,
               newPass: this.changePassForm.newPassWord

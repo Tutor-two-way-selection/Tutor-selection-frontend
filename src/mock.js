@@ -40,7 +40,7 @@ Mock.mock('/student/login', options => {
       newfilename: 'saidgihkdglha'
     }
   })
-}).mock('/student/allteacher', options => {
+}).mock('/allteacher', options => {
   console.log('mockjs:', options, JSON.parse(options.body))
   return Mock.mock({
     // 'tutorList|10-20': [{
@@ -470,4 +470,101 @@ Mock.mock('/student/login', options => {
       }
     }]
   })
+}).mock('/admin/stulist', options => {
+  console.log('mockjs:', options, JSON.parse(options.body))
+  return Mock.mock(
+    {
+      tableList: [{
+        name: 'profileTable',
+        title: '学生个人简介表'
+      }, {
+        name: 'choiceTable',
+        title: '导师双向选择表'
+      }],
+      stuList: [{
+        name: '张三',
+        id: '201701010101',
+        classes: 'qwerty',
+        contact: 'zxcvb',
+        firstChoice: {
+          id: '199901010101',
+          name: '王五',
+          accept: false
+        },
+        secondChoice: {
+          id: '199901010102',
+          name: '赵六',
+          accept: true
+        },
+        profileTable: {
+          flag: true,
+          fileList: [{
+            name: '计算机学院本科学生导师选择学生个人简介表 (1).DOC',
+            url: 'https://test-1301169585.cos.ap-shanghai.myqcloud.com/%E9%99%84%E4%BB%B6%E5%9B%9B%EF%BC%9A%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%AD%A6%E9%99%A2%E6%9C%AC%E7%A7%91%E5%AD%A6%E7%94%9F%E5%AF%BC%E5%B8%88%E9%80%89%E6%8B%A9%E5%AD%A6%E7%94%9F%E4%B8%AA%E4%BA%BA%E7%AE%80%E4%BB%8B%E8%A1%A8%20(1).DOC',
+            status: 'success',
+            size: 1141
+          }]
+        },
+        choiceTable: {
+          flag: true,
+          fileList: [{
+            name: '计算机学院本科学生导师双向选择表 (1).docx',
+            url: 'https://test-1301169585.cos.ap-shanghai.myqcloud.com/%E9%99%84%E4%BB%B6%E4%B8%80%EF%BC%9A%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%AD%A6%E9%99%A2%E6%9C%AC%E7%A7%91%E5%AD%A6%E7%94%9F%E5%AF%BC%E5%B8%88%E5%8F%8C%E5%90%91%E9%80%89%E6%8B%A9%E8%A1%A8%20(1).docx'
+          }]
+        }
+      }, {
+        name: '李四',
+        id: '201701010101',
+        classes: 'qwerty',
+        contact: 'zxcvb',
+        firstChoice: {
+          id: '199901010101',
+          name: '王五',
+          accept: true
+        },
+        secondChoice: {
+          id: '199901010102',
+          name: '赵六',
+          accept: false
+        },
+        profileTable: {
+          flag: true,
+          fileList: [{
+            name: '计算机学院本科学生导师选择学生个人简介表 (1).DOC',
+            url: 'https://test-1301169585.cos.ap-shanghai.myqcloud.com/%E9%99%84%E4%BB%B6%E5%9B%9B%EF%BC%9A%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%AD%A6%E9%99%A2%E6%9C%AC%E7%A7%91%E5%AD%A6%E7%94%9F%E5%AF%BC%E5%B8%88%E9%80%89%E6%8B%A9%E5%AD%A6%E7%94%9F%E4%B8%AA%E4%BA%BA%E7%AE%80%E4%BB%8B%E8%A1%A8%20(1).DOC',
+            status: 'success',
+            size: 1141
+          }]
+        },
+        choiceTable: {
+          flag: true,
+          fileList: [{
+            name: '计算机学院本科学生导师双向选择表 (1).docx',
+            url: 'https://test-1301169585.cos.ap-shanghai.myqcloud.com/%E9%99%84%E4%BB%B6%E4%B8%80%EF%BC%9A%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%AD%A6%E9%99%A2%E6%9C%AC%E7%A7%91%E5%AD%A6%E7%94%9F%E5%AF%BC%E5%B8%88%E5%8F%8C%E5%90%91%E9%80%89%E6%8B%A9%E8%A1%A8%20(1).docx'
+          }]
+        }
+      }]
+    }
+  )
+}).mock('/admin/situation', options => {
+  console.log('mockjs:', options, JSON.parse(options.body))
+  return Mock.mock(
+    {
+      stuList: [{
+        stuID: '201701010101',
+        stuName: '张三',
+        classes: 'class1',
+        teaID: '199901010101',
+        teaName: '王五',
+        status: 'untreat'
+      }, {
+        stuID: '201701010102',
+        stuName: '李四',
+        classes: 'class1',
+        teaID: '199901010101',
+        teaName: '王五',
+        status: 'accept'
+      }]
+    }
+  )
 })
