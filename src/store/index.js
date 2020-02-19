@@ -91,48 +91,69 @@ export default new Vuex.Store({
       state.accountType = arg
     },
     LoadStudent (state, args) {
-      if (!args) { args = { next: () => {} } }
-      if (args.id || state.student.stuId) {
+      if (!args) { args = { next: () => {}, id: state.student.stuId } }
+      if (!args.id) { args.id = state.student.stuId }
+      if (args.id) {
         console.log('LoadStudent')
         Vue.set(
           state.student,
           'tutorTypeList',
           ['regular', 'graduate']
         )
-        axios.post('/student/queryinfo', {
-          stuID: args.id || state.student.stuId,
-          type: 'regular'
-        }).then(res => {
-          var tempForm = {}
-          for (let index in res.data.tableList) {
-            tempForm[res.data.tableList[index].name] = res.data[res.data.tableList[index].name]
-            console.log(res.data.tableList[index].name, '!!!!!!!!!!!!!')
-          }
-          Vue.set(state.student, 'regular', {
-            first: '',
-            second: '',
-            form: tempForm
+        for (let i in state.student.tutorTypeList) {
+          axios.post('/student/queryinfo', {
+            stuID: args.id,
+            type: state.student.tutorTypeList[i]
+          }).then(res => {
+            var tempForm = {}
+            for (let index in res.data.tableList) {
+              tempForm[res.data.tableList[index].name] = res.data[res.data.tableList[index].name]
+              console.log(res.data.tableList[index].name, '!!!!!!!!!!!!!')
+            }
+            Vue.set(state.student, state.student.tutorTypeList[i], {
+              first: '',
+              second: '',
+              form: tempForm
+            })
           })
-        })
-        axios.post('/student/queryinfo', {
-          stuID: args.id || state.student.stuId,
-          type: 'graduate'
-        }).then(res => {
-          var tempForm = {}
-          for (let index in res.data.tableList) {
-            tempForm[res.data.tableList[index].name] = res.data[res.data.tableList[index].name]
-            console.log(res.data.tableList[index].name, '!!!!!!!!!!!!!')
-          }
-          Vue.set(state.student, 'graduate', {
-            first: '',
-            second: '',
-            form: tempForm
-          })
-        })
+        }
+
+        // axios.post('/student/queryinfo', {
+        //   stuID: args.id,
+        //   type: 'graduate'
+        // }).then(res => {
+        //   var tempForm = {}
+        //   for (let index in res.data.tableList) {
+        //     tempForm[res.data.tableList[index].name] = res.data[res.data.tableList[index].name]
+        //     console.log(res.data.tableList[index].name, '!!!!!!!!!!!!!')
+        //   }
+        //   Vue.set(state.student, 'graduate', {
+        //     first: '',
+        //     second: '',
+        //     form: tempForm
+        //   })
+        // })
         args.next()
       } else {
         console.log('no stuId')
       }
+    },
+    LoadAdmin (state, args) {
+      if (!args) { args = { next: () => {}, id: state.admin.admId } }
+      if (!args.id) { args.id = state.admin.admId }
+      console.log('LoadAdmin')
+      Vue.set(
+        state.admin,
+        'tutorTypeList',
+        ['regular', 'graduate']
+      )
+      Vue.set(state.admin, 'currentBatch', {})
+      for (let i in state.admin.tutorTypeList) {
+        axios.post('/admin/querybatch', { admNum: args.id, type: state.admin.tutorTypeList[i] }).then(res => {
+          Vue.set(state.admin.currentBatch, state.admin.tutorTypeList[i], res.data.batch)
+        })
+      }
+      args.next()
     },
     Flash_Flag (state) {
       if (state.student && state.student.tutorTypeList) {

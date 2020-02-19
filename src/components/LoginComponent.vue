@@ -205,7 +205,12 @@ export default {
           if (response.data.success) {
             this.$store.commit('setAccountType', 'admin')
             this.$store.commit('setAdminId', that.form.name)
-            this.$router.push('/admin')
+            this.$store.commit('LoadAdmin', {
+              next: () => {
+                this.$router.push('/admin')
+              },
+              id: this.form.name
+            })
           } else {
             // TODO 密码错误
           }

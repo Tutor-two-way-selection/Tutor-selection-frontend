@@ -7,7 +7,40 @@
     {{tutorType}}
     <hr>
     {{stuList}}
-    <!-- {{this.$route.params.tutorType}} -->
+    <hr>
+
+    <el-table :data="stuList.filter(onSearch)" style="width: 100%">
+      <el-table-column prop="" label="姓名">
+        <template slot-scope="scope">
+          <el-button :type="studentKey?'primary':'text'" size="mini" @click="searchStudent(scope.row.stuID)">{{scope.row.stuName}}</el-button>
+        </template>
+      </el-table-column>
+      <el-table-column prop="" label="班级">
+        <template slot-scope="scope">
+          <el-button :type="classesKey?'primary':'text'" size="mini" @click="searchClasses(scope.row.classes)">{{scope.row.classes}}</el-button>
+        </template>
+      </el-table-column>
+      <el-table-column prop="" label="导师姓名">
+        <template slot-scope="scope">
+          <el-button :type="teacherKey?'primary':'text'" size="mini" @click="searchTeacher(scope.row.teaID)">{{scope.row.teaName}}</el-button>
+        </template>
+      </el-table-column>
+      <el-table-column prop="" label="">
+        <template slot="header" slot-scope="scope">
+          <!-- <el-input v-model="searchKey" placeholder="输入关键字搜索" /> -->
+          <el-input v-model="searchKey" placeholder="输入关键字搜索" :name="scope" size="mini"></el-input>
+        </template>
+        <template slot-scope="scope">
+          <div @click="searchStatus(scope.row.status)">
+            <el-button :plain="!statusKey" size="mini" type="info" v-if="scope.row.status==='untreat'">未处理</el-button>
+            <el-button :plain="!statusKey" size="mini" type="success" v-if="scope.row.status==='accept'">接收</el-button>
+            <el-button :plain="!statusKey" size="mini" type="danger" v-if="scope.row.status==='refuse'">不接收</el-button>
+          </div>
+        </template>
+      </el-table-column>
+    </el-table>
+    <el-button type="" @click="secondChoice" v-if="progress===1" :disabled="secondChoiceFlag">进入第二轮选择</el-button>
+    <el-button type="" @click="manualChoice" v-if="progress===2" :disabled="manualChoiceFlag">进入管理员分配</el-button>
   </div>
 </template>
 <script>
@@ -15,7 +48,104 @@ import { mapState } from 'vuex'
 export default {
   data () {
     return {
-      stuList: []
+      stuList: [],
+      searchKey: '',
+      studentKey: '',
+      classesKey: '',
+      teacherKey: '',
+      statusKey: ''
+    }
+  },
+  methods: {
+    secondChoice () {
+      this.axios.post('/admin/setbatch', { admNum: this.$store.state.admin.admId, type: this.tutorType, batch: 2 }).then(res => {
+        if (res.data.success) {
+          console.log('进入第二轮选择')
+          this.$router.push('/admin/select/' + this.tutorType + '/twoWaySelect/second')
+        }
+      })
+    },
+    manualChoice () {
+      this.axios.post('/admin/setbatch', { admNum: this.$store.state.admin.admId, type: this.tutorType, batch: 3 }).then(res => {
+        if (res.data.success) {
+          console.log('进入管理员分配')
+          this.$router.push('/admin/select/' + this.tutorType + '/manual')
+        }
+      })
+    },
+    onSearch (data) {
+      return (!this.searchKey ||
+          data.stuName.toLowerCase().includes(this.searchKey.toLowerCase()) ||
+          data.classes.toLowerCase().includes(this.searchKey.toLowerCase()) ||
+          data.teaName.toLowerCase().includes(this.searchKey.toLowerCase())) &&
+          (!this.teacherKey || data.teaID.toLowerCase().includes(this.teacherKey.toLowerCase())) &&
+          (!this.statusKey || data.status.toLowerCase().includes(this.statusKey.toLowerCase())) &&
+          (!this.studentKey || data.stuID.toLowerCase().includes(this.studentKey.toLowerCase())) &&
+          (!this.classesKey || data.classes.toLowerCase().includes(this.classesKey.toLowerCase()))
+    },
+    searchStudent (student) {
+      if (this.studentKey) {
+        this.studentKey = ''
+        this.flag = true
+      } else {
+        this.studentKey = student
+        this.flag = false
+      }
+    },
+    searchClasses (classes) {
+      if (this.classesKey) {
+        this.classesKey = ''
+        this.flag = true
+      } else {
+        this.classesKey = classes
+        this.flag = false
+      }
+    },
+    searchTeacher (teacher) {
+      if (this.teacherKey) {
+        this.teacherKey = ''
+        this.flag = true
+      } else {
+        this.teacherKey = teacher
+        this.flag = false
+      }
+    },
+    searchStatus (status) {
+      if (this.statusKey) {
+        this.statusKey = ''
+        this.flag = true
+      } else {
+        this.statusKey = status
+        this.flag = false
+      }
+    },
+    init () {
+      this.$store.commit('LoadAdmin')
+      this.axios.post('/admin/situation', { admNum: this.$store.state.admin.admId, type: this.tutorType, batch: this.progress }).then(res => {
+        this.stuList = res.data.stuList
+        // 测试
+        if (this.progress === 2) {
+          this.stuList.push({
+            stuID: '201701010105',
+            stuName: 'qwe',
+            classes: 'class2',
+            teaID: '199901010103',
+            teaName: '赵七',
+            status: 'accept'
+          })
+        }
+        if (this.tutorType === 'graduate') {
+          this.stuList.push({
+            stuID: '201701010106',
+            stuName: 'zxc',
+            classes: 'class2',
+            teaID: '199901010107',
+            teaName: '李十四',
+            status: 'accept'
+          })
+        }
+        // //////////////////////
+      })
     }
   },
   computed: mapState({
@@ -32,25 +162,36 @@ export default {
     tutorType (state) {
       return this.type
     },
-    stuListListener () {
+    // 监听组件的初始条件的变化
+    listener () {
       return { admNum: this.$store.state.admin.admId, type: this.tutorType, batch: this.progress }
+    },
+    secondChoiceFlag () {
+      if (this.$store.state.admin.currentBatch[this.tutorType] === 1) {
+        return false
+      } else {
+        return true
+      }
+    },
+    manualChoiceFlag () {
+      if (this.$store.state.admin.currentBatch[this.tutorType] === 2) {
+        return false
+      } else {
+        return true
+      }
     }
   }),
   watch: {
-    stuListListener: {
+    listener: {
       handler: function (val, oldval) {
-        this.axios.post('/admin/situation', { admNum: this.$store.state.admin.admId, type: this.tutorType, batch: this.progress }).then(res => {
-          this.stuList = res.data.stuList
-        })
+        this.init()
       },
       deep: true// 对象内部的属性监听，也叫深度监听
     }
   },
   props: ['type'],
   created () {
-    this.axios.post('/admin/situation', { admNum: this.$store.state.admin.admId, type: this.tutorType, batch: this.progress }).then(res => {
-      this.stuList = res.data.stuList
-    })
+    this.init()
   }
 }
 </script>

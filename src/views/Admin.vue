@@ -17,8 +17,8 @@
               <span slot="title">本科导师选择</span>
             </template>
             <el-menu-item index="/admin/select/regular/twoWaySelect/first">第一轮双向选择</el-menu-item>
-            <el-menu-item index="/admin/select/regular/twoWaySelect/second">第二轮双向选择</el-menu-item>
-            <el-menu-item index="/admin/select/regular/manual">管理员分配</el-menu-item>
+            <el-menu-item index="/admin/select/regular/twoWaySelect/second" :disabled="!(this.$store.state.admin.currentBatch.regular>=2)">第二轮双向选择</el-menu-item>
+            <el-menu-item index="/admin/select/regular/manual" :disabled="!(this.$store.state.admin.currentBatch.regular>=3)">管理员分配</el-menu-item>
           </el-submenu>
           <el-submenu index="/admin/graduate">
             <template slot="title">
@@ -26,8 +26,8 @@
               <span slot="title">毕业设计导师选择</span>
             </template>
             <el-menu-item index="/admin/select/graduate/twoWaySelect/first">第一轮双向选择</el-menu-item>
-            <el-menu-item index="/admin/select/graduate/twoWaySelect/second">第二轮双向选择</el-menu-item>
-            <el-menu-item index="/admin/select/graduate/manual">管理员分配</el-menu-item>
+            <el-menu-item index="/admin/select/graduate/twoWaySelect/second" :disabled="!(this.$store.state.admin.currentBatch.graduate>=2)"> 第二轮双向选择</el-menu-item>
+            <el-menu-item index="/admin/select/graduate/manual" :disabled="!(this.$store.state.admin.currentBatch.graduate>=3)">管理员分配</el-menu-item>
           </el-submenu>
           <el-menu-item index="/admin/publicly">
             <i class="el-icon-document"></i>

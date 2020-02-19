@@ -556,6 +556,13 @@ Mock.mock('/student/login', options => {
         classes: 'class1',
         teaID: '199901010101',
         teaName: '王五',
+        status: 'refuse'
+      }, {
+        stuID: '201701010101',
+        stuName: '张三',
+        classes: 'class1',
+        teaID: '199901010101',
+        teaName: '王五',
         status: 'untreat'
       }, {
         stuID: '201701010102',
@@ -564,7 +571,35 @@ Mock.mock('/student/login', options => {
         teaID: '199901010101',
         teaName: '王五',
         status: 'accept'
+      }, {
+        stuID: '201701010103',
+        stuName: 'abc',
+        classes: 'class2',
+        teaID: '199901010102',
+        teaName: '赵六',
+        status: 'untreat'
+      }, {
+        stuID: '201701010104',
+        stuName: 'def',
+        classes: 'class2',
+        teaID: '199901010102',
+        teaName: '赵六',
+        status: 'accept'
       }]
+    }
+  )
+}).mock('/admin/setbatch', options => {
+  console.log('mockjs:', options, JSON.parse(options.body))
+  return Mock.mock(
+    {
+      success: true
+    }
+  )
+}).mock('/admin/querybatch', options => {
+  console.log('mockjs:', options, JSON.parse(options.body))
+  return Mock.mock(
+    {
+      batch: 3
     }
   )
 })
