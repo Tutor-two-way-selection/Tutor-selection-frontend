@@ -71,6 +71,9 @@ export default {
     if (json) {
       if (accountType === 'student') {
         this.$store.commit('Flash_Flag')
+        this.$store.commit('LoadStudent')
+      } else if (accountType === 'admin') {
+        this.$store.commit('LoadAdmin')
       }
     } else {
       this.$router.push('/login')
