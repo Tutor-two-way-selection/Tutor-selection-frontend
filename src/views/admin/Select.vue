@@ -1,7 +1,7 @@
 <template>
   <div>
-    tutorType:{{tutorType}}
-    <hr>
+    <!-- tutorType:{{tutorType}}
+    <hr> -->
     <router-view :type="tutorType" />
   </div>
 </template>

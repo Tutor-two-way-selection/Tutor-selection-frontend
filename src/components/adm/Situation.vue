@@ -1,16 +1,22 @@
 <template>
   <div>
-    TwoWaySelect
+    <!-- TwoWaySelect
     <hr>
     {{progress}}
     <hr>
     {{tutorType}}
     <hr>
     {{stuList}}
-    <hr>
+    <hr> -->
 
+    <el-row type="flex" class="row-bg" justify="end">
+      <el-button :type="accessToPublic?'primary':'info'" @click="toPublicly" :disabled="!accessToPublic" v-if="progress===3">进入公示阶段</el-button>
+      <el-button :type="(!accessToPublic)?'success':'info'" v-if="progress===3" :disabled="!(this.$store.state.admin.currentBatch[tutorType] === 3)">管理员分配</el-button>
+      <el-button type="" @click="secondChoice" v-if="progress===1" :disabled="secondChoiceFlag">进入第二轮选择</el-button>
+      <el-button type="" @click="manualChoice" v-if="progress===2" :disabled="manualChoiceFlag">进入管理员分配</el-button>
+    </el-row>
     <el-table :data="stuList.filter(onSearch)" style="width: 100%">
-      <el-table-column prop="" label="姓名">
+      <el-table-column prop="" label="姓名" fixed>
         <template slot-scope="scope">
           <el-button :type="studentKey?'primary':'text'" size="mini" @click="searchStudent(scope.row.stuID)">{{scope.row.stuName}}</el-button>
         </template>
@@ -39,8 +45,7 @@
         </template>
       </el-table-column>
     </el-table>
-    <el-button type="" @click="secondChoice" v-if="progress===1" :disabled="secondChoiceFlag">进入第二轮选择</el-button>
-    <el-button type="" @click="manualChoice" v-if="progress===2" :disabled="manualChoiceFlag">进入管理员分配</el-button>
+
   </div>
 </template>
 <script>
@@ -57,10 +62,23 @@ export default {
     }
   },
   methods: {
+    toPublicly () {
+      this.axios.post('/admin/setbatch', {
+        admNum: this.$store.state.admin.admId,
+        type: this.tutorType,
+        batch: 4
+      }).then(res => {
+        if (res.data.success) {
+          this.$store.commit('FlashBatch')
+          this.$router.push('/admin/publicly')
+        }
+      })
+    },
     secondChoice () {
       this.axios.post('/admin/setbatch', { admNum: this.$store.state.admin.admId, type: this.tutorType, batch: 2 }).then(res => {
         if (res.data.success) {
           console.log('进入第二轮选择')
+          this.$store.commit('FlashBatch')
           this.$router.push('/admin/select/' + this.tutorType + '/twoWaySelect/second')
         }
       })
@@ -69,6 +87,7 @@ export default {
       this.axios.post('/admin/setbatch', { admNum: this.$store.state.admin.admId, type: this.tutorType, batch: 3 }).then(res => {
         if (res.data.success) {
           console.log('进入管理员分配')
+          this.$store.commit('FlashBatch')
           this.$router.push('/admin/select/' + this.tutorType + '/manual')
         }
       })
@@ -120,6 +139,8 @@ export default {
       }
     },
     init () {
+      this.statusKey = ''
+      this.flag = true
       this.$store.commit('LoadAdmin')
       this.axios.post('/admin/situation', { admNum: this.$store.state.admin.admId, type: this.tutorType, batch: this.progress }).then(res => {
         this.stuList = res.data.stuList
@@ -131,7 +152,7 @@ export default {
             classes: 'class2',
             teaID: '199901010103',
             teaName: '赵七',
-            status: 'accept'
+            status: 'refuse'
           })
         }
         if (this.tutorType === 'graduate') {
@@ -141,7 +162,7 @@ export default {
             classes: 'class2',
             teaID: '199901010107',
             teaName: '李十四',
-            status: 'accept'
+            status: 'untreat'
           })
         }
         // //////////////////////
@@ -155,6 +176,10 @@ export default {
           return 1
         case 'second':
           return 2
+        case 'third':
+          return 3
+        case 'fourth':
+          return 4
         default:
           return this.$route.params.progress
       }
@@ -179,6 +204,17 @@ export default {
       } else {
         return true
       }
+    },
+    accessToPublic () {
+      for (let i in this.stuList) {
+        if (!(this.stuList[i].status === 'accept')) {
+          return false
+        }
+      }
+      if (!(this.$store.state.admin.currentBatch[this.tutorType] === 3)) {
+        return false
+      }
+      return true
     }
   }),
   watch: {

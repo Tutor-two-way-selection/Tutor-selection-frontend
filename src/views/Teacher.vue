@@ -1,11 +1,7 @@
 <template>
   <div style="text-align:left">
     <el-container>
-      <el-aside width="200px">
-        <!-- <el-radio-group v-model="isCollapse" style="margin-bottom: 20px;">
-          <el-radio-button :label="false">展开</el-radio-button>
-          <el-radio-button :label="true">收起</el-radio-button>
-        </el-radio-group> -->
+      <el-aside :width="asideWidth">
         <el-menu :default-active="defaultActive" class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose" :collapse="isCollapse" style="text-align: left;" router>
           <!-- {{defaultActive}} -->
           <el-menu-item index="/teacher/teachInfo">
@@ -51,7 +47,8 @@
 export default {
   data () {
     return {
-      isCollapse: false
+      isCollapse: false,
+      asideWidth: '200px'
     }
   },
   methods: {
@@ -70,6 +67,24 @@ export default {
     defaultActive () {
       return this.$route.path.split('#').reverse()[0]
     }
+  },
+  mounted () {
+    if (document.body.clientWidth < 900) {
+      this.isCollapse = true
+      this.asideWidth = '65px'
+    } else {
+      this.isCollapse = false
+      this.asideWidth = '200px'
+    }
+    window.addEventListener('resize', () => {
+      if (document.body.clientWidth < 900) {
+        this.isCollapse = true
+        this.asideWidth = '65px'
+      } else {
+        this.isCollapse = false
+        this.asideWidth = '200px'
+      }
+    })
   }
 }
 </script>

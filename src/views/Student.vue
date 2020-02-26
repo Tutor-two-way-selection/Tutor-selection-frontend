@@ -1,11 +1,7 @@
 <template>
   <div style="text-align:left">
     <el-container>
-      <el-aside width="200px">
-        <!-- <el-radio-group v-model="isCollapse" style="margin-bottom: 20px;">
-          <el-radio-button :label="false">展开</el-radio-button>
-          <el-radio-button :label="true">收起</el-radio-button>
-        </el-radio-group> -->
+      <el-aside :width="asideWidth">
         <el-menu :default-active="defaultActive" class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose" :collapse="isCollapse" style="text-align: left;" router>
           <!-- {{defaultActive}} -->
           <el-submenu index="/student/regular">
@@ -51,16 +47,17 @@
 </template>
 
 <style>
-.el-menu-vertical-demo:not(.el-menu--collapse) {
-  /* width: 200px; */
-  min-height: 90vh;
-}
+  .el-menu-vertical-demo:not(.el-menu--collapse) {
+    /* width: 200px; */
+    min-height: 90vh;
+  }
 </style>
 <script>
 export default {
   data () {
     return {
-      isCollapse: false
+      isCollapse: false,
+      asideWidth: '200px'
     }
   },
   methods: {
@@ -82,6 +79,24 @@ export default {
   },
   created () {
     this.$store.commit('Flash_Flag')
+  },
+  mounted () {
+    if (document.body.clientWidth < 900) {
+      this.isCollapse = true
+      this.asideWidth = '65px'
+    } else {
+      this.isCollapse = false
+      this.asideWidth = '200px'
+    }
+    window.addEventListener('resize', () => {
+      if (document.body.clientWidth < 900) {
+        this.isCollapse = true
+        this.asideWidth = '65px'
+      } else {
+        this.isCollapse = false
+        this.asideWidth = '200px'
+      }
+    })
   }
 }
 </script>

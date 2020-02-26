@@ -505,30 +505,16 @@ Mock.mock('/student/login', options => {
       classes: 'qwerty',
       contact: 'zxcvb',
       firstChoice: {
-        id: '199901010101',
-        name: '王五',
-        accept: false
       },
       secondChoice: {
-        id: '199901010102',
-        name: '赵六',
-        accept: true
       },
       profileTable: {
-        flag: true,
-        fileList: [{
-          name: '计算机学院本科学生导师选择学生个人简介表 (1).DOC',
-          url: 'https://test-1301169585.cos.ap-shanghai.myqcloud.com/%E9%99%84%E4%BB%B6%E5%9B%9B%EF%BC%9A%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%AD%A6%E9%99%A2%E6%9C%AC%E7%A7%91%E5%AD%A6%E7%94%9F%E5%AF%BC%E5%B8%88%E9%80%89%E6%8B%A9%E5%AD%A6%E7%94%9F%E4%B8%AA%E4%BA%BA%E7%AE%80%E4%BB%8B%E8%A1%A8%20(1).DOC',
-          status: 'success',
-          size: 1141
-        }]
+        flag: false,
+        fileList: []
       },
       choiceTable: {
-        flag: true,
-        fileList: [{
-          name: '计算机学院本科学生导师双向选择表 (1).docx',
-          url: 'https://test-1301169585.cos.ap-shanghai.myqcloud.com/%E9%99%84%E4%BB%B6%E4%B8%80%EF%BC%9A%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%AD%A6%E9%99%A2%E6%9C%AC%E7%A7%91%E5%AD%A6%E7%94%9F%E5%AF%BC%E5%B8%88%E5%8F%8C%E5%90%91%E9%80%89%E6%8B%A9%E8%A1%A8%20(1).docx'
-        }]
+        flag: false,
+        fileList: []
       }
     }, {
       name: '李四',
@@ -572,14 +558,7 @@ Mock.mock('/student/login', options => {
       classes: 'class1',
       teaID: '199901010101',
       teaName: '王五',
-      status: 'refuse'
-    }, {
-      stuID: '201701010101',
-      stuName: '张三',
-      classes: 'class1',
-      teaID: '199901010101',
-      teaName: '王五',
-      status: 'untreat'
+      status: 'accept'
     }, {
       stuID: '201701010102',
       stuName: '李四',
@@ -593,7 +572,7 @@ Mock.mock('/student/login', options => {
       classes: 'class2',
       teaID: '199901010102',
       teaName: '赵六',
-      status: 'untreat'
+      status: 'accept'
     }, {
       stuID: '201701010104',
       stuName: 'def',
@@ -630,5 +609,42 @@ Mock.mock('/student/login', options => {
   console.log('mockjs:', options, JSON.parse(options.body))
   return Mock.mock({
     success: true
+  })
+}).mock('/admin/querypub', options => {
+  console.log('mockjs:', options, JSON.parse(options.body))
+  return Mock.mock({
+    start: '2020-02-03T16:00:00.000Z',
+    end: '2020-02-28T16:00:00.000Z'
+  })
+}).mock('/admin/final', options => {
+  console.log('mockjs:', options, JSON.parse(options.body))
+  return Mock.mock({
+    stuList: [{
+      stuName: '张三',
+      stuID: '201701010101',
+      classes: 'qwerty',
+      contact: 'zxcvb',
+      teaName: '王五',
+      teaNum: '199901010101'
+    }, {
+      stuName: '李四',
+      stuID: '201701010102',
+      classes: 'qwerty',
+      contact: 'qaazwsx',
+      teaName: '王五',
+      teaNum: '199901010101'
+    }, {
+      stuName: '李五',
+      stuID: '201701010102',
+      classes: 'asdfgh',
+      contact: 'qaazwsx',
+      teaName: '王五',
+      teaNum: '199901010101'
+    }, {
+      stuName: '李五',
+      stuID: '201701010102',
+      classes: 'asdfgh',
+      contact: 'qaazwsx'
+    }]
   })
 })

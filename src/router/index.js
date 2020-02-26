@@ -28,7 +28,7 @@ import Confirm from '../views/admin/Confirm.vue'
 import NecessaryInfo from '../components/stu/NecessaryInfo.vue'
 import ChooseTutor from '../components/stu/ChooseTutor.vue'
 
-import TwoWaySelect from '../components/adm/TwoWaySelect.vue'
+import Situation from '../components/adm/Situation.vue'
 import Manual from '../components/adm/Manual.vue'
 
 Vue.use(VueRouter)
@@ -131,20 +131,21 @@ const routes = [{
     component: Select,
     children: [{
       path: '/',
-      redirect: '/admin/select/regular/twoWaySelect/first'
+      redirect: '/admin/select/regular/situation/first'
     }, {
-      path: '/admin/select/:tutorType/twoWaySelect/:progress',
-      component: TwoWaySelect
+      path: '/admin/select/:tutorType/situation/:progress',
+      component: Situation
     }, {
       path: 'manual',
       component: Manual
     }]
   }, {
+    // 弃用
     path: 'graduate',
     component: GraduateAdm,
     children: [{
-      path: 'twoWaySelect',
-      component: TwoWaySelect
+      path: 'situation',
+      component: Situation
     }]
   }, {
     path: 'publicly',

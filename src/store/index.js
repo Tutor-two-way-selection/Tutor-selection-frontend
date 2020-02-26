@@ -155,6 +155,14 @@ export default new Vuex.Store({
       }
       args.next()
     },
+    FlashBatch (state) {
+      Vue.set(state.admin, 'currentBatch', {})
+      for (let i in state.admin.tutorTypeList) {
+        axios.post('/admin/querybatch', { admNum: state.admin.admId, type: state.admin.tutorTypeList[i] }).then(res => {
+          Vue.set(state.admin.currentBatch, state.admin.tutorTypeList[i], res.data.batch)
+        })
+      }
+    },
     Flash_Flag (state) {
       if (state.student && state.student.tutorTypeList) {
         for (let i = 0; i < state.student.tutorTypeList.length; i++) {

@@ -1,12 +1,12 @@
 <template>
   <div>
-    Manual
+    <!-- Manual
     <hr>
     {{tutorType}}
     <hr>
     {{stuList}}
     <hr>
-    {{addList}}
+    {{addList}} -->
     <el-table :data="stuList">
       <el-table-column prop="stuID" label="学号">
       </el-table-column>
@@ -22,13 +22,13 @@
       <el-table-column prop="teaName" label="分配教师">
       </el-table-column>
     </el-table>
-    <el-button type="primary" size="medium" @click="submit">提交</el-button>
+    <el-button type="primary" size="medium" @click="submit" :disabled="!(this.$store.state.admin.currentBatch[tutorType] === 3)">提交</el-button>
     <!-- dialog -->
     <el-dialog title="导师选择" :visible.sync="dialogVisible" fullscreen :before-close="handleClose">
       <span>学号</span>
       <span>{{dialogData.stuID}}</span>
       <el-table :data="tutorList" height="65vh">
-        <el-table-column prop="name" label="姓名">
+        <el-table-column prop="name" label="姓名" fixed>
         </el-table-column>
         <el-table-column prop="department" label="所在部门/研究所">
         </el-table-column>
@@ -87,6 +87,7 @@ export default {
       this.axios.post('/admin/manual', req).then(res => {
         if (res.data.success) {
           console.log('提交成功')
+          this.init()
         } else {
           // 服务器错误
         }

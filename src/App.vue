@@ -4,7 +4,7 @@
       <router-link to="/">Home</router-link> |
       <router-link to="/about">About</router-link>
     </div> -->
-    <div v-if="this.$store.state.student">
+    <!-- <div v-if="this.$store.state.student">
       {{this.$store.state.student.stuId}}
       <hr />
       {{this.$store.state.student}}
@@ -19,7 +19,7 @@
       <hr />
       {{this.$store.state.admin}}
     </div>
-    {{this.$store.state}}
+    {{this.$store.state}} -->
     <router-view />
   </div>
 </template>
@@ -50,6 +50,22 @@
         color: #42b983;
       }
     }
+  }
+
+  .close-button {
+    position: fixed;
+    right: 40px;
+    top: 20px;
+    z-index: 3000;
+  }
+
+  .closeButton-enter-active,
+  .closeButton-leave-active {
+    transition: all 0.45s ease;
+  }
+  .closeButton-enter,
+  .closeButton-leave-to {
+    transform: translateX(100px) rotate(720deg);
   }
 </style>
 <script>
@@ -126,4 +142,5 @@ export default {
   }
 
 }
+
 </script>

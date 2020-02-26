@@ -43,6 +43,16 @@
 
     </el-table>
     <el-button type="primary" style="margin-top:15px" @click="onSubmit">提交</el-button>
+
+    <el-drawer title="在线浏览" :visible.sync="drawer" direction="rtl" :before-close="handleClose" size="100%" :with-header="false" ref="docDrawer" :destroyOnClose="false">
+      <iframe :src="fileSrc" style="height:100%;width:100%"></iframe>
+    </el-drawer>
+    <transition name="closeButton">
+      <div class="close-button" v-show="closeButton">
+        <el-button type="danger" icon="el-icon-close" circle @click="closeDrawer"></el-button>
+      </div>
+    </transition>
+
   </div>
 </template>
 <script>
@@ -53,7 +63,10 @@ export default {
       tutorType: 'regular',
       // tutorType: this.$route.query.tutorType,
       stuList: [],
-      tableList: []
+      tableList: [],
+      drawer: false,
+      fileSrc: null,
+      closeButton: false
     }
   },
   created () {
@@ -66,8 +79,19 @@ export default {
     })
   },
   methods: {
+    closeDrawer () {
+      // closeDrawer()
+      this.$refs['docDrawer'].closeDrawer()
+    },
     preview (fileUrl) {
-      window.open('http://view.officeapps.live.com/op/view.aspx?src=' + fileUrl)
+      // window.open('http://view.officeapps.live.com/op/view.aspx?src=' + fileUrl)
+      this.fileSrc = 'http://view.officeapps.live.com/op/view.aspx?src=' + fileUrl
+      this.drawer = true
+      this.closeButton = true
+    },
+    handleClose (done) {
+      this.closeButton = false
+      done()
     },
     tableRowClassName ({ row, rowIndex }) {
       if (row.recept === true) {
