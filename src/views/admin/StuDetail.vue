@@ -209,11 +209,45 @@ export default {
       this.addForm.addList.push({ name: '', id: '', classes: '' })
     },
     init () {
-      this.axios.post('/admin/stulist', { admNum: this.$store.state.admin.admId, type: this.tutorType }).then(res => {
+      this.axios.post('/admin/stulist', { grade: this.$store.state.admin.currentGrade, type: this.tutorType }).then(res => {
         this.stuList = res.data.stuList
         this.tableList = res.data.tableList
 
         // 测试
+        if (this.$store.state.admin.currentGrade === '2016') {
+          this.stuList.push({
+            name: '赵十一',
+            id: '201701010101',
+            classes: 'qwerty',
+            contact: 'zxcvb',
+            firstChoice: {
+              id: '199901010101',
+              name: '王五',
+              accept: false
+            },
+            secondChoice: {
+              id: '199901010102',
+              name: '赵六',
+              accept: true
+            },
+            profileTable: {
+              flag: true,
+              fileList: [{
+                name: '计算机学院本科学生导师选择学生个人简介表 (1).DOC',
+                url: 'https://test-1301169585.cos.ap-shanghai.myqcloud.com/%E9%99%84%E4%BB%B6%E5%9B%9B%EF%BC%9A%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%AD%A6%E9%99%A2%E6%9C%AC%E7%A7%91%E5%AD%A6%E7%94%9F%E5%AF%BC%E5%B8%88%E9%80%89%E6%8B%A9%E5%AD%A6%E7%94%9F%E4%B8%AA%E4%BA%BA%E7%AE%80%E4%BB%8B%E8%A1%A8%20(1).DOC',
+                status: 'success',
+                size: 1141
+              }]
+            },
+            choiceTable: {
+              flag: true,
+              fileList: [{
+                name: '计算机学院本科学生导师双向选择表 (1).docx',
+                url: 'https://test-1301169585.cos.ap-shanghai.myqcloud.com/%E9%99%84%E4%BB%B6%E4%B8%80%EF%BC%9A%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%AD%A6%E9%99%A2%E6%9C%AC%E7%A7%91%E5%AD%A6%E7%94%9F%E5%AF%BC%E5%B8%88%E5%8F%8C%E5%90%91%E9%80%89%E6%8B%A9%E8%A1%A8%20(1).docx'
+              }]
+            }
+          })
+        }
         if (this.tutorType === 'graduate') {
           this.stuList.push({
             name: '赵十一',

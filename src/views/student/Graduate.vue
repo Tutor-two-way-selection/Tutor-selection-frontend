@@ -11,12 +11,13 @@
     <br>
     {{necList}}
     <hr>
-    {{necFileList}} -->
+    {{necFileList}}
     {{necFileList}}
     <hr>
-    {{necInfo}}
-    <router-view :type="tutorType" :necList="necList" />
+    {{necInfo}} -->
+    <router-view :type="tutorType" :necList="necList" :baseForm="baseForm" />
     <el-button type="" @click="submitNec">提交基本信息</el-button>
+    {{baseForm}}
   </div>
 </template>
 <script>
@@ -26,7 +27,10 @@ export default {
   data () {
     return {
       tutorType: 'graduate',
-      necList: []
+      necList: [],
+      baseForm: {
+        contact: '789'
+      }
     }
   },
   methods: {
@@ -98,6 +102,12 @@ export default {
     }
   }),
   created () {
+    // for (let i = 0; i < this.necList.length; i++) {
+    //   if (this.$store.state.student[this.tutorType].form[this.necList[i].name]) {
+    //     this.necList[i].fileList = this.$store.state.student[this.tutorType].form[this.necList[i].name].fileList
+    //     this.necList[i].title = this.$store.state.student[this.tutorType].form[this.necList[i].name].title
+    //   }
+    // }
     for (let key in this.$store.state.student[this.tutorType].form) {
       this.necList.push({
         url: '/uploadFile',

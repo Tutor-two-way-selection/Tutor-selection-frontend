@@ -11,12 +11,13 @@
     <br>
     {{necList}}
     <hr>
-    {{necFileList}} -->
+    {{necFileList}}
     {{necFileList}}
     <hr>
-    {{necInfo}}
-    <router-view :type="tutorType" :necList="necList" />
+    {{necInfo}} -->
+    <router-view :type="tutorType" :necList="necList" :baseForm="baseForm" />
     <el-button type="" @click="submitNec">提交基本信息</el-button>
+    {{baseForm}}
   </div>
 </template>
 <script>
@@ -26,23 +27,10 @@ export default {
   data () {
     return {
       tutorType: 'regular',
-      // necList: [{
-      //   url: '/uploadFile',
-      //   name: 'profileTable',
-      //   // title: '学生个人简介表',
-      //   fileList: []
-      // }, {
-      //   url: '/uploadFile',
-      //   name: 'choiceTable',
-      //   // title: '导师双向选择表',
-      //   fileList: []
-      // }, {
-      //   url: '/uploadFile',
-      //   name: 'choiceTable2',
-      //   // title: '导师双向选择表2',
-      //   fileList: []
-      // }]
-      necList: []
+      necList: [],
+      baseForm: {
+        contact: '123'
+      }
     }
   },
   methods: {

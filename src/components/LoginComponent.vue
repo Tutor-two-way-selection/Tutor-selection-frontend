@@ -209,7 +209,8 @@ export default {
               next: () => {
                 this.$router.push('/admin')
               },
-              id: this.form.name
+              id: this.form.name,
+              grades: response.data.grades
             })
           } else {
             // TODO 密码错误

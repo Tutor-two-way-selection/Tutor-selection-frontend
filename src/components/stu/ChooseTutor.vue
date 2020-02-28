@@ -13,9 +13,9 @@
         closable
         v-show="form.secondChoice"
         type="success"
-      >第二志愿: {{form.secondChoice}}</el-tag>-->
+      >第二志愿: {{form.secondChoice}}</el-tag>
       {{ form }}
-      <br />
+      <br /> -->
       <el-form-item label="第一志愿" prop="firstChoice">
         <el-select v-model="form.firstChoice" placeholder="请选择第一志愿">
           <el-option :label="item.name" :value="item.id" v-for="(item, i) in tutorList" :key="i + 'first'"></el-option>

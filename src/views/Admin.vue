@@ -4,6 +4,14 @@
       <el-aside :width="asideWidth">
         <el-menu :default-active="defaultActive" class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose" :collapse="isCollapse" style="text-align: left;" router>
           <el-menu-item index="/admin/stuDetail">
+            <!-- <i class="el-icon-document"></i>
+            <span slot="title">查看学生信息</span> -->
+            <el-select v-model="currentGrade" filterable placeholder="请选择">
+              <el-option v-for="item in this.$store.state.admin.grades" :key="item" :label="item" :value="item">
+              </el-option>
+            </el-select>
+          </el-menu-item>
+          <el-menu-item index="/admin/stuDetail">
             <i class="el-icon-document"></i>
             <span slot="title">查看学生信息</span>
           </el-menu-item>
@@ -75,7 +83,8 @@ export default {
   data () {
     return {
       isCollapse: false,
-      asideWidth: '200px'
+      asideWidth: '200px',
+      currentGrade: this.$store.state.admin.currentGrade
     }
   },
   methods: {
@@ -99,6 +108,15 @@ export default {
   computed: {
     defaultActive () {
       return this.$route.path.split('#').reverse()[0]
+    }
+  },
+  watch: {
+    currentGrade: {
+      handler: function (val, oldval) {
+        console.log('currentGrade')
+        this.$store.commit('setCurrentGrade', val)
+      },
+      deep: true// 对象内部的属性监听，也叫深度监听
     }
   },
   mounted () {

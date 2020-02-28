@@ -91,8 +91,15 @@ export default new Vuex.Store({
       state.accountType = arg
     },
     LoadStudent (state, args) {
-      if (!args) { args = { next: () => {}, id: state.student.stuId } }
-      if (!args.id) { args.id = state.student.stuId }
+      if (!args) {
+        args = {
+          next: () => {},
+          id: state.student.stuId
+        }
+      }
+      if (!args.id) {
+        args.id = state.student.stuId
+      }
       if (args.id) {
         console.log('LoadStudent')
         Vue.set(
@@ -139,29 +146,69 @@ export default new Vuex.Store({
       }
     },
     LoadAdmin (state, args) {
-      if (!args) { args = { next: () => {}, id: state.admin.admId } }
-      if (!args.id) { args.id = state.admin.admId }
+      // Vue.set(state.admin, 'currentBatch', {})
+      // 会刷新的数据:currentBatch
+      if (!args) {
+        args = {
+          next: () => {}
+        }
+      }
+      if (!args.id) {
+        args.id = state.admin.admId
+      }
+      if (args.grades) {
+        Vue.set(
+          state.admin,
+          'grades',
+          args.grades
+        )
+        Vue.set(
+          state.admin,
+          'currentGrade',
+          args.grades[0]
+        )
+      }
       console.log('LoadAdmin')
+
       Vue.set(
         state.admin,
         'tutorTypeList',
         ['regular', 'graduate']
       )
+
       Vue.set(state.admin, 'currentBatch', {})
       for (let i in state.admin.tutorTypeList) {
-        axios.post('/admin/querybatch', { admNum: args.id, type: state.admin.tutorTypeList[i] }).then(res => {
+        axios.post('/admin/querybatch', {
+          grade: state.admin.currentGrade,
+          type: state.admin.tutorTypeList[i]
+        }).then(res => {
           Vue.set(state.admin.currentBatch, state.admin.tutorTypeList[i], res.data.batch)
+          // 测试
+          if (state.admin.currentGrade === '2016') {
+            Vue.set(state.admin.currentBatch, state.admin.tutorTypeList[i], 2)
+          }
         })
       }
+
       args.next()
     },
     FlashBatch (state) {
       Vue.set(state.admin, 'currentBatch', {})
       for (let i in state.admin.tutorTypeList) {
-        axios.post('/admin/querybatch', { admNum: state.admin.admId, type: state.admin.tutorTypeList[i] }).then(res => {
+        axios.post('/admin/querybatch', {
+          grade: state.admin.currentGrade,
+          type: state.admin.tutorTypeList[i]
+        }).then(res => {
           Vue.set(state.admin.currentBatch, state.admin.tutorTypeList[i], res.data.batch)
+          // 测试
+          if (state.admin.currentGrade === '2016') {
+            Vue.set(state.admin.currentBatch, state.admin.tutorTypeList[i], 2)
+          }
         })
       }
+    },
+    setCurrentGrade (state, currentGrade) {
+      state.admin.currentGrade = currentGrade
     },
     Flash_Flag (state) {
       if (state.student && state.student.tutorTypeList) {

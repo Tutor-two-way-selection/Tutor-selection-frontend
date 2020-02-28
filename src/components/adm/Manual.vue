@@ -73,7 +73,7 @@ export default {
   methods: {
     submit () {
       let req = {
-        admNum: this.$store.state.admin.admId,
+        grade: this.$store.state.admin.currentGrade,
         type: this.tutorType,
         manualList: []
       }
@@ -127,7 +127,7 @@ export default {
       this.axios.post('/allteacher', { type: 'regular' }).then(res => {
         this.tutorList = res.data.tutorList
       })
-      this.axios.post('/admin/undistri', { admNum: this.$store.state.admin.admId, type: this.tutorType }).then(res => {
+      this.axios.post('/admin/undistri', { grade: this.$store.state.admin.currentGrade, type: this.tutorType }).then(res => {
         this.stuList = res.data.stuList
         // 测试
         if (this.tutorType === 'graduate') {
@@ -146,7 +146,7 @@ export default {
       return this.type
     },
     listener () {
-      return { admNum: this.$store.state.admin.admId, type: this.tutorType }
+      return { grade: this.$store.state.admin.currentGrade, type: this.tutorType }
     }
   }),
   watch: {

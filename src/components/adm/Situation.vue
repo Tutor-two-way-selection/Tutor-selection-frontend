@@ -64,7 +64,7 @@ export default {
   methods: {
     toPublicly () {
       this.axios.post('/admin/setbatch', {
-        admNum: this.$store.state.admin.admId,
+        grade: this.$store.state.admin.currentGrade,
         type: this.tutorType,
         batch: 4
       }).then(res => {
@@ -75,7 +75,7 @@ export default {
       })
     },
     secondChoice () {
-      this.axios.post('/admin/setbatch', { admNum: this.$store.state.admin.admId, type: this.tutorType, batch: 2 }).then(res => {
+      this.axios.post('/admin/setbatch', { grade: this.$store.state.admin.currentGrade, type: this.tutorType, batch: 2 }).then(res => {
         if (res.data.success) {
           console.log('进入第二轮选择')
           this.$store.commit('FlashBatch')
@@ -84,7 +84,7 @@ export default {
       })
     },
     manualChoice () {
-      this.axios.post('/admin/setbatch', { admNum: this.$store.state.admin.admId, type: this.tutorType, batch: 3 }).then(res => {
+      this.axios.post('/admin/setbatch', { grade: this.$store.state.admin.currentGrade, type: this.tutorType, batch: 3 }).then(res => {
         if (res.data.success) {
           console.log('进入管理员分配')
           this.$store.commit('FlashBatch')
@@ -142,7 +142,7 @@ export default {
       this.statusKey = ''
       this.flag = true
       this.$store.commit('LoadAdmin')
-      this.axios.post('/admin/situation', { admNum: this.$store.state.admin.admId, type: this.tutorType, batch: this.progress }).then(res => {
+      this.axios.post('/admin/situation', { grade: this.$store.state.admin.currentGrade, type: this.tutorType, batch: this.progress }).then(res => {
         this.stuList = res.data.stuList
         // 测试
         if (this.progress === 2) {
@@ -189,7 +189,7 @@ export default {
     },
     // 监听组件的初始条件的变化
     listener () {
-      return { admNum: this.$store.state.admin.admId, type: this.tutorType, batch: this.progress }
+      return { grade: this.$store.state.admin.currentGrade, type: this.tutorType, batch: this.progress }
     },
     secondChoiceFlag () {
       if (this.$store.state.admin.currentBatch[this.tutorType] === 1) {

@@ -4,7 +4,7 @@
       <router-link to="/">Home</router-link> |
       <router-link to="/about">About</router-link>
     </div> -->
-    <!-- <div v-if="this.$store.state.student">
+    <div v-if="this.$store.state.student">
       {{this.$store.state.student.stuId}}
       <hr />
       {{this.$store.state.student}}
@@ -19,7 +19,7 @@
       <hr />
       {{this.$store.state.admin}}
     </div>
-    {{this.$store.state}} -->
+    {{this.$store.state}}
     <router-view />
   </div>
 </template>
@@ -107,6 +107,9 @@ export default {
     },
     listenAccountType () {
       return this.$store.state.accountType
+    },
+    listenCurrentGrade () {
+      return this.$store.state.admin.currentGrade
     }
   },
   watch: {
@@ -136,6 +139,15 @@ export default {
       handler: function (val, oldval) {
         console.log('listenAccountType')
         this.$store.commit('UPDATE_AccountType')
+      },
+      deep: true// 对象内部的属性监听，也叫深度监听
+    },
+    listenCurrentGrade: {
+      handler: function (val, oldval) {
+        console.log('listenCurrentGrade')
+        // this.$store.commit('FlashBatch')
+
+        location.reload()
       },
       deep: true// 对象内部的属性监听，也叫深度监听
     }

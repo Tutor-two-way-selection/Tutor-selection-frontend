@@ -41,7 +41,7 @@ export default {
   },
   methods: {
     endPub () {
-      this.axios.post('/admin/setbatch', { admNum: this.$store.state.admin.admId, type: this.tutorType, batch: 5 }).then(res => {
+      this.axios.post('/admin/setbatch', { grade: this.$store.state.admin.currentGrade, type: this.tutorType, batch: 5 }).then(res => {
         if (res.data.success) {
           console.log('公示结束')
           this.init()
@@ -56,7 +56,7 @@ export default {
       return ''
     },
     init () {
-      this.axios.post('/admin/querypub', { admNum: this.$store.state.admin.admId, type: this.tutorType }).then(res => {
+      this.axios.post('/admin/querypub', { grade: this.$store.state.admin.currentGrade, type: this.tutorType }).then(res => {
         this.pubDate = []
         this.pubDate.push(new Date(res.data.start))
         this.pubDate.push(new Date(res.data.end))
@@ -69,7 +69,7 @@ export default {
         }
       })
 
-      this.axios.post('/admin/final', { admNum: this.$store.state.admin.admId, type: this.tutorType }).then(res => {
+      this.axios.post('/admin/final', { grade: this.$store.state.admin.currentGrade, type: this.tutorType }).then(res => {
         this.stuList = res.data.stuList
       })
     },

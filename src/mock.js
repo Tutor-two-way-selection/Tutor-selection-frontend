@@ -31,7 +31,7 @@ Mock.mock('/student/login', options => {
     'url|1-10': 'def'
   })
 }).mock('/uploadFile', options => {
-  console.log('mockjs:', options, JSON.parse(options.body))
+  console.log('mockjs:', options, options.body)
   return Mock.mock({
     code: 20000,
     // 'url|1': 'https://test-1301169585.cos.ap-shanghai.myqcloud.com/va11halla.png',
@@ -437,7 +437,8 @@ Mock.mock('/student/login', options => {
 }).mock('/admin/login', options => {
   console.log('mockjs:', options, JSON.parse(options.body))
   return Mock.mock({
-    'success|1-0': true
+    'success|1-0': true,
+    'grades': ['2017', '2016']
   })
 }).mock('/teacher/accepted', options => {
   console.log('mockjs:', options, JSON.parse(options.body))
