@@ -12,19 +12,22 @@
             </el-select>
           </el-menu-item>
           <el-menu-item index="/admin/stuDetail">
-            <i class="el-icon-document"></i>
+            <i class="el-icon-user-solid"></i>
             <span slot="title">查看学生信息</span>
           </el-menu-item>
           <el-menu-item index="/admin/teaDetail">
-            <i class="el-icon-document"></i>
+            <i class="el-icon-s-custom"></i>
             <span slot="title">查看导师信息</span>
           </el-menu-item>
           <el-submenu index="/admin/regular" :disabled="!(this.$store.state.admin.currentBatch.regular>=1)">
             <template slot="title">
-              <i class="el-icon-location"></i>
+              <i class="el-icon-notebook-1"></i>
               <span slot="title">本科导师选择</span>
             </template>
             <el-menu-item-group>
+              <template slot="title">
+                本科导师选择
+              </template>
               <el-menu-item index="/admin/select/regular/Situation/first">第一轮双向选择</el-menu-item>
               <el-menu-item index="/admin/select/regular/Situation/second" :disabled="!(this.$store.state.admin.currentBatch.regular>=2)">第二轮双向选择</el-menu-item>
             </el-menu-item-group>
@@ -37,10 +40,13 @@
           </el-submenu>
           <el-submenu index="/admin/graduate" :disabled="!(this.$store.state.admin.currentBatch.graduate>=1)">
             <template slot="title">
-              <i class="el-icon-location"></i>
+              <i class="el-icon-notebook-2"></i>
               <span slot="title">毕业设计导师选择</span>
             </template>
             <el-menu-item-group>
+              <template slot="title">
+                本科导师选择
+              </template>
               <el-menu-item index="/admin/select/graduate/Situation/first">第一轮双向选择</el-menu-item>
               <el-menu-item index="/admin/select/graduate/Situation/second" :disabled="!(this.$store.state.admin.currentBatch.graduate>=2)"> 第二轮双向选择</el-menu-item>
             </el-menu-item-group>
@@ -52,7 +58,7 @@
             </el-menu-item-group>
           </el-submenu>
           <el-menu-item index="/admin/publicly">
-            <i class="el-icon-document"></i>
+            <i class="el-icon-data-analysis"></i>
             <span slot="title">公示与确认</span>
           </el-menu-item>
           <!-- <el-menu-item index="/admin/confirm">
@@ -60,7 +66,7 @@
             <span slot="title">结果确认</span>
           </el-menu-item> -->
           <el-menu-item @click="quit">
-            <i class="el-icon-document"></i>
+            <i class="el-icon-switch-button"></i>
             <span slot="title">退出登录</span>
           </el-menu-item>
         </el-menu>

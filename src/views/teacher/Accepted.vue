@@ -1,8 +1,6 @@
 <template>
   <div>
-    {{tutorType}}
     <div v-for="type in tutorType" :key="'type'+type">
-      {{type}}
       <el-table :data="stuList[type]" style="width: 100%">
         <el-table-column type="expand">
           <template slot-scope="props">

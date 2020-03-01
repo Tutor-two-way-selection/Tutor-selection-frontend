@@ -9,6 +9,7 @@ import Graduate from '../views/student/Graduate.vue'
 import SelectedTutor from '../views/student/SelectedTutor.vue'
 import Publicly from '../views/student/Publicly.vue'
 import MyTutor from '../views/student/MyTutor.vue'
+import BaseInfo from '../views/student/BaseInfo.vue'
 
 import Teacher from '../views/Teacher.vue'
 import TeachInfo from '../views/teacher/TeachInfo.vue'
@@ -86,6 +87,9 @@ const routes = [{
   }, {
     path: 'myTutor',
     component: MyTutor
+  }, {
+    path: 'baseInfo',
+    component: BaseInfo
   }
   ]
 },

@@ -2,7 +2,9 @@
   <div>
     <el-table ref="filterTable" :data="tutorList" style="width: 100%">
       <el-table-column type="expand">
-        <template slot-scope="props">{{ props.row }}</template>
+        <template slot-scope="props">
+          <TutorInfo :tutor="props.row"></TutorInfo>
+        </template>
       </el-table-column>
       <el-table-column prop="id" label="编号" sortable></el-table-column>
       <el-table-column prop="name" label="姓名" sortable></el-table-column>
@@ -13,8 +15,13 @@
   </div>
 </template>
 <script>
+import TutorInfo from '../../components/stu/TutorInfo'
+
 export default {
   props: ['type'],
+  components: {
+    TutorInfo
+  },
   data () {
     return {
       tutorList: [],

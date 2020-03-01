@@ -4,37 +4,53 @@
       <el-aside :width="asideWidth">
         <el-menu :default-active="defaultActive" class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose" :collapse="isCollapse" style="text-align: left;" router>
           <!-- {{defaultActive}} -->
+          <el-menu-item index="/student/baseInfo">
+            <i class="el-icon-user-solid"></i>
+            <span slot="title">修改基本信息</span>
+          </el-menu-item>
           <el-submenu index="/student/regular">
             <template slot="title">
-              <i class="el-icon-location"></i>
+              <i class="el-icon-notebook-1"></i>
               <span slot="title">本科导师选择</span>
             </template>
-            <el-menu-item index="/student/regular/necessaryInfo">查看、修改个人信息</el-menu-item>
-            <el-menu-item index="/student/regular/chooseTutor" :disabled="!(this.$store.state.flag['regular'])">选择导师</el-menu-item>
+            <el-menu-item-group>
+              <template slot="title">
+                本科导师选择
+              </template>
+              <el-menu-item index="/student/regular/necessaryInfo">查看、修改个人信息</el-menu-item>
+              <el-menu-item index="/student/regular/chooseTutor" :disabled="!(this.$store.state.flag['regular'])">选择导师</el-menu-item>
+            </el-menu-item-group>
+
           </el-submenu>
 
           <el-submenu index="/student/graduate">
             <template slot="title">
-              <i class="el-icon-location"></i>
+              <i class="el-icon-notebook-2"></i>
               <span slot="title">毕业设计导师选择</span>
             </template>
-            <el-menu-item index="/student/graduate/necessaryInfo">查看、修改个人信息</el-menu-item>
-            <el-menu-item index="/student/graduate/chooseTutor" :disabled="!(this.$store.state.flag['graduate'])">选择导师</el-menu-item>
+            <el-menu-item-group>
+              <template slot="title">
+                毕业设计导师选择
+              </template>
+              <el-menu-item index="/student/graduate/necessaryInfo">查看、修改个人信息</el-menu-item>
+              <el-menu-item index="/student/graduate/chooseTutor" :disabled="!(this.$store.state.flag['graduate'])">选择导师</el-menu-item>
+            </el-menu-item-group>
+
           </el-submenu>
           <el-menu-item index="/student/selectedTutor">
-            <i class="el-icon-document"></i>
+            <i class="el-icon-aim"></i>
             <span slot="title">查看已选导师</span>
           </el-menu-item>
           <el-menu-item index="/student/publicly">
-            <i class="el-icon-document"></i>
+            <i class="el-icon-data-analysis"></i>
             <span slot="title">查看公示信息</span>
           </el-menu-item>
           <el-menu-item index="/student/myTutor">
-            <i class="el-icon-document"></i>
+            <i class="el-icon-s-custom"></i>
             <span slot="title">查看本人导师信息</span>
           </el-menu-item>
           <el-menu-item @click="quit">
-            <i class="el-icon-document"></i>
+            <i class="el-icon-switch-button"></i>
             <span slot="title">退出登录</span>
           </el-menu-item>
         </el-menu>

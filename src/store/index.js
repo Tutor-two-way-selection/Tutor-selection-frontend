@@ -115,7 +115,10 @@ export default new Vuex.Store({
             var tempForm = {}
             for (let index in res.data.tableList) {
               tempForm[res.data.tableList[index].name] = res.data[res.data.tableList[index].name]
+              tempForm[res.data.tableList[index].name].title = res.data.tableList[index].title
+              // tempForm.title = res.data.tableList[i].title
               console.log(res.data.tableList[index].name, '!!!!!!!!!!!!!')
+              console.log(tempForm)
             }
             Vue.set(state.student, state.student.tutorTypeList[i], {
               first: '',

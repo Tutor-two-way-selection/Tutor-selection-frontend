@@ -11,7 +11,7 @@
 
     <el-row type="flex" class="row-bg" justify="end">
       <el-button :type="accessToPublic?'primary':'info'" @click="toPublicly" :disabled="!accessToPublic" v-if="progress===3">进入公示阶段</el-button>
-      <el-button :type="(!accessToPublic)?'success':'info'" v-if="progress===3" :disabled="!(this.$store.state.admin.currentBatch[tutorType] === 3)">管理员分配</el-button>
+      <el-button :type="(!accessToPublic)?'success':'info'" @click="toManual" v-if="progress===3" :disabled="!(this.$store.state.admin.currentBatch[tutorType] === 3)">管理员分配</el-button>
       <el-button type="" @click="secondChoice" v-if="progress===1" :disabled="secondChoiceFlag">进入第二轮选择</el-button>
       <el-button type="" @click="manualChoice" v-if="progress===2" :disabled="manualChoiceFlag">进入管理员分配</el-button>
     </el-row>
@@ -62,6 +62,9 @@ export default {
     }
   },
   methods: {
+    toManual () {
+      this.$router.push(`/admin/select/${this.tutorType}/manual`)
+    },
     toPublicly () {
       this.axios.post('/admin/setbatch', {
         grade: this.$store.state.admin.currentGrade,

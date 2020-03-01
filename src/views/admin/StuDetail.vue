@@ -63,55 +63,70 @@
       </el-card>
     </div>
 
-    <el-dialog title="添加学生" :visible.sync="dialogFormVisible">
-
-      <div v-for="(stu, index) in addForm.addList" :key="'stu'+index">
-        {{'学生'+(index+1)}}
-        <el-form :model="stu" label-position="top" ref="stu">
-          <el-row :gutter="20">
-            <el-col :span="7">
-              <el-form-item required prop="name" :rules="[{ required: true, message: '姓名不能为空'}]">
-                <el-input v-model="stu.name" autocomplete="off" placeholder="姓名" type="name"></el-input>
-              </el-form-item>
-            </el-col>
-            <el-col :span="7">
-              <el-form-item required prop="id" :rules="[{ required: true, message: '学号不能为空'}]">
-                <el-input v-model="stu.id" autocomplete="off" placeholder="学号" type="id"></el-input>
-              </el-form-item>
-            </el-col>
-            <el-col :span="7">
-              <el-form-item required prop="classes" :rules="[{ required: true, message: '班级不能为空'}]">
-                <el-input v-model="stu.classes" autocomplete="off" placeholder="班级" type="classes"></el-input>
-              </el-form-item>
-            </el-col>
-            <el-col :span="3">
-              <el-button type="danger" icon="el-icon-delete" circle @click="removeStuItem(index)"></el-button>
-            </el-col>
-          </el-row>
-        </el-form>
-      </div>
+    <el-dialog title="添加学生" :visible.sync="dialogFormVisible" fullscreen>
       <el-row type="flex" class="row-bg" justify="space-between">
         <el-col :span="12">
           <el-button @click="addStuItem">新增学生</el-button>
         </el-col>
         <el-col :span="12" style="text-align:right;margin-right:20px">
           <el-upload class="upload" action="" :multiple="false" :show-file-list="false" accept="csv, application/vnd.ms-excel, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" :http-request="analysis">
-            <el-button type="primary" icon="el-icon-document" circle></el-button>
+            <el-button type="primary" icon="el-icon-document">从文件导入</el-button>
           </el-upload>
         </el-col>
       </el-row>
-
       <div slot="footer" class="dialog-footer">
-        <el-button @click="dialogFormVisible = false">取 消</el-button>
-        <el-button type="primary" @click="postNewStu('stu')">确 定</el-button>
+        <el-button @click="clear">清 空</el-button>
+        <el-button type="primary" @click="postNewStu('stu')">提 交</el-button>
+      </div>
+      <div v-for="(stu, index) in addList" :key="'stu'+index">
+        {{'学生'+(index+1)}}
+        <el-form :model="stu" ref="stu" :inline="true">
+          <el-row :gutter="20" type="flex" align="middle">
+            <el-col :span="5">
+              <el-form-item prop="name" :rules="[{ required: true, message: '姓名不能为空'}]" label="姓名">
+                <el-input v-model="stu.name" autocomplete="off" placeholder="姓名" type="name"></el-input>
+              </el-form-item>
+            </el-col>
+            <el-col :span="5">
+              <el-form-item prop="id" :rules="[{ required: true, message: '学号不能为空'}]" label="学号">
+                <el-input v-model="stu.id" autocomplete="off" placeholder="学号" type="id"></el-input>
+              </el-form-item>
+            </el-col>
+            <el-col :span="5">
+              <el-form-item prop="classes" :rules="[{ required: true, message: '班级不能为空'}]" label="班级">
+                <el-select v-model="stu.classes" placeholder="请选择班级">
+                  <el-option v-for="item in classList" :key="item" :label="item" :value="item">
+                  </el-option>
+                </el-select>
+              </el-form-item>
+            </el-col>
+            <el-col :span="5">
+              <el-form-item prop="contact" label="联系方式">
+                <el-input v-model="stu.contact" autocomplete="off" placeholder="联系方式" type="contact"></el-input>
+              </el-form-item>
+            </el-col>
+            <el-col :span="5">
+              <el-form-item prop="initpass" :rules="[{ required: true, message: '初始密码不能为空'}]" label="初始密码">
+                <el-input v-model="stu.initpass" autocomplete="off" placeholder="初始密码" type="initpass"></el-input>
+              </el-form-item>
+            </el-col>
+            <el-col :span="1">
+              <el-button type="danger" icon="el-icon-delete" circle @click="removeStuItem(index)"></el-button>
+            </el-col>
+          </el-row>
+        </el-form>
       </div>
     </el-dialog>
+
+    <ViewFile ref="childItem"></ViewFile>
   </div>
 </template>
 <script>
 // import Vue from 'vue'
 import XLSX from 'xlsx'
+import ViewFile from '../../components/ViewFile'
 export default {
+  components: { ViewFile },
   data () {
     return {
       tutorType: 'regular',
@@ -120,9 +135,12 @@ export default {
       tableList: [],
       dialogFormVisible: false,
       formLabelWidth: '',
-      addForm: {
-        addList: []
-      }
+      addList: [],
+      classList: ['class1', 'class2'],
+
+      drawer: false,
+      fileSrc: null,
+      closeButton: false
     }
   },
   watch: {
@@ -137,7 +155,9 @@ export default {
     this.init()
   },
   methods: {
-
+    clear () {
+      this.addList = []
+    },
     analysis (e) {
       // 覆盖上传行为
       let file = e.file // 文件信息
@@ -164,8 +184,14 @@ export default {
           const exl = XLSX.utils.sheet_to_json(workbook.Sheets[exlname]) // 生成json表格内容
           console.log(exl)
           exl.forEach((item, index, array) => {
-            console.log(item)
-            this.addForm.addList.push({ name: item['姓名'] || item[0], id: item['学号'] || item[1], classes: item['班级'] || item[2] })
+            let idCard = item['身份证']
+            idCard = String(idCard)
+            let student = { name: String(item['姓名'] || item[0] || ''), id: String(item['学号'] || item[1] || ''), classes: String(item['班级'] || item[2] || ''), contact: String(item['联系方式'] || item[3] || ''), initpass: String(item['初始密码'] || idCard.substring(idCard.length - 6) || item[4] || '') }
+            console.log(!this.classList.includes(student.classes))
+            if (!this.classList.includes(student.classes)) {
+              student.classes = ''
+            }
+            this.addList.push(student)
           })
           // document.getElementsByName('file')[0].value = '' // 根据自己需求，可重置上传value为空，允许重复上传同一文件
         } catch (e) {
@@ -181,7 +207,11 @@ export default {
       var post = () => {
         // TODO 新增学生
         console.log('post')
-        this.axios.post('')
+        this.axios.post('/admin/addStu', { grade: this.$store.state.admin.currentGrade, stuList: this.addList }).then(res => {
+          if (res.data.success) {
+            this.init()
+          }
+        })
       }
       for (let index in this.$refs[formName]) {
         this.$refs[formName][index].validate((valid) => {
@@ -193,7 +223,6 @@ export default {
           if ((count === this.$refs[formName].length) && flag) {
             post()
             this.dialogFormVisible = false
-            this.init()
           }
         })
       }
@@ -203,10 +232,10 @@ export default {
       this.dialogFormVisible = true
     },
     removeStuItem (index) {
-      this.addForm.addList.splice(index, 1)
+      this.addList.splice(index, 1)
     },
     addStuItem () {
-      this.addForm.addList.push({ name: '', id: '', classes: '' })
+      this.addList.push({ name: '', id: '', classes: '' })
     },
     init () {
       this.axios.post('/admin/stulist', { grade: this.$store.state.admin.currentGrade, type: this.tutorType }).then(res => {
@@ -285,7 +314,7 @@ export default {
       })
     },
     preview (fileUrl) {
-      window.open('http://view.officeapps.live.com/op/view.aspx?src=' + fileUrl)
+      this.$refs.childItem.preview(fileUrl)
     },
     onSubmit () {
       let tempList = []

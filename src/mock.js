@@ -9,12 +9,25 @@ Mock.mock('/student/login', options => {
     //     'id|+1': 1
     //   }]
     'success|1-0': true,
-    'passChanged|0-1': true
+    'passChanged|0-1': false
   })
 }).mock('/student/changePass', options => {
   console.log('mockjs:', options, JSON.parse(options.body))
   return Mock.mock({
     'success|1-0': true
+  })
+}).mock('/student/changeBaseInfo', options => {
+  console.log('mockjs:', options, JSON.parse(options.body))
+  return Mock.mock({
+    'success|1-0': true
+  })
+}).mock('/student/baseInfo', options => {
+  console.log('mockjs:', options, JSON.parse(options.body))
+  return Mock.mock({
+    stuName: '张三',
+    classes: 'class1',
+    grade: '2017',
+    contact: '123456'
   })
 }).mock('/upload/1', options => {
   console.log('mockjs:', options, JSON.parse(options.body))
@@ -505,10 +518,8 @@ Mock.mock('/student/login', options => {
       id: '201701010101',
       classes: 'qwerty',
       contact: 'zxcvb',
-      firstChoice: {
-      },
-      secondChoice: {
-      },
+      firstChoice: {},
+      secondChoice: {},
       profileTable: {
         flag: false,
         fileList: []
@@ -647,5 +658,10 @@ Mock.mock('/student/login', options => {
       classes: 'asdfgh',
       contact: 'qaazwsx'
     }]
+  })
+}).mock('/admin/addStu', options => {
+  console.log('mockjs:', options, JSON.parse(options.body))
+  return Mock.mock({
+    success: true
   })
 })

@@ -15,9 +15,8 @@
     {{necFileList}}
     <hr>
     {{necInfo}} -->
-    <router-view :type="tutorType" :necList="necList" :baseForm="baseForm" />
+    <router-view :type="tutorType" :necList="necList" />
     <el-button type="" @click="submitNec">提交基本信息</el-button>
-    {{baseForm}}
   </div>
 </template>
 <script>
@@ -27,10 +26,7 @@ export default {
   data () {
     return {
       tutorType: 'regular',
-      necList: [],
-      baseForm: {
-        contact: '123'
-      }
+      necList: []
     }
   },
   methods: {

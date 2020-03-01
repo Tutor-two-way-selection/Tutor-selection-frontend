@@ -5,15 +5,15 @@
         <el-menu :default-active="defaultActive" class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose" :collapse="isCollapse" style="text-align: left;" router>
           <!-- {{defaultActive}} -->
           <el-menu-item index="/teacher/teachInfo">
-            <i class="el-icon-document"></i>
+            <i class="el-icon-s-custom"></i>
             <span slot="title">修改个人信息</span>
           </el-menu-item>
           <el-menu-item index="/teacher/regular">
-            <i class="el-icon-document"></i>
+            <i class="el-icon-notebook-1"></i>
             <span slot="title">本科导师选择</span>
           </el-menu-item>
           <el-menu-item index="/teacher/graduate">
-            <i class="el-icon-document"></i>
+            <i class="el-icon-notebook-2"></i>
             <span slot="title">毕业导师选择</span>
           </el-menu-item>
           <!-- <el-menu-item index="/teacher/publicly">
@@ -21,11 +21,11 @@
             <span slot="title">查看公示信息</span>
           </el-menu-item> -->
           <el-menu-item index="/teacher/accepted">
-            <i class="el-icon-document"></i>
+            <i class="el-icon-user-solid"></i>
             <span slot="title">查看接收的学生</span>
           </el-menu-item>
           <el-menu-item @click="quit">
-            <i class="el-icon-document"></i>
+            <i class="el-icon-switch-button"></i>
             <span slot="title">退出登录</span>
           </el-menu-item>
         </el-menu>
