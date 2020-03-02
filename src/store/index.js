@@ -112,6 +112,7 @@ export default new Vuex.Store({
             stuID: args.id,
             type: state.student.tutorTypeList[i]
           }).then(res => {
+            console.log(res)
             var tempForm = {}
             for (let index in res.data.tableList) {
               tempForm[res.data.tableList[index].name] = res.data[res.data.tableList[index].name]

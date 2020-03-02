@@ -5,13 +5,13 @@
         <el-input :disabled="true" v-model="student.stuName"></el-input>
       </el-form-item>
       <el-form-item label="班级">
-        <el-input :disabled="true" v-model="student.classes"></el-input>
+        <el-input :disabled="true" v-model="student.stuClass"></el-input>
       </el-form-item>
       <el-form-item label="年级">
-        <el-input :disabled="true" v-model="student.grade"></el-input>
+        <el-input :disabled="true" v-model="student.stuGrade"></el-input>
       </el-form-item>
       <el-form-item label="联系方式" required>
-        <el-input v-model="student.contact"></el-input>
+        <el-input v-model="student.stuTelephone"></el-input>
       </el-form-item>
       <el-form-item>
         <el-button type="primary" @click="onSubmit">提交</el-button>
@@ -40,9 +40,9 @@ export default {
       this.axios.post('/student/changeBaseInfo', {
         stuID: this.$store.state.student.stuId,
         stuName: this.student.stuName,
-        classes: this.student.classes,
-        grade: this.student.grade,
-        contact: this.student.contact })
+        stuClass: this.student.stuClass,
+        stuGrade: this.student.stuGrade,
+        stuTelephone: this.student.stuTelephone })
         .then(res => {
           if (res.data.success) {
             console.log('提交成功')

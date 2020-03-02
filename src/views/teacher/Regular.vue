@@ -1,6 +1,7 @@
 <template>
-  <div>
-    <el-table :data="stuList" style="width: 100%" :row-class-name="tableRowClassName">
+  <div style="max-width:100vw">
+    {{screenWidth}}
+    <el-table :data="stuList" :row-class-name="tableRowClassName">
       <el-table-column type="expand">
         <template slot-scope="props">
           <div label="" v-for="(item,index) in tableList" :key="'table'+index">
@@ -29,11 +30,11 @@
           </div>
         </template>
       </el-table-column>
-      <el-table-column label="学生ID" prop="id">
+      <el-table-column label="学生ID" prop="id" v-if="screenWidth>600">
       </el-table-column>
       <el-table-column label="学生姓名" prop="name">
       </el-table-column>
-      <el-table-column label="">
+      <el-table-column label="" min-width="200px">
         <template slot-scope="scope">
           <el-switch v-model="scope.row.recept" active-color="#13ce66" inactive-color="#ff4949" active-text="接收" inactive-text="不接收">
           </el-switch>
@@ -58,7 +59,17 @@ export default {
       tutorType: 'regular',
       // tutorType: this.$route.query.tutorType,
       stuList: [],
-      tableList: []
+      tableList: [],
+      screenWidth: document.body.clientWidth
+    }
+  },
+  mounted () {
+    const that = this
+    window.onresize = () => {
+      return (() => {
+        window.screenWidth = document.body.clientWidth
+        that.screenWidth = window.screenWidth
+      })()
     }
   },
   created () {

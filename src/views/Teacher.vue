@@ -1,8 +1,12 @@
 <template>
-  <div style="text-align:left">
+  <div style="text-align:left;height:100vh" @click="closeMenu($event)">
+
+    <div class="mobile-bar" v-show="draw">
+      <el-button icon="el-icon-menu" @click.stop="open=!open" type=""></el-button>
+    </div>
     <el-container>
-      <el-aside :width="asideWidth">
-        <el-menu :default-active="defaultActive" class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose" :collapse="isCollapse" style="text-align: left;" router>
+      <div :class="(draw?'draw':'')+' '+(open?'open':'')" id="menu" :style="draw?'margin-top:61px':''">
+        <el-menu :default-active="defaultActive" class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose" style="text-align: left;" router :collapse="draw">
           <!-- {{defaultActive}} -->
           <el-menu-item index="/teacher/teachInfo">
             <i class="el-icon-s-custom"></i>
@@ -29,8 +33,8 @@
             <span slot="title">退出登录</span>
           </el-menu-item>
         </el-menu>
-      </el-aside>
-      <el-main>
+      </div>
+      <el-main :style="draw?'margin-top:61px':''">
         <router-view />
       </el-main>
     </el-container>
@@ -48,7 +52,9 @@ export default {
   data () {
     return {
       isCollapse: false,
-      asideWidth: '200px'
+      asideWidth: '200px',
+      open: false,
+      draw: false
     }
   },
   methods: {
@@ -61,6 +67,15 @@ export default {
     quit () {
       this.$router.push('/')
       this.$store.commit('LOGOUT')
+    },
+    closeMenu (el) {
+      console.log('closeMenu')
+      console.log(this.open)
+      if (this.open) {
+        console.log('closeMenu')
+        let myPanel = document.getElementById('menu')
+        this.open = myPanel.contains(el.target)
+      }
     }
   },
   computed: {
@@ -70,19 +85,21 @@ export default {
   },
   mounted () {
     if (document.body.clientWidth < 900) {
-      this.isCollapse = true
-      this.asideWidth = '65px'
+      this.draw = true
+      // this.asideWidth = '0'
     } else {
-      this.isCollapse = false
-      this.asideWidth = '200px'
+      this.draw = false
+      this.open = false
+      // this.asideWidth = '200px'
     }
     window.addEventListener('resize', () => {
       if (document.body.clientWidth < 900) {
-        this.isCollapse = true
-        this.asideWidth = '65px'
+        this.draw = true
+        // this.asideWidth = '0'
       } else {
-        this.isCollapse = false
-        this.asideWidth = '200px'
+        this.draw = false
+        this.open = false
+        // this.asideWidth = '200px'
       }
     })
   }

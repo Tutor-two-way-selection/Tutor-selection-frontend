@@ -149,6 +149,7 @@ export default {
         })
         .then(response => {
           if (response.data.success) {
+            console.log(response.data)
             if (response.data.passChanged) {
               this.$store.commit('setAccountType', 'student')
               this.$store.commit('setStudentId', that.form.name)

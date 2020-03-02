@@ -1,63 +1,69 @@
 <template>
-  <div style="text-align:left">
+  <div style="text-align:left;height:100vh" @click="closeMenu($event)">
     <el-container>
-      <el-aside :width="asideWidth">
-        <el-menu :default-active="defaultActive" class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose" :collapse="isCollapse" style="text-align: left;" router>
-          <!-- {{defaultActive}} -->
-          <el-menu-item index="/student/baseInfo">
-            <i class="el-icon-user-solid"></i>
-            <span slot="title">修改基本信息</span>
-          </el-menu-item>
-          <el-submenu index="/student/regular">
-            <template slot="title">
-              <i class="el-icon-notebook-1"></i>
-              <span slot="title">本科导师选择</span>
-            </template>
-            <el-menu-item-group>
+
+      <div class="mobile-bar" v-show="draw">
+        <el-button icon="el-icon-menu" @click.stop="open=!open" type=""></el-button>
+      </div>
+      <el-container>
+        <div :class="(draw?'draw':'')+' '+(open?'open':'')" id="menu" :style="draw?'margin-top:61px':''">
+          <el-menu :default-active="defaultActive" class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose" style="text-align: left;" router>
+            <!-- {{defaultActive}} -->
+            <el-menu-item index="/student/baseInfo">
+              <i class="el-icon-user-solid"></i>
+              <span slot="title">修改基本信息</span>
+            </el-menu-item>
+            <el-submenu index="/student/regular">
               <template slot="title">
-                本科导师选择
+                <i class="el-icon-notebook-1"></i>
+                <span slot="title">本科导师选择</span>
               </template>
-              <el-menu-item index="/student/regular/necessaryInfo">查看、修改个人信息</el-menu-item>
-              <el-menu-item index="/student/regular/chooseTutor" :disabled="!(this.$store.state.flag['regular'])">选择导师</el-menu-item>
-            </el-menu-item-group>
+              <el-menu-item-group>
+                <template slot="title">
+                  本科导师选择
+                </template>
+                <el-menu-item index="/student/regular/necessaryInfo">查看、修改个人信息</el-menu-item>
+                <el-menu-item index="/student/regular/chooseTutor" :disabled="!(this.$store.state.flag['regular'])">选择导师</el-menu-item>
+              </el-menu-item-group>
 
-          </el-submenu>
+            </el-submenu>
 
-          <el-submenu index="/student/graduate">
-            <template slot="title">
-              <i class="el-icon-notebook-2"></i>
-              <span slot="title">毕业设计导师选择</span>
-            </template>
-            <el-menu-item-group>
+            <el-submenu index="/student/graduate">
               <template slot="title">
-                毕业设计导师选择
+                <i class="el-icon-notebook-2"></i>
+                <span slot="title">毕业设计导师选择</span>
               </template>
-              <el-menu-item index="/student/graduate/necessaryInfo">查看、修改个人信息</el-menu-item>
-              <el-menu-item index="/student/graduate/chooseTutor" :disabled="!(this.$store.state.flag['graduate'])">选择导师</el-menu-item>
-            </el-menu-item-group>
+              <el-menu-item-group>
+                <template slot="title">
+                  毕业设计导师选择
+                </template>
+                <el-menu-item index="/student/graduate/necessaryInfo">查看、修改个人信息</el-menu-item>
+                <el-menu-item index="/student/graduate/chooseTutor" :disabled="!(this.$store.state.flag['graduate'])">选择导师</el-menu-item>
+              </el-menu-item-group>
 
-          </el-submenu>
-          <el-menu-item index="/student/selectedTutor">
-            <i class="el-icon-aim"></i>
-            <span slot="title">查看已选导师</span>
-          </el-menu-item>
-          <el-menu-item index="/student/publicly">
-            <i class="el-icon-data-analysis"></i>
-            <span slot="title">查看公示信息</span>
-          </el-menu-item>
-          <el-menu-item index="/student/myTutor">
-            <i class="el-icon-s-custom"></i>
-            <span slot="title">查看本人导师信息</span>
-          </el-menu-item>
-          <el-menu-item @click="quit">
-            <i class="el-icon-switch-button"></i>
-            <span slot="title">退出登录</span>
-          </el-menu-item>
-        </el-menu>
-      </el-aside>
-      <el-main>
-        <router-view />
-      </el-main>
+            </el-submenu>
+            <el-menu-item index="/student/selectedTutor">
+              <i class="el-icon-aim"></i>
+              <span slot="title">查看已选导师</span>
+            </el-menu-item>
+            <el-menu-item index="/student/publicly">
+              <i class="el-icon-data-analysis"></i>
+              <span slot="title">查看公示信息</span>
+            </el-menu-item>
+            <el-menu-item index="/student/myTutor">
+              <i class="el-icon-s-custom"></i>
+              <span slot="title">查看本人导师信息</span>
+            </el-menu-item>
+            <el-menu-item @click="quit">
+              <i class="el-icon-switch-button"></i>
+              <span slot="title">退出登录</span>
+            </el-menu-item>
+          </el-menu>
+        </div>
+        <el-main :style="draw?'margin-top:61px':''">
+          <router-view />
+        </el-main>
+      </el-container>
     </el-container>
   </div>
 </template>
@@ -67,13 +73,32 @@
     /* width: 200px; */
     min-height: 90vh;
   }
+  .mobile-bar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 3000;
+    background: white;
+    width: 100vw;
+    padding: 10px;
+    border-bottom: 1px solid #d6d6d6;
+  }
+  .draw {
+    position: fixed;
+    z-index: 4000;
+    transform: translate(-280px, 0);
+  }
+  .open {
+    transform: translate(0, 0);
+  }
 </style>
 <script>
 export default {
   data () {
     return {
-      isCollapse: false,
-      asideWidth: '200px'
+      open: false,
+      asideWidth: '200px',
+      draw: false
     }
   },
   methods: {
@@ -86,6 +111,15 @@ export default {
     quit () {
       this.$router.push('/')
       this.$store.commit('LOGOUT')
+    },
+    closeMenu (el) {
+      console.log('closeMenu')
+      console.log(this.open)
+      if (this.open) {
+        console.log('closeMenu')
+        let myPanel = document.getElementById('menu')
+        this.open = myPanel.contains(el.target)
+      }
     }
   },
   computed: {
@@ -98,19 +132,21 @@ export default {
   },
   mounted () {
     if (document.body.clientWidth < 900) {
-      this.isCollapse = true
-      this.asideWidth = '65px'
+      this.draw = true
+      // this.asideWidth = '0'
     } else {
-      this.isCollapse = false
-      this.asideWidth = '200px'
+      this.draw = false
+      this.open = false
+      // this.asideWidth = '200px'
     }
     window.addEventListener('resize', () => {
       if (document.body.clientWidth < 900) {
-        this.isCollapse = true
-        this.asideWidth = '65px'
+        this.draw = true
+        // this.asideWidth = '0'
       } else {
-        this.isCollapse = false
-        this.asideWidth = '200px'
+        this.draw = false
+        this.open = false
+        // this.asideWidth = '200px'
       }
     })
   }
