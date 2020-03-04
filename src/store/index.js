@@ -108,24 +108,25 @@ export default new Vuex.Store({
           ['regular', 'graduate']
         )
         for (let i in state.student.tutorTypeList) {
+          console.log(state.student.tutorTypeList[i])
           axios.post('/student/queryinfo', {
             stuID: args.id,
-            type: state.student.tutorTypeList[i]
+            tutorType: state.student.tutorTypeList[i]
           }).then(res => {
             console.log(res)
             var tempForm = {}
             for (let index in res.data.tableList) {
-              tempForm[res.data.tableList[index].name] = res.data[res.data.tableList[index].name]
+              tempForm[res.data.tableList[index].name] = res.data[res.data.tableList[index].name] || {}
               tempForm[res.data.tableList[index].name].title = res.data.tableList[index].title
               // tempForm.title = res.data.tableList[i].title
-              console.log(res.data.tableList[index].name, '!!!!!!!!!!!!!')
-              console.log(tempForm)
             }
             Vue.set(state.student, state.student.tutorTypeList[i], {
               first: '',
               second: '',
               form: tempForm
             })
+          }).catch(err => {
+            console.log(err)
           })
         }
 
@@ -187,10 +188,6 @@ export default new Vuex.Store({
           type: state.admin.tutorTypeList[i]
         }).then(res => {
           Vue.set(state.admin.currentBatch, state.admin.tutorTypeList[i], res.data.batch)
-          // 测试
-          if (state.admin.currentGrade === '2016') {
-            Vue.set(state.admin.currentBatch, state.admin.tutorTypeList[i], 2)
-          }
         })
       }
 
@@ -204,10 +201,6 @@ export default new Vuex.Store({
           type: state.admin.tutorTypeList[i]
         }).then(res => {
           Vue.set(state.admin.currentBatch, state.admin.tutorTypeList[i], res.data.batch)
-          // 测试
-          if (state.admin.currentGrade === '2016') {
-            Vue.set(state.admin.currentBatch, state.admin.tutorTypeList[i], 2)
-          }
         })
       }
     },
@@ -221,7 +214,11 @@ export default new Vuex.Store({
             let flag = true
             for (var key in state.student[state.student.tutorTypeList[i]]
               .form) {
-              if (state.student[state.student.tutorTypeList[i]].form[key].fileList.length > 0) {} else {
+              if (state.student[state.student.tutorTypeList[i]].form[key].fileList) {
+                if (state.student[state.student.tutorTypeList[i]].form[key].fileList.length > 0) {} else {
+                  flag = false
+                }
+              } else {
                 flag = false
               }
             }

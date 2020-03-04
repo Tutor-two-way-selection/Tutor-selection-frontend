@@ -46,10 +46,10 @@
               <i class="el-icon-aim"></i>
               <span slot="title">查看已选导师</span>
             </el-menu-item>
-            <el-menu-item index="/student/publicly">
+            <!-- <el-menu-item index="/student/publicly">
               <i class="el-icon-data-analysis"></i>
               <span slot="title">查看公示信息</span>
-            </el-menu-item>
+            </el-menu-item> -->
             <el-menu-item index="/student/myTutor">
               <i class="el-icon-s-custom"></i>
               <span slot="title">查看本人导师信息</span>
@@ -77,7 +77,7 @@
     position: fixed;
     top: 0;
     left: 0;
-    z-index: 3000;
+    z-index: 2006;
     background: white;
     width: 100vw;
     padding: 10px;
@@ -85,7 +85,7 @@
   }
   .draw {
     position: fixed;
-    z-index: 4000;
+    z-index: 2006;
     transform: translate(-280px, 0);
   }
   .open {
@@ -113,10 +113,7 @@ export default {
       this.$store.commit('LOGOUT')
     },
     closeMenu (el) {
-      console.log('closeMenu')
-      console.log(this.open)
       if (this.open) {
-        console.log('closeMenu')
         let myPanel = document.getElementById('menu')
         this.open = myPanel.contains(el.target)
       }

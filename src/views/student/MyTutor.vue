@@ -30,6 +30,7 @@ export default {
       stuID: this.$store.state.student.stuId,
       type: 'graduate'
     }).then(res => {
+      console.log('graduate!!!!!!!!!', res)
       this.graduateTutor = res.data
     })
   }

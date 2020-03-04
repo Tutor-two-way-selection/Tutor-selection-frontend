@@ -1,5 +1,6 @@
 <template>
   <div>
+    {{student}}
     <el-form ref="student" :model="student" label-width="100px" label-position="left">
       <el-form-item label="姓名">
         <el-input :disabled="true" v-model="student.stuName"></el-input>
@@ -40,17 +41,29 @@ export default {
       this.axios.post('/student/changeBaseInfo', {
         stuID: this.$store.state.student.stuId,
         stuName: this.student.stuName,
-        stuClass: this.student.stuClass,
-        stuGrade: this.student.stuGrade,
-        stuTelephone: this.student.stuTelephone })
+        classes: this.student.stuClass,
+        grade: this.student.stuGrade,
+        contact: this.student.stuTelephone })
         .then(res => {
           if (res.data.success) {
-            console.log('提交成功')
+            this.$notify({
+              title: '成功',
+              message: '提交成功',
+              type: 'success'
+            })
           } else {
-            console.log('提交失败')
+            this.$notify({
+              title: '失败',
+              message: '提交失败',
+              type: 'error'
+            })
           }
         }).catch(err => {
-          console.log(err)
+          this.$notify({
+            title: '异常',
+            message: err,
+            type: 'warning'
+          })
         })
     },
     onReset () {

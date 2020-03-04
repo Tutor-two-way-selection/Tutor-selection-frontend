@@ -1,5 +1,5 @@
 <template>
-  <div v-if="tutor" class="card-container">
+  <div v-if="tutor&&tutor.id" class="card-container">
     <el-card class="box-card" shadow="hover">
       <div slot="header" class="clearfix">
         <span>{{tutor.name}}</span>
@@ -17,7 +17,7 @@ export default {
 }
 </script>
 <style  scoped>
-.card-container {
-  margin-bottom: 20px;
-}
+  .card-container {
+    margin-bottom: 20px;
+  }
 </style>

@@ -8,7 +8,7 @@
     <hr>
     {{stuList}}
     <hr> -->
-
+    <!-- {{stuList}} -->
     <el-row type="flex" class="row-bg" justify="end">
       <el-button :type="accessToPublic?'primary':'info'" @click="toPublicly" :disabled="!accessToPublic" v-if="progress===3">进入公示阶段</el-button>
       <el-button :type="(!accessToPublic)?'success':'info'" @click="toManual" v-if="progress===3" :disabled="!(this.$store.state.admin.currentBatch[tutorType] === 3)">管理员分配</el-button>
@@ -23,12 +23,12 @@
       </el-table-column>
       <el-table-column prop="" label="班级">
         <template slot-scope="scope">
-          <el-button :type="classesKey?'primary':'text'" size="mini" @click="searchClasses(scope.row.classes)">{{scope.row.classes}}</el-button>
+          <el-button :type="classesKey?'primary':'text'" size="mini" @click="searchClasses(scope.row.stuClass)">{{scope.row.stuClass}}</el-button>
         </template>
       </el-table-column>
       <el-table-column prop="" label="导师姓名">
         <template slot-scope="scope">
-          <el-button :type="teacherKey?'primary':'text'" size="mini" @click="searchTeacher(scope.row.teaID)">{{scope.row.teaName}}</el-button>
+          <el-button :type="teacherKey?'primary':'text'" size="mini" @click="searchTeacher(scope.row.teaID)">{{scope.row.name}}</el-button>
         </template>
       </el-table-column>
       <el-table-column prop="" label="">
@@ -82,7 +82,7 @@ export default {
         if (res.data.success) {
           console.log('进入第二轮选择')
           this.$store.commit('FlashBatch')
-          this.$router.push('/admin/select/' + this.tutorType + '/twoWaySelect/second')
+          this.$router.push('/admin/select/' + this.tutorType + '/Situation/second')
         }
       })
     },
@@ -98,12 +98,12 @@ export default {
     onSearch (data) {
       return (!this.searchKey ||
           data.stuName.toLowerCase().includes(this.searchKey.toLowerCase()) ||
-          data.classes.toLowerCase().includes(this.searchKey.toLowerCase()) ||
-          data.teaName.toLowerCase().includes(this.searchKey.toLowerCase())) &&
+          data.stuClass.toLowerCase().includes(this.searchKey.toLowerCase()) ||
+          data.name.toLowerCase().includes(this.searchKey.toLowerCase())) &&
           (!this.teacherKey || data.teaID.toLowerCase().includes(this.teacherKey.toLowerCase())) &&
           (!this.statusKey || data.status.toLowerCase().includes(this.statusKey.toLowerCase())) &&
           (!this.studentKey || data.stuID.toLowerCase().includes(this.studentKey.toLowerCase())) &&
-          (!this.classesKey || data.classes.toLowerCase().includes(this.classesKey.toLowerCase()))
+          (!this.classesKey || data.stuClass.toLowerCase().includes(this.classesKey.toLowerCase()))
     },
     searchStudent (student) {
       if (this.studentKey) {
@@ -114,12 +114,12 @@ export default {
         this.flag = false
       }
     },
-    searchClasses (classes) {
+    searchClasses (stuClass) {
       if (this.classesKey) {
         this.classesKey = ''
         this.flag = true
       } else {
-        this.classesKey = classes
+        this.classesKey = stuClass
         this.flag = false
       }
     },
@@ -146,29 +146,8 @@ export default {
       this.flag = true
       this.$store.commit('LoadAdmin')
       this.axios.post('/admin/situation', { grade: this.$store.state.admin.currentGrade, type: this.tutorType, batch: this.progress }).then(res => {
-        this.stuList = res.data.stuList
-        // 测试
-        if (this.progress === 2) {
-          this.stuList.push({
-            stuID: '201701010105',
-            stuName: 'qwe',
-            classes: 'class2',
-            teaID: '199901010103',
-            teaName: '赵七',
-            status: 'refuse'
-          })
-        }
-        if (this.tutorType === 'graduate') {
-          this.stuList.push({
-            stuID: '201701010106',
-            stuName: 'zxc',
-            classes: 'class2',
-            teaID: '199901010107',
-            teaName: '李十四',
-            status: 'untreat'
-          })
-        }
-        // //////////////////////
+        console.log(res)
+        this.stuList = res.data.stuList || []
       })
     }
   },

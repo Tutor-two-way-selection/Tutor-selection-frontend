@@ -116,10 +116,7 @@ export default {
       this.$store.commit('LOGOUT')
     },
     closeMenu (el) {
-      console.log('closeMenu')
-      console.log(this.open)
       if (this.open) {
-        console.log('closeMenu')
         let myPanel = document.getElementById('menu')
         this.open = myPanel.contains(el.target)
       }

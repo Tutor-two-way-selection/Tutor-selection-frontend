@@ -77,11 +77,11 @@ export default {
       rules: {
         name: [
           { required: true, message: '请输入用户名', trigger: 'blur' },
-          { min: 6, max: 15, message: '长度在 6 到 15 个字符', trigger: 'blur' }
+          { min: 4, max: 15, message: '长度在 4 到 15 个字符', trigger: 'blur' }
         ],
         password: [
           { required: true, message: '请输入密码', trigger: 'blur' },
-          { min: 6, max: 15, message: '长度在 6 到 15 个字符', trigger: 'blur' }
+          { min: 4, max: 15, message: '长度在 4 到 15 个字符', trigger: 'blur' }
         ],
         accountType: [
           { required: true, message: '请选择账号类型', trigger: 'blur' }
@@ -95,16 +95,16 @@ export default {
       changeRules: {
         oldPassWord: [
           { required: true, message: '请输入旧密码', trigger: 'blur' },
-          { min: 6, max: 15, message: '长度在 6 到 15 个字符', trigger: 'blur' }
+          { min: 4, max: 15, message: '长度在 4 到 15 个字符', trigger: 'blur' }
         ],
         newPassWord: [
           { required: true, message: '请输入新密码', trigger: 'blur' },
-          { min: 6, max: 15, message: '长度在 6 到 15 个字符', trigger: 'blur' },
+          { min: 4, max: 15, message: '长度在 4 到 15 个字符', trigger: 'blur' },
           { validator: validatePass1, trigger: 'blur' }
         ],
         repeat: [
           // { required: true, message: '请确认密码', trigger: 'blur' },
-          // { min: 6, max: 15, message: '长度在 6 到 15 个字符', trigger: 'blur' },
+          // { min: 4, max: 15, message: '长度在 4 到 15 个字符', trigger: 'blur' },
           { validator: validatePass2, trigger: 'blur' }
         ]
       },
@@ -163,10 +163,20 @@ export default {
               that.dialogVisible = true
             }
           } else {
+            console.log(response.data)
             // TODO 密码错误
+            this.$notify.error({
+              title: '错误',
+              message: response.data.err
+            })
           }
         })
         .catch(err => {
+          this.$notify({
+            title: '异常',
+            message: err,
+            type: 'warning'
+          })
           console.log(err)
         })
     },
@@ -189,9 +199,18 @@ export default {
             this.$router.push('/teacher')
           } else {
             // TODO 密码错误
+            this.$notify.error({
+              title: '错误',
+              message: response.data.err
+            })
           }
         })
         .catch(err => {
+          this.$notify({
+            title: '异常',
+            message: err,
+            type: 'warning'
+          })
           console.log(err)
         })
     },
@@ -215,9 +234,18 @@ export default {
             })
           } else {
             // TODO 密码错误
+            this.$notify.error({
+              title: '错误',
+              message: response.data.err
+            })
           }
         })
         .catch(err => {
+          this.$notify({
+            title: '异常',
+            message: err,
+            type: 'warning'
+          })
           console.log(err)
         })
     },

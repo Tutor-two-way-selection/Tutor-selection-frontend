@@ -15,15 +15,15 @@
     <el-table :data="stuList" :row-class-name="tableRowClassName">
       <el-table-column prop="stuName" label="姓名">
       </el-table-column>
-      <el-table-column prop="stuID" label="学号">
+      <el-table-column prop="stuNum" label="学号">
       </el-table-column>
-      <el-table-column prop="classes" label="班级">
+      <el-table-column prop="stuClass" label="班级">
       </el-table-column>
-      <el-table-column prop="contact" label="联系方式">
+      <el-table-column prop="stuTelephone" label="联系方式">
       </el-table-column>
-      <el-table-column prop="teaName" label="导师">
+      <el-table-column prop="name" label="导师">
       </el-table-column>
-      <el-table-column prop="teaNum" label="导师编号">
+      <el-table-column prop="id" label="导师编号">
       </el-table-column>
     </el-table>
     <el-button type="" @click="endPub" v-if="endPubFlag">公示结束</el-button>
@@ -42,6 +42,7 @@ export default {
   methods: {
     endPub () {
       this.axios.post('/admin/setbatch', { grade: this.$store.state.admin.currentGrade, type: this.tutorType, batch: 5 }).then(res => {
+        console.log(res)
         if (res.data.success) {
           console.log('公示结束')
           this.init()
@@ -50,7 +51,7 @@ export default {
       })
     },
     tableRowClassName ({ row, rowIndex }) {
-      if (!row.teaName) {
+      if (!row.name) {
         return 'warning-row'
       }
       return ''
@@ -60,13 +61,6 @@ export default {
         this.pubDate = []
         this.pubDate.push(new Date(res.data.start))
         this.pubDate.push(new Date(res.data.end))
-
-        // 测试
-        if (this.tutorType === 'graduate') {
-          this.pubDate = []
-          this.pubDate.push(new Date('2020-06-03T16:00:00.000Z'))
-          this.pubDate.push(new Date('2020-07-04T16:00:00.000Z'))
-        }
       })
 
       this.axios.post('/admin/final', { grade: this.$store.state.admin.currentGrade, type: this.tutorType }).then(res => {

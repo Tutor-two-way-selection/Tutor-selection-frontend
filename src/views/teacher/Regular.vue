@@ -1,6 +1,8 @@
 <template>
   <div style="max-width:100vw">
-    {{screenWidth}}
+    <!-- {{screenWidth}}<br>
+    {{stuList}}<br>
+    {{tableList}} -->
     <el-table :data="stuList" :row-class-name="tableRowClassName">
       <el-table-column type="expand">
         <template slot-scope="props">
@@ -30,9 +32,9 @@
           </div>
         </template>
       </el-table-column>
-      <el-table-column label="学生ID" prop="id" v-if="screenWidth>600">
+      <el-table-column label="学生ID" prop="stuNum" v-if="screenWidth>600">
       </el-table-column>
-      <el-table-column label="学生姓名" prop="name">
+      <el-table-column label="学生姓名" prop="stuName">
       </el-table-column>
       <el-table-column label="" min-width="200px">
         <template slot-scope="scope">
@@ -73,15 +75,18 @@ export default {
     }
   },
   created () {
-    this.axios.post('/teacher/stuinfo', { teaID: this.$store.state.teacher.teaId, type: this.tutorType }).then(res => {
-      this.stuList = res.data.stuList
-      this.tableList = res.data.tableList
-      for (let index in this.stuList) {
-        Vue.set(this.stuList[index], 'recept', false)
-      }
-    })
+    this.init()
   },
   methods: {
+    init () {
+      this.axios.post('/teacher/stuinfo', { teaID: this.$store.state.teacher.teaId, type: this.tutorType }).then(res => {
+        this.stuList = res.data.stuList
+        this.tableList = res.data.tableList
+        for (let index in this.stuList) {
+          Vue.set(this.stuList[index], 'recept', false)
+        }
+      })
+    },
     preview (fileUrl) {
       this.$refs.childItem.preview(fileUrl)
     },
@@ -96,7 +101,7 @@ export default {
       let tempList = []
       for (let i in this.stuList) {
         tempList.push({
-          stuID: this.stuList[i].id,
+          stuID: this.stuList[i].stuNum,
           recept: this.stuList[i].recept
         })
       }
@@ -105,13 +110,23 @@ export default {
         type: this.tutorType,
         selStuList: tempList
       }).then(res => {
+        this.init()
         if (res.data.success) {
-          console.log('提交成功')
+          this.$message({
+            type: 'success',
+            message: '提交成功'
+          })
         } else {
-          console.log('提交失败')
+          this.$message({
+            type: 'error',
+            message: '提交失败:' + res.data.err
+          })
         }
       }).catch(err => {
-        console.log(err)
+        this.$message({
+          type: 'warning',
+          message: err
+        })
       })
     }
   }

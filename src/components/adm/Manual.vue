@@ -124,7 +124,7 @@ export default {
       this.dialogVisible = true
     },
     init () {
-      this.axios.post('/allteacher', { type: 'regular' }).then(res => {
+      this.axios.post('/student/allteacher', { type: 'regular' }).then(res => {
         this.tutorList = res.data.tutorList
       })
       this.axios.post('/admin/undistri', { grade: this.$store.state.admin.currentGrade, type: this.tutorType }).then(res => {

@@ -7,10 +7,10 @@ import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
 import store from './store'
 
-require('./mock')
+// require('./mock')
 
 Vue.config.productionTip = false
-// axios.defaults.baseURL = 'http://localhost:3000'
+axios.defaults.baseURL = 'http://localhost:3000'
 Vue.use(VueAxios, axios)
 Vue.use(ElementUI)
 new Vue({

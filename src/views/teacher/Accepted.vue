@@ -1,6 +1,9 @@
 <template>
   <div>
+    <!-- {{stuList}}<br>
+    {{tableList}} -->
     <div v-for="type in tutorType" :key="'type'+type">
+      <h2>{{((type==='regular')&&'本科')||((type==='graduate')&&'毕业设计')||type}}</h2>
       <el-table :data="stuList[type]" style="width: 100%">
         <el-table-column type="expand">
           <template slot-scope="props">
@@ -30,26 +33,23 @@
             </div>
           </template>
         </el-table-column>
-        <el-table-column label="学生ID" prop="id">
+        <el-table-column label="学生ID" prop="stuNum">
         </el-table-column>
-        <el-table-column label="学生姓名" prop="name">
+        <el-table-column label="学生姓名" prop="stuName">
         </el-table-column>
       </el-table>
     </div>
 
-    <el-drawer title="在线浏览" :visible.sync="drawer" direction="rtl" :before-close="handleClose" size="100%" :with-header="false" ref="docDrawer" :destroyOnClose="false">
-      <iframe :src="fileSrc" style="height:100%;width:100%"></iframe>
-    </el-drawer>
-    <transition name="closeButton">
-      <div class="close-button" v-show="closeButton">
-        <el-button type="danger" icon="el-icon-close" circle @click="closeDrawer"></el-button>
-      </div>
-    </transition>
+    <ViewFile ref="childItem"></ViewFile>
   </div>
 </template>
 <script>
 import Vue from 'vue'
+import ViewFile from '../../components/ViewFile'
 export default {
+  components: {
+    ViewFile
+  },
   data () {
     return {
       tutorType: ['regular', 'graduate'],
@@ -74,10 +74,7 @@ export default {
       this.$refs['docDrawer'].closeDrawer()
     },
     preview (fileUrl) {
-      // window.open('http://view.officeapps.live.com/op/view.aspx?src=' + fileUrl)
-      this.fileSrc = 'http://view.officeapps.live.com/op/view.aspx?src=' + fileUrl
-      this.drawer = true
-      this.closeButton = true
+      this.$refs.childItem.preview(fileUrl)
     },
     handleClose (done) {
       this.closeButton = false

@@ -31,7 +31,7 @@ export default {
   },
   created () {
     this.axios
-      .post('/allteacher')
+      .post('/student/allteacher')
       .then(response => {
         this.tutorList = response.data.tutorList
         // temoList用来防止重复

@@ -29,13 +29,16 @@ export default {
     }
   },
   created () {
-    this.axios.post('/teacher/info', { teaID: this.$store.state.teacher.teaId })
-      .then(res => {
-        this.teacher = JSON.parse(JSON.stringify(res.data))
-        this.reset = JSON.parse(JSON.stringify(res.data))
-      })
+    this.init()
   },
   methods: {
+    init () {
+      this.axios.post('/teacher/info', { teaID: this.$store.state.teacher.teaId })
+        .then(res => {
+          this.teacher = JSON.parse(JSON.stringify(res.data))
+          this.reset = JSON.parse(JSON.stringify(res.data))
+        })
+    },
     onSubmit () {
       this.axios.post('/teacher/changeinfo', {
         teaID: this.$store.state.teacher.teaId,
@@ -44,13 +47,23 @@ export default {
         search: this.teacher.search,
         contact: this.teacher.contact })
         .then(res => {
+          this.init()
           if (res.data.success) {
-            console.log('提交成功')
+            this.$message({
+              type: 'success',
+              message: '提交成功'
+            })
           } else {
-            console.log('提交失败')
+            this.$message({
+              type: 'error',
+              message: '提交失败:' + res.data.err
+            })
           }
         }).catch(err => {
-          console.log(err)
+          this.$message({
+            type: 'warning',
+            message: err
+          })
         })
     },
     onReset () {

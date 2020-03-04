@@ -1,6 +1,8 @@
 <template>
   <div style="max-width:100vw">
-    {{screenWidth}}
+    <!-- {{screenWidth}}<br>
+    {{stuList}}<br>
+    {{tableList}} -->
     <el-table :data="stuList" :row-class-name="tableRowClassName">
       <el-table-column type="expand">
         <template slot-scope="props">
@@ -30,9 +32,9 @@
           </div>
         </template>
       </el-table-column>
-      <el-table-column label="学生ID" prop="id" v-if="screenWidth>600">
+      <el-table-column label="学生ID" prop="stuNum" v-if="screenWidth>600">
       </el-table-column>
-      <el-table-column label="学生姓名" prop="name">
+      <el-table-column label="学生姓名" prop="stuName">
       </el-table-column>
       <el-table-column label="" min-width="200px">
         <template slot-scope="scope">
