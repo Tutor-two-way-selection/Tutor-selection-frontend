@@ -75,15 +75,18 @@ export default {
     }
   },
   created () {
-    this.axios.post('/teacher/stuinfo', { teaID: this.$store.state.teacher.teaId, type: this.tutorType }).then(res => {
-      this.stuList = res.data.stuList
-      this.tableList = res.data.tableList
-      for (let index in this.stuList) {
-        Vue.set(this.stuList[index], 'recept', false)
-      }
-    })
+    this.init()
   },
   methods: {
+    init () {
+      this.axios.post('/teacher/stuinfo', { teaID: this.$store.state.teacher.teaId, type: this.tutorType }).then(res => {
+        this.stuList = res.data.stuList
+        this.tableList = res.data.tableList
+        for (let index in this.stuList) {
+          Vue.set(this.stuList[index], 'recept', true)
+        }
+      })
+    },
     preview (fileUrl) {
       this.$refs.childItem.preview(fileUrl)
     },
@@ -95,25 +98,53 @@ export default {
       }
     },
     onSubmit () {
+      if (this.stuList.length <= 0) {
+        return
+      }
       let tempList = []
+      let refuseNum = 0
       for (let i in this.stuList) {
+        if (!this.stuList[i].recept) {
+          refuseNum++
+        }
         tempList.push({
-          stuID: this.stuList[i].id,
+          stuID: this.stuList[i].stuNum,
           recept: this.stuList[i].recept
         })
       }
-      this.axios.post('/teacher/selectstu', {
-        teaID: this.$store.state.teacher.teaId,
-        type: this.tutorType,
-        selStuList: tempList
-      }).then(res => {
-        if (res.data.success) {
-          console.log('提交成功')
-        } else {
-          console.log('提交失败')
-        }
-      }).catch(err => {
-        console.log(err)
+      this.$confirm(`将提交您对学生的接收情况,此操作不可撤销,有${refuseNum}个学生将被拒绝接收,是否继续?`, '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        this.axios.post('/teacher/selectstu', {
+          teaID: this.$store.state.teacher.teaId,
+          type: this.tutorType,
+          selStuList: tempList
+        }).then(res => {
+          this.init()
+          if (res.data.success) {
+            this.$message({
+              type: 'success',
+              message: '提交成功'
+            })
+          } else {
+            this.$message({
+              type: 'error',
+              message: '提交失败:' + res.data.err
+            })
+          }
+        }).catch(err => {
+          this.$message({
+            type: 'warning',
+            message: err
+          })
+        })
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '已取消提交'
+        })
       })
     }
   }

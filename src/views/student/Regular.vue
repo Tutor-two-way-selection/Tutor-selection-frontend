@@ -1,7 +1,15 @@
 <template>
   <div>
-    <h2>本科导师选择</h2>
-    <Progress :step="step" :titleList="['上传个人信息','选择导师']" />
+    <el-row :gutter="20">
+      <el-col :span="9">
+        <div class="Head">
+          <h2>本科导师选择</h2>
+          <hr>
+        </div>
+      </el-col>
+      <el-col :span="15"><Progress :step="step" :titleList="['上传个人信息','选择导师']" /></el-col>
+    </el-row>
+
     <!-- <el-button
       style="margin-top: 12px;"
       @click="next"
@@ -73,7 +81,9 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-  h2 {
-    margin-bottom: 40px;
+  .Head {
+    hr {
+      width: 100%;
+    }
   }
 </style>

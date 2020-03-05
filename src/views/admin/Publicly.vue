@@ -1,17 +1,27 @@
 <template>
   <div>
-    <el-select v-model="tutorType" placeholder="请选择">
-      <el-option label="regular" value="regular">
-      </el-option>
-      <el-option label="graduate" value="graduate">
-      </el-option>
-    </el-select>
-    <br>
-    <el-date-picker v-model="pubDate" type="daterange" range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期">
-    </el-date-picker>
-    <el-button type="" @click="changeDate">保存修改</el-button>
-    <el-button type="" @click="init">重置</el-button>
-    <h3>名单确认</h3>
+    <el-row :gutter="20" type="flex" justify="space-between" align="center">
+      <el-col :span="9">
+        <div class="Head">
+          <h2>公示与名单确认</h2>
+          <el-select v-model="tutorType" placeholder="请选择" style="margin-bottom:10px">
+            <el-option label="regular" value="regular">
+            </el-option>
+            <el-option label="graduate" value="graduate">
+            </el-option>
+          </el-select>
+          <hr>
+        </div>
+      </el-col>
+      <el-col :span="15">
+        <el-row :gutter="20" type="flex" justify="center" align="center">
+          <el-date-picker v-model="pubDate" type="daterange" range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期"></el-date-picker>
+          <el-button type="" @click="changeDate" style="margin-left:10px">保存修改</el-button>
+          <el-button type="" @click="init" style="margin-left:10px">重置</el-button>
+        </el-row>
+      </el-col>
+    </el-row>
+
     <el-table :data="stuList" :row-class-name="tableRowClassName">
       <el-table-column prop="stuName" label="姓名">
       </el-table-column>
@@ -69,6 +79,28 @@ export default {
     },
     changeDate () {
       console.log(this.pubDate)
+      this.axios.post('/admin/setpub', { grade: this.$store.state.admin.currentGrade,
+        type: this.tutorType,
+        start: this.pubDate[0],
+        end: this.pubDate[1] }).then(res => {
+        this.init()
+        if (res.data.success) {
+          this.$message({
+            type: 'success',
+            message: '修改成功'
+          })
+        } else {
+          this.$message({
+            type: 'error',
+            message: '修改失败:' + res.data.err
+          })
+        }
+      }).catch(err => {
+        this.$message({
+          type: 'warning',
+          message: err
+        })
+      })
     }
   },
   created () {
@@ -93,3 +125,10 @@ export default {
   }
 }
 </script>
+<style lang="scss" scoped>
+  .Head {
+    hr {
+      width: 100%;
+    }
+  }
+</style>

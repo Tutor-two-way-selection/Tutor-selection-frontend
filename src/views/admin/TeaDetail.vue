@@ -1,5 +1,9 @@
 <template>
   <div>
+    <div class="Head">
+      <h2>查看导师基本信息</h2>
+      <hr>
+    </div>
     <el-table ref="filterTable" :data="tutorList" style="width: 100%">
       <el-table-column type="expand">
         <template slot-scope="props">

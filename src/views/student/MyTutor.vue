@@ -1,9 +1,15 @@
 <template>
   <div>
-    <h2 v-if="regularTutor">本科导师</h2>
+    <div class="Head" v-if="regularTutor">
+      <h2>本科导师</h2>
+      <hr>
+    </div>
     <TutorInfo :tutor="regularTutor" />
 
-    <h2 v-if="graduateTutor">毕业设计导师</h2>
+    <div class="Head" v-if="graduateTutor">
+      <h2>毕业设计导师</h2>
+      <hr>
+    </div>
     <TutorInfo :tutor="graduateTutor" />
   </div>
 </template>

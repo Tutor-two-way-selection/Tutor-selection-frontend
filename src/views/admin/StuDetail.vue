@@ -1,16 +1,23 @@
 <template>
   <div>
-    <el-select v-model="tutorType" placeholder="请选择">
-      <el-option label="regular" value="regular">
+    <div class="Head">
+      <h2>查看学生基本信息</h2>
+      <hr>
+    </div>
+    <el-select v-model="tutorType" placeholder="请选择学生参与的选择的类型">
+      <el-option label="全部学生名单" value="">
       </el-option>
-      <el-option label="graduate" value="graduate">
+      <el-option label="本科导师选择" value="regular">
+      </el-option>
+      <el-option label="毕业设计导师选择" value="graduate">
       </el-option>
     </el-select>
+    <!-- {{filters}} -->
     <el-table :data="stuList" style="width: 100%">
       <el-table-column type="expand">
-        <template slot-scope="props">
+        <template slot-scope="props" v-if="tutorType">
           <div label="" v-for="(item,index) in tableList" :key="'table'+index">
-            <el-table :data="props.row[item.name].fileList" style="width: 100%">
+            <el-table :data="props.row[item.name]&&props.row[item.name].fileList" style="width: 100%">
               <el-table-column :label="item.title||item.name">
                 <template slot-scope="scope">
                   <i class="el-icon-document"></i>
@@ -34,24 +41,30 @@
             </el-table>
           </div>
         </template>
+        <template slot-scope="" v-else>
+        </template>
       </el-table-column>
       <el-table-column label="学生ID" prop="stuNum">
       </el-table-column>
       <el-table-column label="学生姓名" prop="stuName">
       </el-table-column>
-      <el-table-column label="志愿一" prop="firstChoice.name">
+      <el-table-column label="班级" prop="stuClass" :filters="filters" :filter-method="filterHandler">
+      </el-table-column>
+      <el-table-column label="志愿一" prop="firstChoice.name" v-if="tutorType">
         <template slot-scope="scope">
-          {{scope.row.firstChoice.name}}
-          <el-tag size="medium" effect="light" type="success" v-if="scope.row.firstChoice.accept">已接收</el-tag>
-          <el-tag size="medium" effect="light" type="warning" v-if="(!scope.row.firstChoice.accept)&&scope.row.firstChoice.id">未接收</el-tag>
+          <!-- {{scope.row.firstChoice}} -->
+          <el-tag size="medium" effect="light" type="error" v-if="scope.row.firstChoice.accept===0">未接收</el-tag>
+          <el-tag size="medium" effect="light" type="success" v-if="scope.row.firstChoice.accept===1">已接收</el-tag>
+          <el-tag size="medium" effect="light" type="warning" v-if="scope.row.firstChoice.accept===2">未处理</el-tag>
           <el-tag size="medium" effect="light" type="info" v-if="!scope.row.firstChoice.id">未填报</el-tag>
         </template>
       </el-table-column>
-      <el-table-column label="志愿二" prop="">
+      <el-table-column label="志愿二" prop="" v-if="tutorType">
         <template slot-scope="scope">
-          {{scope.row.secondChoice.name}}
-          <el-tag size="medium" effect="light" type="success" v-if="scope.row.secondChoice.accept">已接收</el-tag>
-          <el-tag size="medium" effect="light" type="warning" v-if="(!scope.row.secondChoice.accept)&&scope.row.secondChoice.id">未接收</el-tag>
+          <!-- {{scope.row.secondChoice}} -->
+          <el-tag size="medium" effect="light" type="error" v-if="scope.row.secondChoice.accept===0">未接收</el-tag>
+          <el-tag size="medium" effect="light" type="success" v-if="scope.row.secondChoice.accept===1">已接收</el-tag>
+          <el-tag size="medium" effect="light" type="warning" v-if="scope.row.secondChoice.accept===2">未处理</el-tag>
           <el-tag size="medium" effect="light" type="info" v-if="!scope.row.secondChoice.id">未填报</el-tag>
         </template>
       </el-table-column>
@@ -129,7 +142,7 @@ export default {
   components: { ViewFile },
   data () {
     return {
-      tutorType: 'regular',
+      tutorType: '',
       // tutorType: this.$route.query.tutorType,
       stuList: [],
       tableList: [],
@@ -140,7 +153,9 @@ export default {
 
       drawer: false,
       fileSrc: null,
-      closeButton: false
+      closeButton: false,
+
+      filters: []
     }
   },
   watch: {
@@ -155,6 +170,10 @@ export default {
     this.init()
   },
   methods: {
+    filterHandler (value, row, column) {
+      const property = column['property']
+      return row[property] === value
+    },
     clear () {
       this.addList = []
     },
@@ -188,9 +207,13 @@ export default {
             idCard = String(idCard)
             let student = { name: String(item['姓名'] || item[0] || ''), id: String(item['学号'] || item[1] || ''), classes: String(item['班级'] || item[2] || ''), contact: String(item['联系方式'] || item[3] || ''), initpass: String(item['初始密码'] || idCard.substring(idCard.length - 6) || item[4] || '') }
             console.log(!this.classList.includes(student.classes))
-            if (!this.classList.includes(student.classes)) {
+            if (!student.classes) {
               student.classes = ''
+            } else if (!this.classList.includes(student.classes)) {
+              // student.classes = ''
+              this.classList.push(student.classes)
             }
+
             this.addList.push(student)
           })
           // document.getElementsByName('file')[0].value = '' // 根据自己需求，可重置上传value为空，允许重复上传同一文件
@@ -206,11 +229,24 @@ export default {
       let count = 0
       var post = () => {
         // TODO 新增学生
-        console.log('post')
         this.axios.post('/admin/addStu', { grade: this.$store.state.admin.currentGrade, stuList: this.addList }).then(res => {
+          this.init()
           if (res.data.success) {
-            this.init()
+            this.$message({
+              type: 'success',
+              message: '提交成功'
+            })
+          } else {
+            this.$message({
+              type: 'error',
+              message: '提交失败:' + res.data.err
+            })
           }
+        }).catch(err => {
+          this.$message({
+            type: 'warning',
+            message: err
+          })
         })
       }
       for (let index in this.$refs[formName]) {
@@ -239,8 +275,27 @@ export default {
     },
     init () {
       this.axios.post('/admin/stulist', { grade: this.$store.state.admin.currentGrade, type: this.tutorType }).then(res => {
+        console.log(res)
         this.stuList = res.data.stuList
         this.tableList = res.data.tableList
+        this.filters = []
+        let tempKey = []
+        for (let index in this.stuList) {
+          if (!tempKey.includes(this.stuList[index].stuClass)) {
+            this.filters.push({ text: this.stuList[index].stuClass, value: this.stuList[index].stuClass })
+            tempKey.push(this.stuList[index].stuClass)
+          }
+        }
+        // 手动排序
+        for (let i = 0; i < this.filters.length; i++) {
+          for (let j = i + 1; j < this.filters.length; j++) {
+            if (this.filters[i].text > this.filters[j].text) {
+              let t = this.filters[i]
+              this.filters[i] = this.filters[j]
+              this.filters[j] = t
+            }
+          }
+        }
       })
     },
     preview (fileUrl) {
@@ -260,12 +315,21 @@ export default {
         selStuList: tempList
       }).then(res => {
         if (res.data.success) {
-          console.log('提交成功')
+          this.$message({
+            type: 'success',
+            message: '提交成功'
+          })
         } else {
-          console.log('提交失败')
+          this.$message({
+            type: 'error',
+            message: '提交失败:' + res.data.err
+          })
         }
       }).catch(err => {
-        console.log(err)
+        this.$message({
+          type: 'warning',
+          message: err
+        })
       })
     }
   }

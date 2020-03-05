@@ -83,11 +83,12 @@ export default {
         this.stuList = res.data.stuList
         this.tableList = res.data.tableList
         for (let index in this.stuList) {
-          Vue.set(this.stuList[index], 'recept', false)
+          Vue.set(this.stuList[index], 'recept', true)
         }
       })
     },
     preview (fileUrl) {
+      fileUrl = 'https://test-1301169585.cos.ap-shanghai.myqcloud.com/%E9%99%84%E4%BB%B6%E4%B8%80%EF%BC%9A%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%AD%A6%E9%99%A2%E6%9C%AC%E7%A7%91%E5%AD%A6%E7%94%9F%E5%AF%BC%E5%B8%88%E5%8F%8C%E5%90%91%E9%80%89%E6%8B%A9%E8%A1%A8%20(1).docx'
       this.$refs.childItem.preview(fileUrl)
     },
     tableRowClassName ({ row, rowIndex }) {
@@ -98,34 +99,52 @@ export default {
       }
     },
     onSubmit () {
+      if (this.stuList.length <= 0) {
+        return
+      }
       let tempList = []
+      let refuseNum = 0
       for (let i in this.stuList) {
+        if (!this.stuList[i].recept) {
+          refuseNum++
+        }
         tempList.push({
           stuID: this.stuList[i].stuNum,
           recept: this.stuList[i].recept
         })
       }
-      this.axios.post('/teacher/selectstu', {
-        teaID: this.$store.state.teacher.teaId,
-        type: this.tutorType,
-        selStuList: tempList
-      }).then(res => {
-        this.init()
-        if (res.data.success) {
+      this.$confirm(`将提交您对学生的接收情况,此操作不可撤销,有${refuseNum}个学生将被拒绝接收,是否继续?`, '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        this.axios.post('/teacher/selectstu', {
+          teaID: this.$store.state.teacher.teaId,
+          type: this.tutorType,
+          selStuList: tempList
+        }).then(res => {
+          this.init()
+          if (res.data.success) {
+            this.$message({
+              type: 'success',
+              message: '提交成功'
+            })
+          } else {
+            this.$message({
+              type: 'error',
+              message: '提交失败:' + res.data.err
+            })
+          }
+        }).catch(err => {
           this.$message({
-            type: 'success',
-            message: '提交成功'
+            type: 'warning',
+            message: err
           })
-        } else {
-          this.$message({
-            type: 'error',
-            message: '提交失败:' + res.data.err
-          })
-        }
-      }).catch(err => {
+        })
+      }).catch(() => {
         this.$message({
-          type: 'warning',
-          message: err
+          type: 'info',
+          message: '已取消提交'
         })
       })
     }

@@ -51,6 +51,39 @@
       }
     }
   }
+
+  .Head {
+    margin-bottom: 40px;
+    padding-left: 10px;
+    border-left: #2c3e50 5px solid;
+    h1,
+    h2,
+    h3,
+    h4,
+    h5 {
+      margin-bottom: 20px;
+    }
+    hr {
+      width: 40%;
+      min-width: 220px;
+    }
+  }
+  .head {
+    margin-bottom: 20px;
+    padding-left: 10px;
+    border-left: #2c3e50 5px solid;
+    h1,
+    h2,
+    h3,
+    h4,
+    h5 {
+      // margin-bottom: 20px;
+    }
+    hr {
+      width: 40%;
+      min-width: 220px;
+    }
+  }
 </style>
 <script>
 export default {

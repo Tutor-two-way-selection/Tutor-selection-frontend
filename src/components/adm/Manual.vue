@@ -7,16 +7,18 @@
     {{stuList}}
     <hr>
     {{addList}} -->
+    {{stuList}}<br>
+    {{tutorList}}
     <el-table :data="stuList">
-      <el-table-column prop="stuID" label="学号">
+      <el-table-column prop="stuNum" label="学号">
       </el-table-column>
       <el-table-column prop="stuName" label="姓名">
       </el-table-column>
-      <el-table-column prop="classes" label="班级">
+      <el-table-column prop="stuClass" label="班级">
       </el-table-column>
       <el-table-column prop="" label="操作">
         <template slot-scope="scope">
-          <el-button size="mini" @click="showList(scope.row.stuID)">手动分配</el-button>
+          <el-button size="mini" @click="showList(scope.row.stuNum)">手动分配</el-button>
         </template>
       </el-table-column>
       <el-table-column prop="teaName" label="分配教师">
@@ -26,7 +28,7 @@
     <!-- dialog -->
     <el-dialog title="导师选择" :visible.sync="dialogVisible" fullscreen :before-close="handleClose">
       <span>学号</span>
-      <span>{{dialogData.stuID}}</span>
+      <span>{{dialogData.stuNum}}</span>
       <el-table :data="tutorList" height="65vh">
         <el-table-column prop="name" label="姓名" fixed>
         </el-table-column>
@@ -36,15 +38,15 @@
         </el-table-column>
         <el-table-column prop="contact" label="联系方式">
         </el-table-column>
-        <el-table-column prop="accNum" label="已接收学生" sortable :sort-method="numSortMethod">
+        <el-table-column :prop="tutorType+'num'" label="已接收学生" sortable :sort-method="numSortMethod">
           <template slot-scope="scope">
-            {{scope.row.accNum}}
+            {{scope.row[tutorType+'num']}}
             <span v-if="addList[scope.row.id]" class="addnum">+{{addList[scope.row.id]}}</span>
           </template>
         </el-table-column>
         <el-table-column prop="" label="操作">
           <template slot-scope="scope">
-            <el-button size="mini" @click="allocate(scope.row.id,dialogData.stuID)">选择</el-button>
+            <el-button size="mini" @click="allocate(scope.row.id,dialogData.stuNum)">选择</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -66,7 +68,7 @@ export default {
       addList: {},
       dialogVisible: false,
       dialogData: {
-        stuID: null
+        stuNum: null
       }
     }
   },
@@ -80,19 +82,40 @@ export default {
       for (let i in this.stuList) {
         if (this.stuList[i].teaID) {
           req.manualList.push({
-            stuID: this.stuList[i].stuID,
+            stuID: this.stuList[i].stuNum,
             teaID: this.stuList[i].teaID })
         }
       }
-      this.axios.post('/admin/manual', req).then(res => {
-        if (res.data.success) {
-          console.log('提交成功')
-          this.init()
-        } else {
-          // 服务器错误
-        }
-      }).catch(err => {
-        console.log(err)
+      this.$confirm('将手动为学生分配导师,此操作不可逆, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        this.axios.post('/admin/manual', req).then(res => {
+          if (res.data.success) {
+            this.$message({
+              type: 'success',
+              message: '提交成功'
+            })
+            this.init()
+          } else {
+            this.$message({
+              type: 'error',
+              message: '分配失败:' + res.data.err
+            })
+          }
+        }).catch(err => {
+          console.log(err)
+          this.$message({
+            type: 'warning',
+            message: err
+          })
+        })
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '已取消分配'
+        })
       })
     },
     handleClose (done) {
@@ -103,13 +126,13 @@ export default {
         .catch(_ => { })
     },
     numSortMethod (a, b) {
-      let numa = a.accNum + (this.addList[a.id] || 0)
-      let numb = b.accNum + (this.addList[b.id] || 0)
+      let numa = a[this.tutorType + 'num'] + (this.addList[a.id] || 0)
+      let numb = b[this.tutorType + 'num'] + (this.addList[b.id] || 0)
       return numa - numb
     },
     allocate (teaId, stuId) {
       for (let i in this.stuList) {
-        if (this.stuList[i].stuID === stuId) {
+        if (this.stuList[i].stuNum === stuId) {
           Vue.set(this.stuList[i], 'teaID', teaId)
           for (let j in this.tutorList) {
             if (this.tutorList[j].id === teaId) {
@@ -119,8 +142,8 @@ export default {
         }
       }
     },
-    showList (stuID) {
-      this.dialogData.stuID = stuID
+    showList (stuNum) {
+      this.dialogData.stuNum = stuNum
       this.dialogVisible = true
     },
     init () {
@@ -129,15 +152,6 @@ export default {
       })
       this.axios.post('/admin/undistri', { grade: this.$store.state.admin.currentGrade, type: this.tutorType }).then(res => {
         this.stuList = res.data.stuList
-        // 测试
-        if (this.tutorType === 'graduate') {
-          this.stuList.push({
-            stuID: '201701010120',
-            stuName: '李五',
-            classes: 'class2'
-          })
-        }
-        // ///////////////////////
       })
     }
   },

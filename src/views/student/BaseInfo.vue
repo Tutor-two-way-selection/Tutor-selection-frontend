@@ -1,6 +1,10 @@
 <template>
   <div>
-    {{student}}
+    <!-- {{student}} -->
+    <div class="Head">
+      <h2>修改基本信息</h2>
+      <hr>
+    </div>
     <el-form ref="student" :model="student" label-width="100px" label-position="left">
       <el-form-item label="姓名">
         <el-input :disabled="true" v-model="student.stuName"></el-input>

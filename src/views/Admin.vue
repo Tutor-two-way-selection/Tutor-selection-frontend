@@ -58,7 +58,7 @@
               <template slot="title">
               </template>
               <el-menu-item index="/admin/select/graduate/manual" :disabled="!(this.$store.state.admin.currentBatch.graduate>=3)">管理员分配</el-menu-item>
-              <el-menu-item index="/admin/select/graduate/Situation/third" :disabled="!(this.$store.state.admin.currentBatch.regular>=3)">导师分配情况</el-menu-item>
+              <el-menu-item index="/admin/select/graduate/Situation/third" :disabled="!(this.$store.state.admin.currentBatch.graduate>=3)">导师分配情况</el-menu-item>
             </el-menu-item-group>
           </el-submenu>
           <el-menu-item index="/admin/publicly">

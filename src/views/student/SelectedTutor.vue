@@ -1,6 +1,11 @@
 <template>
   <div>
-    <h2 v-if="regularTutor">本科导师</h2>
+    <div class="Head">
+      <h2 v-if="regularTutor&&(regularTutor.firstChoice||regularTutor.secondChoice)">本科导师</h2>
+      <h2 v-else>暂无本科导师</h2>
+      <hr>
+    </div>
+
     <el-row :gutter="20">
       <el-col :xs="24" :sm="24" :md="12" :lg="12" :xl="12">
         <TutorInfo :tutor="regularTutor.firstChoice" />
@@ -10,7 +15,12 @@
       </el-col>
     </el-row>
 
-    <h2 v-if="graduateTutor">毕业设计导师</h2>
+    <div class="Head">
+      <h2 v-if="graduateTutor&&(graduateTutor.firstChoice||graduateTutor.secondChoice)">毕业设计导师</h2>
+      <h2 v-else>暂无毕业设计导师</h2>
+      <hr>
+    </div>
+
     <el-row :gutter="20">
       <el-col :xs="24" :sm="24" :md="12" :lg="12" :xl="12">
         <TutorInfo :tutor="graduateTutor.firstChoice" />
@@ -50,7 +60,4 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-  h2 {
-    margin-bottom: 20px;
-  }
 </style>
