@@ -7,8 +7,8 @@
     {{stuList}}
     <hr>
     {{addList}} -->
-    {{stuList}}<br>
-    {{tutorList}}
+    <!-- {{stuList}}<br>
+    {{tutorList}} -->
     <el-table :data="stuList">
       <el-table-column prop="stuNum" label="学号">
       </el-table-column>

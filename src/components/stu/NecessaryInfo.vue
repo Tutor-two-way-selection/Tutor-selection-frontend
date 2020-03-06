@@ -14,7 +14,7 @@
             将文件拖到此处，或
             <em>点击上传</em>
           </div>
-          <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
+          <div slot="tip" class="el-upload__tip">文件总数不能超过3个</div>
         </el-upload>
       </el-col>
     </el-row>

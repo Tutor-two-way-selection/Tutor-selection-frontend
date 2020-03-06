@@ -38,6 +38,7 @@
         </template>
         <template slot-scope="scope">
           <div @click="searchStatus(scope.row.status)">
+            <!-- {{scope.row}} -->
             <el-button :plain="!statusKey" size="mini" type="info" v-if="scope.row.status==='untreat'">未处理</el-button>
             <el-button :plain="!statusKey" size="mini" type="success" v-if="scope.row.status==='accept'">接收</el-button>
             <el-button :plain="!statusKey" size="mini" type="danger" v-if="scope.row.status==='refuse'">不接收</el-button>

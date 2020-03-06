@@ -88,6 +88,7 @@ export default {
       })
     },
     preview (fileUrl) {
+      fileUrl = 'https://test-1301169585.cos.ap-shanghai.myqcloud.com/%E9%99%84%E4%BB%B6%E4%B8%80%EF%BC%9A%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%AD%A6%E9%99%A2%E6%9C%AC%E7%A7%91%E5%AD%A6%E7%94%9F%E5%AF%BC%E5%B8%88%E5%8F%8C%E5%90%91%E9%80%89%E6%8B%A9%E8%A1%A8%20(1).docx'
       this.$refs.childItem.preview(fileUrl)
     },
     tableRowClassName ({ row, rowIndex }) {

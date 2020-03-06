@@ -13,6 +13,7 @@
           <hr>
         </div>
       </el-col>
+
       <el-col :span="15">
         <el-row :gutter="20" type="flex" justify="center" align="center">
           <el-date-picker v-model="pubDate" type="daterange" range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期"></el-date-picker>
@@ -21,7 +22,8 @@
         </el-row>
       </el-col>
     </el-row>
-
+    <el-alert v-if="this.$store.state.admin.currentBatch[this.tutorType]===5" title="公示已结束" type="success" :closable="false">
+    </el-alert>
     <el-table :data="stuList" :row-class-name="tableRowClassName">
       <el-table-column prop="stuName" label="姓名">
       </el-table-column>
@@ -53,11 +55,24 @@ export default {
     endPub () {
       this.axios.post('/admin/setbatch', { grade: this.$store.state.admin.currentGrade, type: this.tutorType, batch: 5 }).then(res => {
         console.log(res)
+        this.init()
+        this.$store.commit('FlashBatch')
         if (res.data.success) {
-          console.log('公示结束')
-          this.init()
-          this.$store.commit('FlashBatch')
+          this.$message({
+            type: 'success',
+            message: '公示结束'
+          })
+        } else {
+          this.$message({
+            type: 'error',
+            message: res.data.err
+          })
         }
+      }).catch(err => {
+        this.$message({
+          type: 'warning',
+          message: err
+        })
       })
     },
     tableRowClassName ({ row, rowIndex }) {
@@ -116,10 +131,10 @@ export default {
   },
   computed: {
     endPubFlag () {
-      if (this.$store.state.admin.currentBatch[this.tutorType] === 5) {
-        return false
-      } else {
+      if (this.$store.state.admin.currentBatch[this.tutorType] === 4) {
         return true
+      } else {
+        return false
       }
     }
   }
@@ -130,5 +145,6 @@ export default {
     hr {
       width: 100%;
     }
+    margin-bottom: 10px;
   }
 </style>
