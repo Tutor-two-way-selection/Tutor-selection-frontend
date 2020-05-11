@@ -1,5 +1,5 @@
 <template>
-  <div style="text-align:left;height:100vh" @click="closeMenu($event)">
+  <div class="student-container" @click="closeMenu($event)">
     <el-container>
 
       <div class="mobile-bar" v-show="draw">
@@ -90,6 +90,10 @@
   }
   .open {
     transform: translate(0, 0);
+  }
+  .student-container {
+    text-align: left;
+    /* height: 88vh; */
   }
 </style>
 <script>

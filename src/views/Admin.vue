@@ -1,5 +1,5 @@
 <template>
-  <div style="text-align:left;height:100vh" @click="closeMenu($event)">
+  <div class="admin-container" @click="closeMenu($event)">
 
     <div class="mobile-bar" v-show="draw">
       <el-button icon="el-icon-menu" @click.stop="open=!open" type=""></el-button>
@@ -86,6 +86,10 @@
   .el-menu-vertical-demo:not(.el-menu--collapse) {
     /* width: 200px; */
     min-height: 90vh;
+  }
+  .admin-container {
+    text-align: left;
+    /* height: 100vh; */
   }
 </style>
 <script>

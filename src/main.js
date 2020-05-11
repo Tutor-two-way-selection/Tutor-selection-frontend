@@ -10,7 +10,7 @@ import store from './store'
 // require('./mock')
 
 Vue.config.productionTip = false
-axios.defaults.baseURL = 'http://localhost:3000'
+axios.defaults.baseURL = 'http://nbcairongjiu.cn'
 Vue.use(VueAxios, axios)
 Vue.use(ElementUI)
 new Vue({

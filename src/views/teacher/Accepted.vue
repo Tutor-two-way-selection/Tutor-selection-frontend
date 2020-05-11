@@ -65,6 +65,7 @@ export default {
       this.axios.post('/teacher/accepted', { teaID: this.$store.state.teacher.teaId, type: this.tutorType[i] }).then(res => {
         Vue.set(this.stuList, this.tutorType[i], res.data.stuList)
         Vue.set(this.tableList, this.tutorType[i], res.data.tableList)
+        console.log(res.data)
       })
     }
   },

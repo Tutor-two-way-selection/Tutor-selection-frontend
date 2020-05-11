@@ -20,7 +20,19 @@
       {{this.$store.state.admin}}
     </div>
     {{this.$store.state}} -->
-    <router-view />
+
+    <el-container>
+      <el-main>
+        <router-view />
+      </el-main>
+      <el-footer>
+        <div>
+          <p>备案号:浙ICP备20008750号</p>
+          <p>Github:<a href="https://github.com/Tutor-two-way-selection">https://github.com/Tutor-two-way-selection</a></p>
+        </div>
+      </el-footer>
+    </el-container>
+
   </div>
 </template>
 
@@ -90,11 +102,15 @@ export default {
   data () {
     return {
       value1: null
+
     }
   },
   methods: {
     showDate () {
       console.log(JSON.stringify({ date: this.value1 }))
+    },
+    handleChange () {
+
     }
   },
   created () {
@@ -171,5 +187,4 @@ export default {
   }
 
 }
-
 </script>

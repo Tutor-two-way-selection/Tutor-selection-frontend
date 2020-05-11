@@ -403,8 +403,8 @@ Mock.mock('/student/login', options => {
       title: '导师双向选择表'
     }],
     stuList: [{
-      name: '张三',
-      id: '201701010101',
+      stuName: '张三',
+      stuNum: '201701010101',
       profileTable: {
         flag: true,
         fileList: [{
@@ -422,8 +422,8 @@ Mock.mock('/student/login', options => {
         }]
       }
     }, {
-      name: '李四',
-      id: '201701010102',
+      stuName: '李四',
+      stuNum: '201701010102',
       profileTable: {
         flag: true,
         fileList: [{
@@ -464,8 +464,8 @@ Mock.mock('/student/login', options => {
       title: '导师双向选择表'
     }],
     stuList: [{
-      name: '张三',
-      id: '201701010101',
+      stuName: '张三',
+      stuNum: '201701010101',
       profileTable: {
         flag: true,
         fileList: [{
@@ -483,8 +483,8 @@ Mock.mock('/student/login', options => {
         }]
       }
     }, {
-      name: '李四',
-      id: '201701010102',
+      stuName: '李四',
+      stuNum: '201701010102',
       profileTable: {
         flag: true,
         fileList: [{
