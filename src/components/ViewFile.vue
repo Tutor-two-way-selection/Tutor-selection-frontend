@@ -28,6 +28,7 @@ export default {
     preview (fileUrl) {
       // window.open('http://view.officeapps.live.com/op/view.aspx?src=' + fileUrl)
       this.fileSrc = 'http://view.officeapps.live.com/op/view.aspx?src=' + fileUrl
+      // this.fileSrc = 'http://view.officeapps.live.com/op/view.aspx?src=' + 'http://nbcairongjiu.cn:8080/onlineRead/7b106db3d68e5a2cf36d4a2adfd93ea8.docx'
       this.drawer = true
       this.closeButton = true
     },

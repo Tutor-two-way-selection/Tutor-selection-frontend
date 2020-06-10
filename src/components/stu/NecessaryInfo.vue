@@ -1,14 +1,14 @@
 <template>
 
   <div class="necessary-info">
+    <el-button type="primary" @click="submitNec" style="margin-bottom:20px">提交基本信息</el-button>
     <el-row :gutter="20">
-      <el-col :xs="24" :sm="12" :md="12" :lg="8" :xl="8" v-for="(item, i) in necList" :key="i">
+      <el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="8" v-for="(item, i) in necList" :key="i">
         <div class="head">
           <h3>{{ item.title || item.name }}</h3>
           <!-- <hr> -->
         </div>
-
-        <el-upload class="upload-demo" :action="item.url" :on-preview="handlePreview" :on-remove="handleRemove[i]" :before-remove="beforeRemove" :on-success="handleSuccess[i]" :on-error="handleError" :before-upload="beforeUpload" :on-progress="handleProgress" multiple drag :auto-upload="true" :limit="3" :on-exceed="handleExceed" :file-list="item.fileList">
+        <el-upload class="upload-demo" :action="item.url" :on-preview="handlePreview" :on-remove="(file, fileList)=>{return handleRemove(file, fileList,i)}" :before-remove="beforeRemove" :on-success="(response, file, fileList)=>{return handleSuccess(response, file, fileList,i)}" :on-error="handleError" :before-upload="beforeUpload" :on-progress="handleProgress" multiple drag :auto-upload="true" :limit="3" :on-exceed="handleExceed" :file-list="item.fileList">
           <i class="el-icon-upload"></i>
           <div class="el-upload__text">
             将文件拖到此处，或
@@ -18,7 +18,6 @@
         </el-upload>
       </el-col>
     </el-row>
-    <el-button type="" @click="submitNec">提交基本信息</el-button>
   </div>
 </template>
 <script>
@@ -27,8 +26,8 @@ export default {
   data () {
     return {
       necList: [],
-      handleSuccess: [],
-      handleRemove: [],
+      // handleSuccess: [],
+      // handleRemove: [],
       activeName: 'second'
     }
   },
@@ -76,29 +75,31 @@ export default {
     init () {
       for (let key in this.$store.state.student[this.tutorType].form) {
         this.necList.push({
-          url: 'http://localhost:3000/uploadFile',
+          // url: 'http://nbcairongjiu.cn/uploadFile',
+          url: this.axios.defaults.baseURL + '/uploadFile',
           name: key,
           title: this.$store.state.student[this.tutorType].form[key].title,
           fileList: this.$store.state.student[this.tutorType].form[key].fileList
         })
       }
 
-      for (let i = 0; i < this.necList.length; i++) {
-        this.handleSuccess.push((response, file, fileList) => {
-          console.log('success')
-          console.log(file)
-          var tempList = fileList
-          file['url'] = window.location.protocol + '//' + window.location.host + '/downloadFile?filename=' + response.file.newfilename + '&oldname=' + response.file.originalname
-          this.necList[i].fileList = tempList
-          console.log(this.necList)
-        })
-      }
-      for (let i = 0; i < this.necList.length; i++) {
-        this.handleRemove.push((file, fileList) => {
-          console.log('remove')
-          this.necList[i].fileList = fileList
-        })
-      }
+      // for (let i = 0; i < this.necList.length; i++) {
+      //   this.handleSuccess.push((response, file, fileList) => {
+      //     console.log('success')
+      //     console.log(file)
+      //     console.log(response)
+      //     var tempList = fileList
+      //     file['url'] = this.axios.defaults.baseURL + '/downloadFile?filename=' + response.file.newfilename + '&oldname=' + response.file.originalname
+      //     this.necList[i].fileList = tempList
+      //     console.log(this.necList)
+      //   })
+      // }
+      // for (let i = 0; i < this.necList.length; i++) {
+      //   this.handleRemove.push((file, fileList) => {
+      //     console.log('remove')
+      //     this.necList[i].fileList = fileList
+      //   })
+      // }
 
       this.initStep()
     },
@@ -128,10 +129,24 @@ export default {
     handleTabClick () { },
     handlePreview (file) {
       console.log(file)
+      let a = document.createElement('a')
+      a.href = file.url
+      a.click()
     },
-    // handleRemove (file, fileList) {
-    //   console.log(file, fileLists)
-    // },
+    handleRemove (file, fileList, i) {
+      // console.log(file, fileLists)
+      console.log('remove')
+      this.necList[i].fileList = fileList
+    },
+    handleSuccess (response, file, fileList, i) {
+      console.log('success')
+      console.log(file)
+      console.log(response)
+      var tempList = fileList
+      file['url'] = this.axios.defaults.baseURL + '/downloadFile?filename=' + response.file.newfilename + '&oldname=' + response.file.originalname
+      this.necList[i].fileList = tempList
+      console.log(this.necList)
+    },
     beforeRemove (file, fileList) {
       return this.$confirm(`确定移除 ${file.name}？`)
     },

@@ -53,19 +53,19 @@
       <el-table-column label="志愿一" prop="firstChoice.name" v-if="tutorType">
         <template slot-scope="scope">
           <!-- {{scope.row.firstChoice}} -->
-          <el-tag size="medium" effect="light" type="error" v-if="scope.row.firstChoice.accept===0">未接收</el-tag>
-          <el-tag size="medium" effect="light" type="success" v-if="scope.row.firstChoice.accept===1">已接收</el-tag>
-          <el-tag size="medium" effect="light" type="warning" v-if="scope.row.firstChoice.accept===2">未处理</el-tag>
-          <el-tag size="medium" effect="light" type="info" v-if="!scope.row.firstChoice.id">未填报</el-tag>
+          <el-tag size="medium" effect="light" type="error" v-if="scope.row.firstChoice&&scope.row.firstChoice.accept===0">未接收</el-tag>
+          <el-tag size="medium" effect="light" type="success" v-if="scope.row.firstChoice&&scope.row.firstChoice.accept===1">已接收</el-tag>
+          <el-tag size="medium" effect="light" type="warning" v-if="scope.row.firstChoice&&scope.row.firstChoice.accept===2">未处理</el-tag>
+          <el-tag size="medium" effect="light" type="info" v-if="!(scope.row.firstChoice&&scope.row.firstChoice.id)">未填报</el-tag>
         </template>
       </el-table-column>
       <el-table-column label="志愿二" prop="" v-if="tutorType">
         <template slot-scope="scope">
           <!-- {{scope.row.secondChoice}} -->
-          <el-tag size="medium" effect="light" type="error" v-if="scope.row.secondChoice.accept===0">未接收</el-tag>
-          <el-tag size="medium" effect="light" type="success" v-if="scope.row.secondChoice.accept===1">已接收</el-tag>
-          <el-tag size="medium" effect="light" type="warning" v-if="scope.row.secondChoice.accept===2">未处理</el-tag>
-          <el-tag size="medium" effect="light" type="info" v-if="!scope.row.secondChoice.id">未填报</el-tag>
+          <el-tag size="medium" effect="light" type="error" v-if="scope.row.secondChoice&&scope.row.secondChoice.accept===0">未接收</el-tag>
+          <el-tag size="medium" effect="light" type="success" v-if="scope.row.secondChoice&&scope.row.secondChoice.accept===1">已接收</el-tag>
+          <el-tag size="medium" effect="light" type="warning" v-if="scope.row.secondChoice&&scope.row.secondChoice.accept===2">未处理</el-tag>
+          <el-tag size="medium" effect="light" type="info" v-if="!(scope.row.secondChoice&&scope.row.secondChoice.id)">未填报</el-tag>
         </template>
       </el-table-column>
     </el-table>

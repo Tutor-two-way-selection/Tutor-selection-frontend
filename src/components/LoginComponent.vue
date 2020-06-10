@@ -150,6 +150,7 @@ export default {
         .then(response => {
           if (response.data.success) {
             console.log(response.data)
+            sessionStorage.setItem('csrf-token', response.data.token || '')
             if (response.data.passChanged) {
               this.$store.commit('setAccountType', 'student')
               this.$store.commit('setStudentId', that.form.name)
@@ -164,7 +165,7 @@ export default {
             }
           } else {
             console.log(response.data)
-            // TODO 密码错误
+            // TODO 登录错误
             this.$notify.error({
               title: '错误',
               message: response.data.err
@@ -194,6 +195,7 @@ export default {
         })
         .then(response => {
           if (response.data.success) {
+            sessionStorage.setItem('csrf-token', response.data.token || '')
             this.$store.commit('setAccountType', 'teacher')
             this.$store.commit('setTeacherId', that.form.name)
             this.$router.push('/teacher')
@@ -223,6 +225,7 @@ export default {
         })
         .then(response => {
           if (response.data.success) {
+            sessionStorage.setItem('csrf-token', response.data.token || '')
             this.$store.commit('setAccountType', 'admin')
             this.$store.commit('setAdminId', that.form.name)
             this.$store.commit('LoadAdmin', {

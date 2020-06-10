@@ -88,6 +88,7 @@ export default {
       })
     },
     preview (fileUrl) {
+      console.log(fileUrl)
       this.$refs.childItem.preview(fileUrl)
     },
     tableRowClassName ({ row, rowIndex }) {

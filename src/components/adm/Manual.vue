@@ -91,7 +91,9 @@ export default {
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
+        console.log(req)
         this.axios.post('/admin/manual', req).then(res => {
+          console.log(res)
           if (res.data.success) {
             this.$message({
               type: 'success',

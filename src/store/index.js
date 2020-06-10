@@ -72,6 +72,7 @@ export default new Vuex.Store({
         regular: false,
         graduate: false
       }
+      sessionStorage.setItem('csrf-token', null)
       // state.flag.login = false
       // window.sessionStorage.removeItem('student')
     },
